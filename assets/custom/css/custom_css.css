@@ -17,7 +17,10 @@
   color: #555 !important;
 }
 .sidebar .nav .nav-item .nav-link .menu-title {
-  font-size: 17px !important;
+  font-size: 15px !important;
+}
+.sidebar .nav .nav-item .nav-link i.menu-icon {
+  margin-right: 5px !important;
 }
 select.form-control {
   color: #4d4d4d;
@@ -103,4 +106,7 @@ select.form-control {
 }
 .custom_td {
   padding: 7px !important;
+}
+.pad_btn {
+  padding: 5px 10px !important;
 }

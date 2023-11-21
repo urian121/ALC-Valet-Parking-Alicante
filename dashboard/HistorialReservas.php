@@ -25,8 +25,9 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
         <div class="container-scroller">
             <?php include 'bases/navbar.php'; ?>
             <div class="container-fluid page-body-wrapper">
-                <?php include 'bases/config.html'; ?>
-                <?php include 'bases/nav.php';
+                <?php
+                include 'bases/config.html';
+                include 'bases/nav.php';
                 include 'funciones.php';
                 $mis_reservas = getAllReservas($con);
                 ?>
@@ -100,10 +101,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                     <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Factura">
                                                                         <i class="bi bi-receipt sin_deuda"></i>
                                                                     </a>
-                                                                <?php } else { ?>
-                                                                    <a href="#" data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-id="<?php echo $reserva["id"]; ?>" class="factura" title="Crear Factura" data-bs-toggle="modal" data-bs-target="#modalFactura">
-                                                                        <i class="bi bi-receipt"></i>
-                                                                    </a>
                                                                 <?php } ?>
                                                             </td>
                                                         </tr>
@@ -138,20 +135,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                         url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json",
                     },
                 });
-
-
-                $(".factura").click(function() {
-                    let reservaId = $(this).data("id");
-                    let cliente = $(this).data("cliente");
-                    let email = $(this).data("email");
-
-                    document.querySelector(".clienteModal").innerHTML = `<h3>Cliente: ${cliente}</h3>`;
-                    document.querySelector("#idReserva").value = reservaId;
-                    document.querySelector("#emailCliente").value = email;
-                    $("#modalFactura").modal("show");
-                });
-
-
             });
         </script>
     </body>

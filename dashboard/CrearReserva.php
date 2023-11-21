@@ -150,9 +150,28 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
+                                                    <label for="servicios_extras">Servicios adicionales</label>
+                                                    <textarea class="form-control" name="servicios_extras"></textarea>
+                                                </div>
+                                                <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                                                    <label for="total_gasto_extras" class="form-label">
+                                                        Total gasto adicional
+                                                        <em style="color: red; font-size: 0.8rem;">(sin comas ni puntos, ejemplo: 10, 40, 65,650, 1500, etc)</em>
+                                                    </label>
+                                                    <input type="number" name="total_gasto_extras" value="0" class="form-control">
+                                                </div>
+                                            </div>
 
-                                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                                <button type="submit" class="btn btn-primary mr-2">Crear Reserva </button>
+                                            <div class="row justify-content-md-center mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="mt-3">
+                                                        <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                                                            Crear Cuenta
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>

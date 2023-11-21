@@ -2,24 +2,24 @@
        <div class="modal-dialog">
            <div class="modal-content">
                <div class="modal-header">
-                   <h3 class="modal-title fs-5" id="exampleModalLabel" style="width: 100% !important; text-align: center;">
+                   <h2 class="modal-title fs-5" id="exampleModalLabel" style="width: 100% !important; text-align: center;">
                        Crear Factura
-                   </h3>
+                   </h2>
                </div>
                <form action="funciones.php" method="post" autocomplete="off">
                    <input type="hidden" name="accion" value="crearFacturaCliente">
                    <input type="hidden" name="idReserva" id="idReserva">
+                   <input type="text" name="deuda" id="deuda" hidden>
                    <input type="hidden" name="emailCliente" id="emailCliente">
                    <div class="modal-body">
                        <div class="col-md-12 mb-2 clienteModal"></div>
-                       <div class="col-md-12 mb-2 mt-3">
+                       <div class="form-floating mb-2">
                            <label for="formato_pago">Formato de Pago</label>
                            <?php
                             $tiposDePago = array(
                                 "Transferencia Bancaria",
                                 "Tarjeta Bancaria",
                                 "Pago con Tarjeta de Crédito/Débito",
-                                "Cheque",
                                 "Efectivo"
                             ); ?>
                            <select name="formato_pago" class="form-control form-control-lg">
@@ -30,7 +30,17 @@
                                 } ?>
                            </select>
                        </div>
-                       <div class="col-md-12 mb-2 clienteModal"></div>
+
+                       <div class="form-floating mb-2">
+                           <label for="servicios_extras">Servicios adicionales</label>
+                           <textarea class="form-control" name="servicios_extras"></textarea>
+                       </div>
+                       <div class="mb-3">
+                           <label for="total_gasto_extras" class="form-label">
+                               Total gasto adicional <em style="color: red; font-size: 0.8rem;">(sin comas ni puntos, ejemplo: 10, 40, 65,650, 1500, etc)</em>
+                               <i class="bi bi-currency-euro"></i></label>
+                           <input type="number" name="total_gasto_extras" value="0" class="form-control">
+                       </div>
                    </div>
                    <div class="modal-footer">
                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

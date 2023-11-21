@@ -4,9 +4,15 @@
     <?php
     if ($rolUser == 1) { ?>
       <li class="nav-item">
-        <a class="nav-link" href="ReservasAdmin.php">
+        <a class="nav-link" href="Agenda.php">
+          <i class="bi bi-calendar2-check menu-icon"></i>
+          <span class="menu-title">Mi Agenda</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="ReservasPendientes.php">
           <i class="bi bi-calendar2-week menu-icon"></i>
-          <span class="menu-title">Todas las Reservas</span>
+          <span class="menu-title">Reservas Pendientes</span>
         </a>
       </li>
       <li class="nav-item">
@@ -19,6 +25,12 @@
         <a class="nav-link" href="CrearCliente.php">
           <i class="bi bi-person-fill-add menu-icon"></i>
           <span class="menu-title">Clientes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="HistorialReservas.php">
+          <i class="bi bi-calendar3 menu-icon"></i>
+          <span class="menu-title">Historial de Reservas</span>
         </a>
       </li>
     <?php } else { ?>

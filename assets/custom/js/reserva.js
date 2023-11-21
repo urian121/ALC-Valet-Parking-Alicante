@@ -31,8 +31,16 @@ const calcularDiferenciaDias = () => {
    * pago cada vez que modifiquen cualquier fecha
    */
   calcularPago(document.querySelector("#tipo_plaza").value);
+  limpiarDescuento();
 
   return resp;
+};
+
+/**
+ * Funcion para limpiar el aplicar descuento
+ */
+const limpiarDescuento = () => {
+  document.querySelector("#descuento").value = 0;
 };
 
 /**
@@ -164,6 +172,8 @@ const calcularPago = async (tipoPlaza) => {
             ${valor} €, con el IVA incluido.
         `;
     pagoTotalBD.value = valor;
+
+    limpiarDescuento();
   } catch (error) {
     // Manejar errores
     console.error("Error al consultar el valor a Pagar:", error);

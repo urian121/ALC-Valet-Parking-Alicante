@@ -110,8 +110,11 @@
         $redireccion = $_POST['redireccion'];
         $total_pago_reserva = trim($_POST['total_pago_reserva']);
         $descuento = trim($_POST['descuento']);
-        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, descuento) 
-                            VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva', '$descuento')");
+        $servicios_extras = trim($_POST['servicios_extras']);
+        $total_gasto_extras = trim($_POST['total_gasto_extras']);
+
+        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, descuento, servicios_extras, total_gasto_extras) 
+                            VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva', '$descuento', '$servicios_extras', '$total_gasto_extras')");
         $resultInsert = mysqli_query($con, $queryInserReserva);
         if ($resultInsert) {
             // Obtener el último ID insertado
@@ -207,8 +210,16 @@
         $idReserva = $_POST['idReserva'];
         $email_cliente = trim($_POST['emailCliente']);
         $formato_pago = $_POST['formato_pago'];
-
-        $Update = ("UPDATE tbl_reservas SET formato_pago='$formato_pago', fecha_pago_factura='$fecha_pago_factura' WHERE id='$idReserva' ");
+        $deuda = isset($_POST["deuda"]) ? trim($_POST["deuda"]) : 0;
+        $servicios_extras = trim($_POST['servicios_extras']);
+        $total_gasto_extras = trim($_POST['total_gasto_extras']);
+        if ($total_gasto_extras != "") {
+            // Convierte las variables a números y realiza la operación aritmética
+            $deudaTotal = number_format(($deuda + $total_gasto_extras), 2, '.', '');
+        } else {
+            $deudaTotal = $deuda;
+        }
+        $Update = ("UPDATE tbl_reservas SET total_pago_reserva='$deudaTotal', formato_pago='$formato_pago', fecha_pago_factura='$fecha_pago_factura', servicios_extras='$servicios_extras', total_gasto_extras='$total_gasto_extras' WHERE id='$idReserva' ");
         $resultado = mysqli_query($con, $Update);
         header("location:../emails/factura_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId);
     }
