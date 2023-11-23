@@ -5,10 +5,35 @@ if (tbody) {
   tbody.addEventListener("click", async (event) => {
     let target = event.target;
 
+    console.log(target.cellIndex);
+    if (target.cellIndex == undefined) {
+      return;
+    }
+
     if (target.tagName === "TD" && target.parentElement.tagName === "TR") {
       let trElement = target.parentElement;
       let reserva_id = trElement.id;
+      let cellIndex = target.cellIndex;
 
+      let tableBody = document.querySelector("table").getAttribute("id");
+      console.log(tableBody);
+      if (tableBody == "tablaReservasPendientes") {
+        if (cellIndex === 11 || cellIndex === undefined) {
+          //no hacer nada xq se hizo click en el primer td de cualquier fila tr
+          return;
+        }
+      } else if (tableBody == "tablaHistorialReservas") {
+        if (cellIndex === 12 || cellIndex === undefined) {
+          //no hacer nada xq se hizo click en el primer td de cualquier fila tr
+          return;
+        }
+      } else if (tableBody == "TablaAgenda") {
+        if (cellIndex === 11 || cellIndex === undefined) {
+          return;
+        }
+      }
+
+      $("#DetalleReserva").modal("show");
       try {
         const response = await axios.post(
           "../acciones/CustomDetalleReserva.php",

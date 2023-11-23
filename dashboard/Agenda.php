@@ -29,7 +29,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                 include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $mis_reservas = getAllReservas($con);
+                $mis_reservas = getAllAgendaDeReservas($con);
                 ?>
                 <div class="main-panel">
                     <div class="content-wrapper">
@@ -44,7 +44,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                             <hr>
                                         </h2>
                                         <div class="table-responsive">
-                                            <table id="MiTabla" class="table table-hover">
+                                            <table id="TablaAgenda" class="table table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th>Nº Reserva</th>
@@ -58,7 +58,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <th>Hora de recogida</th>
                                                         <th>Pago</th>
                                                         <th>Tipo de plaza</th>
-                                                        <th>Serv. Adicionales</th>
                                                         <th>Reserva / Factura</th>
                                                     </tr>
                                                 </thead>
@@ -66,7 +65,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <?php
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
                                                         $reserva_id = $reserva["id"]; ?>
-                                                        <tr id="<?php echo $reserva_id; ?>" data-bs-toggle="modal" data-bs-target="#DetalleReserva">
+                                                        <tr id="<?php echo $reserva_id; ?>">
                                                             <td class="custom_td">
                                                                 <?php
                                                                 if ($reserva_id < 10) {
@@ -92,7 +91,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                 </span>
                                                             </td>
                                                             <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["servicio_adicional"]; ?></td>
                                                             <td class="custom_td" style="display: flex;justify-content: space-around;">
                                                                 <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Reserva">
                                                                     <i class="bi bi-filetype-pdf"></i>
@@ -127,43 +125,19 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
         </div>
 
         <?php include 'bases/PageJs.html'; ?>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
+        <script src="../assets/custom/js/factura.js"></script>
+        <script src="../assets/custom/js/funciones_generales.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"></script>
         <script>
             $(document).ready(function() {
-                $("#MiTabla").DataTable({
+                $("#TablaAgenda").DataTable({
                     language: {
                         url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json",
                     },
                 });
-
-
-                $(".factura").click(function() {
-                    let reservaId = $(this).data("id");
-                    let cliente = $(this).data("cliente");
-                    let din = $(this).data("din");
-                    let matricula = $(this).data("matric");
-                    let deuda = $(this).data("deuda");
-                    let email = $(this).data("email");
-
-                    let contenido = `
-                        <h4>Cliente: ${cliente} </h4>
-                        <h4>DIN: ${din}</h4>
-                        <h4>Matricula: ${matricula}</h4>
-                        <h4>Deuda: ${deuda} <i class="bi bi-currency-euro"></i></h4>
-                    `;
-
-                    document.querySelector(".clienteModal").innerHTML = contenido;
-                    document.querySelector("#idReserva").value = reservaId;
-                    document.querySelector("#deuda").value = deuda;
-                    document.querySelector("#emailCliente").value = email;
-                    $("#modalFactura").modal("show");
-                });
-
-
             });
         </script>
     </body>

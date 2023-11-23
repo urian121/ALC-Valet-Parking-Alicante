@@ -108,5 +108,8 @@ select.form-control {
   padding: 7px !important;
 }
 .pad_btn {
-  padding: 5px 10px !important;
+  padding: 8px !important;
+}
+body tr td:hover {
+  cursor: pointer !important;
 }

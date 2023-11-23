@@ -37,9 +37,9 @@
                        </div>
                        <div class="mb-3">
                            <label for="total_gasto_extras" class="form-label">
-                               Total gasto adicional <em style="color: red; font-size: 0.8rem;">(sin comas ni puntos, ejemplo: 10, 40, 65,650, 1500, etc)</em>
-                               <i class="bi bi-currency-euro"></i></label>
-                           <input type="number" name="total_gasto_extras" value="0" class="form-control">
+                               Total gasto adicional
+                               <i class="bi bi-currency-euro .sin_deuda"></i></label>
+                           <input type="text" name="total_gasto_extras" oninput="formatCurrency(event)" class="form-control">
                        </div>
                    </div>
                    <div class="modal-footer">

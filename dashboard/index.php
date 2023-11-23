@@ -169,7 +169,6 @@ if (isset($_SESSION['emailUser']) != "") {
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <script src="https://unpkg.com/gijgo@1.9.14/js/messages/messages.es-es.js" type="text/javascript"></script>
     <script src="../assets/custom/js/custom_date_time.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../assets/custom/js/reserva.js"></script>
 
   </body>
