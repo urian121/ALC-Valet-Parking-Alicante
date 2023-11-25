@@ -41,7 +41,6 @@ if (isset($_SESSION['emailUser']) != "") {
                                         <form action="funciones.php" method="post" autocomplete="off">
                                             <input type="hidden" name="accion" value="crearReserva">
                                             <input type="hidden" name="total_pago_reserva" id="total_pago_reserva">
-                                            <input type="text" name="redireccion" value="CrearReserva.php" hidden>
                                             <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="fecha-entrega">Fecha de entrega</label>
@@ -158,9 +157,8 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="total_gasto_extras" class="form-label">
                                                         Total gasto adicional
-                                                        <em style="color: red; font-size: 0.8rem;">(sin comas ni puntos, ejemplo: 10, 40, 65,650, 1500, etc)</em>
                                                     </label>
-                                                    <input type="number" name="total_gasto_extras" value="0" class="form-control">
+                                                    <input type="text" name="total_gasto_extras" oninput="formatCurrency(event)" class="form-control">
                                                 </div>
                                             </div>
 
@@ -194,10 +192,11 @@ if (isset($_SESSION['emailUser']) != "") {
         </div>
 
         <?php include 'bases/PageJs.html'; ?>
+        <script src="../assets/custom/js/funciones_generales.js"></script>
+        <script src="../assets/custom/js/reserva.js"></script>
         <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
         <script src="https://unpkg.com/gijgo@1.9.14/js/messages/messages.es-es.js" type="text/javascript"></script>
         <script src="../assets/custom/js/custom_date_time.js"></script>
-        <script src="../assets/custom/js/reserva.js"></script>
 
     </body>
 

@@ -1,16 +1,17 @@
 <?php
 include('../config/config.php');
+$expo = (int)$_REQUEST['expo'];
 
 date_default_timezone_set("Europe/Madrid");
 $horaEnEspana = date("Y-m-d");
 
 // Obtener los datos de la base de datos
-$sqlClientes = "SELECT * FROM tbl_reservas ORDER BY id DESC";
+$sqlClientes = "SELECT * FROM tbl_reservas WHERE estado_reserva='{$expo}' ORDER BY id DESC";
 $query = mysqli_query($con, $sqlClientes);
 
 // Configuración de encabezados para forzar la descarga del archivo
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment; filename="Data de Reservas ' . $horaEnEspana . '.xls"');
+header('Content-Disposition: attachment; filename="HISTORIAL DE RESERVAS ' . $horaEnEspana . '.xls"');
 header('Cache-Control: max-age=0');
 
 // Función para imprimir una fila de datos

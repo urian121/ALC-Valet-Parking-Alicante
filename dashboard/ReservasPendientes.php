@@ -27,16 +27,17 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                 include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $mis_reservas = getAllReservasPendientes($con);
+                $mis_reservas = getAllReservasPorEstadoReserva($con, 0);
                 ?>
                 <div class="main-panel">
                     <div class="content-wrapper">
+                        <div class="row justify-content-md-center" id="MiAlert"></div>
                         <div class="row justify-content-md-center">
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
                                         <h2 class="card-title text-center mb-4" style="font-size: 30px;">Resumen de Reservas Pendientes
-                                            <a href="../acciones/exportDataReservas.php" download="Data_clientes.xls" style="float: right;font-size: 25px;">
+                                            <a title="Todas las Reservas Pendientes" href="../acciones/exportDataReservas.php?expo=2" download="Data_clientes.xls" style="float: right;font-size: 25px;">
                                                 <i class="bi bi-filetype-csv"></i>
                                             </a>
                                             <hr>
@@ -64,7 +65,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <?php
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
                                                         $reserva_id = $reserva["id"]; ?>
-                                                        <tr id="<?php echo $reserva_id; ?>">
+                                                        <tr id="<?php echo $reserva_id; ?>" class="reserva_<?php echo $reserva_id; ?>">
                                                             <td class="custom_td">
                                                                 <?php
                                                                 if ($reserva_id < 10) {
@@ -91,7 +92,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             </td>
                                                             <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
                                                             <td class="text-center custom_td">
-                                                                <button title="Aprobar Reserva" type="button" onclick='aceptarReservaPendiente(this, <?php echo $reserva["id"]; ?>)' class="pad_btn btn btn-danger btn-sm pd_7">
+                                                                <button title="Aprobar Reserva" type="button" onclick='gestionarReserva(this, <?php echo $reserva["id"]; ?>,"ReservasPendientes")' class="pad_btn btn btn-danger btn-sm pd_7">
                                                                     Aceptar Reserva
                                                                 </button>
                                                             </td>
@@ -121,6 +122,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
 
         <?php include 'bases/PageJs.html'; ?>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
+        <script src="../assets/custom/js/status_reservas.js"></script>
         <script>
             $(document).ready(function() {
                 $("#tablaReservasPendientes").DataTable({
@@ -129,38 +131,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                     },
                 });
             });
-
-            const aceptarReservaPendiente = async (boton, idReserva) => {
-                try {
-                    const url = `../acciones/servicio_api/aceptarReservaPendiente.php/`;
-                    const response = await axios.post(url, {
-                        idReserva
-                    });
-                    const {
-                        success,
-                        message
-                    } = response.data;
-
-                    if (success) {
-                        console.log("Reserva aceptada con éxito");
-                        actualizarBotonExito(boton);
-                    } else {
-                        console.error(`Error ${status}: ${message}`);
-                        // Manejar otros casos de error según sea necesario
-                    }
-                } catch (error) {
-                    console.error("Error en la función aceptarReservaPendiente:", error);
-                    // Manejar errores de red u otros errores
-                }
-            };
-
-            const actualizarBotonExito = (boton) => {
-                boton.classList.remove("btn-danger");
-                boton.classList.add("btn-success");
-                boton.innerHTML = "<i class='bi bi-check2-all' style='font-size: 15px !important;'></i> Reserva Aceptada";
-                boton.onclick = null;
-                // Puedes agregar más acciones si es necesario
-            };
         </script>
     </body>
 

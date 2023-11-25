@@ -11,11 +11,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
     include('bases/head.html');
     include('bases/toastr.html');
     ?>
-    <style>
-        body tr td:hover {
-            cursor: pointer !important;
-        }
-    </style>
 
     <body>
         <?php
@@ -29,16 +24,19 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                 include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $mis_reservas = getAllAgendaDeReservas($con);
+                $mis_reservas = getAllReservasPorEstadoReserva($con, 1);
                 ?>
                 <div class="main-panel">
                     <div class="content-wrapper">
+                        <div class="row justify-content-md-center" id="MiAlert"></div>
+
                         <div class="row justify-content-md-center">
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">Todas Mis Reservas
-                                            <a href="../acciones/exportDataReservas.php" download="Data_clientes.xls" style="float: right;font-size: 25px;">
+                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">
+                                            Agenda de Reservas Activas
+                                            <a title="Lista de Todas las Reservas activas" href="../acciones/exportDataReservas.php?expo=1" download="Data_clientes.xls" style="float: right;font-size: 25px;">
                                                 <i class="bi bi-filetype-csv"></i>
                                             </a>
                                             <hr>
@@ -57,7 +55,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <th>Fecha de recogida</th>
                                                         <th>Hora de recogida</th>
                                                         <th>Pago</th>
-                                                        <th>Tipo de plaza</th>
+                                                        <th>Acción</th>
                                                         <th>Reserva / Factura</th>
                                                     </tr>
                                                 </thead>
@@ -65,7 +63,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <?php
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
                                                         $reserva_id = $reserva["id"]; ?>
-                                                        <tr id="<?php echo $reserva_id; ?>">
+                                                        <tr id="<?php echo $reserva_id; ?>" class="reserva_<?php echo $reserva_id; ?>">
                                                             <td class="custom_td">
                                                                 <?php
                                                                 if ($reserva_id < 10) {
@@ -90,7 +88,18 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                     <i class="bi bi-currency-euro"></i>
                                                                 </span>
                                                             </td>
-                                                            <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
+                                                            <td class="text-center custom_td">
+                                                                <?php if (isset($reserva["formato_pago"])) { ?>
+                                                                    <button title="Enviar a Historial" type="button" onclick='gestionarReserva(this, <?php echo $reserva["id"]; ?>,"Agenda")' class="pad_btn btn btn-success btn-sm pd_7">
+                                                                        Enviar a Historial
+                                                                    </button>
+                                                                <?php } else { ?>
+                                                                    <button title="Enviar a Historial" type="button" class="pad_btn btn btn-danger btn-sm pd_7" disabled>
+                                                                        Enviar a Historial
+                                                                    </button>
+                                                                <?php } ?>
+
+                                                            </td>
                                                             <td class="custom_td" style="display: flex;justify-content: space-around;">
                                                                 <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Reserva">
                                                                     <i class="bi bi-filetype-pdf"></i>
@@ -100,7 +109,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                         <i class="bi bi-receipt sin_deuda"></i>
                                                                     </a>
                                                                 <?php } else { ?>
-                                                                    <a href="#" data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>" class="factura" title="Crear Factura" data-bs-toggle="modal" data-bs-target="#modalFactura">
+                                                                    <a class="factura" title="Crear Factura" href="#" data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>">
                                                                         <i class="bi bi-receipt"></i>
                                                                     </a>
                                                                 <?php } ?>
@@ -126,6 +135,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
 
         <?php include 'bases/PageJs.html'; ?>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
+        <script src="../assets/custom/js/status_reservas.js"></script>
         <script src="../assets/custom/js/factura.js"></script>
         <script src="../assets/custom/js/funciones_generales.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

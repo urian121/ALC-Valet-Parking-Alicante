@@ -22,7 +22,7 @@
                                 "Pago con Tarjeta de Crédito/Débito",
                                 "Efectivo"
                             ); ?>
-                           <select name="formato_pago" class="form-control form-control-lg">
+                           <select name="formato_pago" class="form-control form-control-lg" required>
                                <option value="" selected="">Seleccione</option>
                                <?php
                                 foreach ($tiposDePago as $tipo) {
@@ -38,7 +38,7 @@
                        <div class="mb-3">
                            <label for="total_gasto_extras" class="form-label">
                                Total gasto adicional
-                               <i class="bi bi-currency-euro .sin_deuda"></i></label>
+                               <i class="bi bi-currency-euro"></i></label>
                            <input type="text" name="total_gasto_extras" oninput="formatCurrency(event)" class="form-control">
                        </div>
                    </div>

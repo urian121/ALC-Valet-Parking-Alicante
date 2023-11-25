@@ -27,7 +27,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                 include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $mis_reservas = getAllReservas($con);
+                $mis_reservas = getAllReservasPorEstadoReserva($con, 2);
                 ?>
                 <div class="main-panel">
                     <div class="content-wrapper">
@@ -36,7 +36,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                 <div class="card">
                                     <div class="card-body">
                                         <h2 class="card-title text-center mb-4" style="font-size: 30px;">Historial de todas las Reservas
-                                            <a href="../acciones/exportDataReservas.php" download="Data_clientes.xls" style="float: right;font-size: 25px;">
+                                            <a title="Historial de todas las Reservas" href="../acciones/exportDataReservas.php?expo=3" download="Data_clientes.xls" style="float: right;font-size: 25px;">
                                                 <i class="bi bi-filetype-csv"></i>
                                             </a>
                                             <hr>

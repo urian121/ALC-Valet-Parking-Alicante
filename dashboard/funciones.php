@@ -81,6 +81,7 @@
         $servicio_adicional = isset($_POST['servicio_adicional']) ? "Si" : "No";
         $total_pago_reserva = trim($_POST['total_pago_reserva']);
         $email_cliente = trim($_POST['email_cliente']);
+
         $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva) VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva')");
         $resultInsert = mysqli_query($con, $queryInserReserva);
         if ($resultInsert) {
@@ -94,6 +95,7 @@
      * Crear reserva desde perfil Administrador
      */
     if (isset($_POST["accion"]) && $_POST["accion"] == "crearReserva") {
+        $id_cliente = trim($_POST['IdUser']);
         $fecha_entrega = date("Y-m-d", strtotime($_POST['fecha_entrega']));
         $hora_entrega = trim($_POST['hora_entrega']);
         $fecha_recogida = date("Y-m-d", strtotime($_POST['fecha_recogida']));
@@ -106,12 +108,18 @@
         $marca_modelo = trim($_POST['marca_modelo']);
         $numero_vuelo_de_vuelta = trim($_POST['numero_vuelo_de_vuelta']);
         $servicio_adicional = isset($_POST['servicio_adicional']) ? "Si" : "No";
-        $id_cliente = trim($_POST['IdUser']);
-        $redireccion = $_POST['redireccion'];
+
+
         $total_pago_reserva = trim($_POST['total_pago_reserva']);
-        $descuento = trim($_POST['descuento']);
-        $servicios_extras = trim($_POST['servicios_extras']);
-        $total_gasto_extras = trim($_POST['total_gasto_extras']);
+        $descuento = isset($_POST['descuento']) ? trim($_POST['descuento']) : 0;
+        $servicios_extras = $_POST['servicios_extras'];
+        $total_gasto_extras = isset($_POST['total_gasto_extras']) ? trim($_POST['total_gasto_extras']) : 0;
+        if ($total_gasto_extras != "") {
+            // Convierte las variables a números y realiza la operación aritmética
+            $deudaTotal = number_format(($total_pago_reserva + $total_gasto_extras), 2, '.', '');
+        } else {
+            $deudaTotal = $total_pago_reserva;
+        }
 
         $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, descuento, servicios_extras, total_gasto_extras) 
                             VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva', '$descuento', '$servicios_extras', '$total_gasto_extras')");
@@ -157,28 +165,13 @@
     }
 
     /**
-     * Listas de todas las Reservas Administrador
-     */
-    function getAllReservas($con)
-    {
-        $sqlReservasAdmin = ("SELECT c.*, r.* FROM tbl_clientes AS c
-                    INNER JOIN tbl_reservas AS r ON c.idUser = r.id_cliente
-                    ORDER BY r.date_registro DESC");
-        $queryReserva = mysqli_query($con, $sqlReservasAdmin);
-        if (!$queryReserva) {
-            return false;
-        }
-        return $queryReserva;
-    }
-
-    /**
      * Lista de Reservas Pendientes
      */
-    function getAllReservasPendientes($con)
+    function getAllReservasPorEstadoReserva($con, $status_reserva)
     {
         $sqlReservasAdmin = ("SELECT c.*, r.* FROM tbl_clientes AS c
                     INNER JOIN tbl_reservas AS r ON c.idUser = r.id_cliente
-                    WHERE r.estado_reserva = 0
+                    WHERE r.estado_reserva = '{$status_reserva}'
                     ORDER BY r.date_registro DESC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
         if (!$queryReserva) {
@@ -187,21 +180,6 @@
         return $queryReserva;
     }
 
-    /**
-     * 
-     */
-    function getAllAgendaDeReservas($con)
-    {
-        $sqlReservasAdmin = ("SELECT c.*, r.* FROM tbl_clientes AS c
-                    INNER JOIN tbl_reservas AS r ON c.idUser = r.id_cliente
-                    WHERE r.estado_reserva = 1
-                    ORDER BY r.date_registro DESC");
-        $queryReserva = mysqli_query($con, $sqlReservasAdmin);
-        if (!$queryReserva) {
-            return false;
-        }
-        return $queryReserva;
-    }
     /**
      * Crear cuenta de Cliente desde el Administrado
      */
@@ -241,31 +219,19 @@
         $idReserva = $_POST['idReserva'];
         $email_cliente = trim($_POST['emailCliente']);
         $formato_pago = $_POST['formato_pago'];
-        echo $deuda = isset($_POST["deuda"]) ? trim($_POST["deuda"]) : 0;
         $servicios_extras = trim($_POST['servicios_extras']);
-        echo '<br>';
-        echo $total_gasto_extras = trim($_POST['total_gasto_extras']);
-        echo '<br>';
-
-        if (strpos($total_gasto_extras, '.') === false) {
-            $cantidad_formateada = number_format($total_gasto_extras / 100, 2, '.', ',');
-        } else {
-            $cantidad_formateada = number_format($total_gasto_extras, 2, '.', ',');
-        }
-        echo $cantidad_formateada;
-        echo '<br>';
-
+        $deuda = isset($_POST["deuda"]) ? trim($_POST["deuda"]) : 0;
+        $total_gasto_extras = isset($_POST['total_gasto_extras']) ? trim($_POST['total_gasto_extras']) : 0;
         if ($total_gasto_extras != "") {
             // Convierte las variables a números y realiza la operación aritmética
-            $deudaTotal = number_format(($deuda + $total_gasto_extras), 2, '.', '');
+            $deudaTotal = (int)(number_format(($deuda + $total_gasto_extras), 2, '.', ''));
         } else {
             $deudaTotal = $deuda;
         }
-        echo '<br>';
-        print_r($deudaTotal);
-        exit();
+
         $Update = ("UPDATE tbl_reservas SET total_pago_reserva='$deudaTotal', formato_pago='$formato_pago', fecha_pago_factura='$fecha_pago_factura', servicios_extras='$servicios_extras', total_gasto_extras='$total_gasto_extras' WHERE id='$idReserva' ");
+        print($Update);
         $resultado = mysqli_query($con, $Update);
-        //header("location:../emails/factura_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId);
+        header("location:../emails/factura_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId);
     }
     ?>

@@ -113,3 +113,10 @@ select.form-control {
 body tr td:hover {
   cursor: pointer !important;
 }
+.btn-success {
+  background-color: #10ac10 !important;
+  border-color: #10ac10;
+}
+body tr td:hover {
+  cursor: pointer !important;
+}
