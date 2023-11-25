@@ -29,6 +29,7 @@ if (isset($_GET["idReserva"])) {
                     r.numero_vuelo_de_vuelta,
                     r.servicio_adicional,
                     r.total_pago_reserva,
+                    r.servicios_extras,
                     ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
                 FROM tbl_clientes AS c 
                 INNER JOIN tbl_reservas AS r
@@ -85,6 +86,11 @@ class MYPDF extends TCPDF
     }
     public function Header()
     {
+        // $watermarkImg = dirname(__FILE__) . '/../assets/custom/imgs/logon_alcvaletparking.png'; // Ruta de la imagen de la marca de agua
+        //$this->Image($watermarkImg, 90, 110, 30, 0, 'PNG', '', '', false, 300, '', false, false, 0);
+        //$this->Image($watermarkImg, 90, 110, 30, 0, 'PNG', '', '', false, 300, '', false, false, 0, 100);
+
+
         $fechaActual = new DateTime();
         $nombreDia = $this->traducirDia($fechaActual->format('l'));
         $nombreMes = $this->traducirMes($fechaActual->format('F'));
@@ -247,39 +253,84 @@ foreach ($reservaDatos as $campo => $valor) {
 $pdf->SetXY($posicionX, $posicionY + 10);
 
 
+/**
+ *  Observaciones
+ */
 $pdf->SetFont('Helvetica', 'B', 15);
 $pdf->Cell(0, 0, 'OBSERVACIONES', 0, 0, 'C');
 $pdf->Line(10, 225, 200, 225);
+// Calcular el precio real sin IVA
+$precioConIva = $rowReserva['total_pago_reserva']; // Precio del producto con IVA
+$porcentajeIva = 21; // Porcentaje de IVA
 
-$cliente = array(
-    'Precio Estancia' => $rowReserva['total_pago_reserva'] . '€',
-    'Tipo de Plaza' => $rowReserva['tipo_plaza'],
-    'Lavado Básico Exterior' => $rowReserva['servicio_adicional'],
-    'Nº Vuelo de Vuelta' => $rowReserva['numero_vuelo_de_vuelta'],
-    'TOTAL' => $rowReserva['total_pago_reserva'] . '€'
+//Base Impuesto sera igual a la suma total sin IVA
+$precioSinIva = $precioConIva / (1 + ($porcentajeIva / 100));
+$iva = $precioSinIva * ($porcentajeIva / 100);
+
+
+// Información para la primera tabla
+$tablaDatos1 = array(
+    'Precio Estancia'   => number_format($precioConIva, 2) . ' €',
+    'Servicio Adicional' => number_format($rowReserva['total_gasto_extras'], 2) . ' €',
+    'SUMA TOTAL'        => $rowReserva['total_pago_reserva'] . ' €'
 );
 
-// Configuración de la fuente
-$pdf->SetFont('Helvetica', 'B', 9);
+// Información para la segunda tabla
+$tablaDatos2 = array(
+    'Base Imp'          => number_format($precioSinIva, 2) . ' €',
+    'IVA 21 %'          => number_format($iva, 2) . ' €',
+    'TOTAL'             => '46,00 €',
+
+);
 
 // Configuración de la tabla
 $anchoColumna1 = 60;
-$anchoColumna2 = 100;
+$anchoColumna2 = 40;
 $altoCelda = 7;
 
-// Establecer posición inicial de la tabla
-$posicionX = 10;
-$posicionY = $pdf->GetY() + 10;
+// Establecer posición inicial de la primera tabla
+$posicionX1 = 10;
+$posicionY1 = $pdf->GetY() + 10;
 
-foreach ($cliente as $campo => $valor) {
-    $pdf->SetXY($posicionX, $posicionY);
+// Crear primera tabla
+foreach ($tablaDatos1 as $concepto => $valor) {
+    $pdf->SetXY($posicionX1, $posicionY1);
     $pdf->SetFont('Helvetica', 'B', 12);
-    $pdf->Cell($anchoColumna1, $altoCelda, $campo); // Sin bordes
+    $pdf->Cell($anchoColumna1, $altoCelda, $concepto); // Sin bordes
     $pdf->SetFont('Helvetica', '', 12);
     $pdf->Cell($anchoColumna2, $altoCelda, $valor); // Sin bordes
-    $posicionY += $altoCelda; // Ajustar la posición Y para la siguiente fila
+    $posicionY1 += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
-$pdf->SetXY($posicionX, $posicionY + 10);
+
+// Establecer posición inicial de la segunda tabla
+$posicionX2 = $posicionX1 - 110; // Desplazamiento horizontal
+$posicionY2 = $pdf->GetY() - 14;
+
+// Crear segunda tabla
+foreach ($tablaDatos2 as $concepto => $valor) {
+    $pdf->SetXY($posicionX2, $posicionY2);
+    $pdf->SetFont('Helvetica', 'B', 12);
+    $pdf->Cell($anchoColumna1, $altoCelda, $concepto); // Sin bordes
+    $pdf->SetFont('Helvetica', '', 12);
+    $pdf->Cell($anchoColumna2, $altoCelda, $valor); // Sin bordes
+    $posicionY2 += $altoCelda; // Ajustar la posición Y para la siguiente fila
+}
+// Ajustar según sea necesario
+$pdf->SetXY($posicionX1, max($posicionY1, $posicionY2) + 10);
+
+//Validando si hay Servicios Extras
+if ($rowReserva['servicios_extras'] != "") {
+    $pdf->SetFont('helvetica', 'B', 14); //La B es para letras en Negritas
+    $pdf->SetXY(118, 138);
+    $pdf->Cell(200, 0, 'Detalles Servicio Adicional', 0, 0, '');
+
+    // Configurar la fuente y tamaño para el párrafo
+    $pdf->SetXY(110, 146);
+    $pdf->SetFont('Helvetica', '', 12);
+    $anchoCelda = 90;
+    $pdf->MultiCell($anchoCelda, 10, $rowReserva['servicios_extras'], 0, 'J');
+}
+
 
 
 

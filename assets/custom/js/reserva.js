@@ -1,3 +1,6 @@
+let pago_original = 0;
+console.log("pago_original iniciando en", pago_original);
+
 const calcularDiferenciaDias = () => {
   let fechaEntrega = document.getElementById("fecha_entrega").value;
   let fechaRecogida = document.getElementById("fecha_recogida").value;
@@ -168,9 +171,11 @@ const calcularPago = async (tipoPlaza) => {
     const dataFromServer = response.data;
     const valor = dataFromServer[0].valor;
 
-    totalR.innerHTML = `
-            ${valor} €, con el IVA incluido.
-        `;
+    //Actualizando valor para el pago_original
+    pago_original = valor;
+    //console.log("Pago a pagar: " + pago_original);
+
+    totalR.innerHTML = `${valor} €, con el IVA incluido.`;
     pagoTotalBD.value = valor;
 
     limpiarDescuento();
@@ -181,6 +186,7 @@ const calcularPago = async (tipoPlaza) => {
 };
 
 const actualizarTotalConDescuento = (PorcentajeDescuento) => {
+  //console.log("en la funcion actualizarTotalConDescuento", pago_original);
   // Eliminar cualquier caracter no numérico del porcentaje de descuento
   const porcentajeNumerico = parseFloat(
     PorcentajeDescuento.replace(/[^\d.]/g, "")
@@ -197,13 +203,9 @@ const actualizarTotalConDescuento = (PorcentajeDescuento) => {
     return;
   }
 
-  const totalPagoReservaInput = document.getElementById("total_pago_reserva");
-  const valorTotalPagoReserva = totalPagoReservaInput.value;
-  console.log("Total pago reserva", valorTotalPagoReserva);
-
   // Calcula el nuevo total con descuento
   const nuevoTotal =
-    valorTotalPagoReserva - valorTotalPagoReserva * (PorcentajeDescuento / 100);
+    pago_original - pago_original * (PorcentajeDescuento / 100);
   const descuentoTotal = nuevoTotal.toFixed(2);
 
   let totalReserva = document.querySelector("#totalReserva");
