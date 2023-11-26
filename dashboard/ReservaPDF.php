@@ -30,6 +30,7 @@ if (isset($_GET["idReserva"])) {
                     r.servicio_adicional,
                     r.total_pago_reserva,
                     r.servicios_extras,
+                    r.total_gasto_extras,
                     ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
                 FROM tbl_clientes AS c 
                 INNER JOIN tbl_reservas AS r
@@ -259,12 +260,14 @@ $pdf->SetXY($posicionX, $posicionY + 10);
 $pdf->SetFont('Helvetica', 'B', 15);
 $pdf->Cell(0, 0, 'OBSERVACIONES', 0, 0, 'C');
 $pdf->Line(10, 225, 200, 225);
-// Calcular el precio real sin IVA
-$precioConIva = $rowReserva['total_pago_reserva']; // Precio del producto con IVA
-$porcentajeIva = 21; // Porcentaje de IVA
 
-//Base Impuesto sera igual a la suma total sin IVA
-$precioSinIva = $precioConIva / (1 + ($porcentajeIva / 100));
+// Calcular el precio real sin IVA
+$precioConIva = ($rowReserva['total_pago_reserva']); // Precio del producto con IVA
+$sumaTotal = ($precioConIva + $rowReserva['total_gasto_extras']);
+
+//Base Impuesto
+$porcentajeIva = 21; // Porcentaje de IVA
+$precioSinIva = $sumaTotal / (1 + ($porcentajeIva / 100));
 $iva = $precioSinIva * ($porcentajeIva / 100);
 
 
@@ -272,15 +275,14 @@ $iva = $precioSinIva * ($porcentajeIva / 100);
 $tablaDatos1 = array(
     'Precio Estancia'   => number_format($precioConIva, 2) . ' €',
     'Servicio Adicional' => number_format($rowReserva['total_gasto_extras'], 2) . ' €',
-    'SUMA TOTAL'        => $rowReserva['total_pago_reserva'] . ' €'
+    'SUMA TOTAL'        => $sumaTotal . ' €'
 );
 
 // Información para la segunda tabla
 $tablaDatos2 = array(
     'Base Imp'          => number_format($precioSinIva, 2) . ' €',
     'IVA 21 %'          => number_format($iva, 2) . ' €',
-    'TOTAL'             => '46,00 €',
-
+    'TOTAL'             => $sumaTotal . ' €',
 );
 
 // Configuración de la tabla
@@ -321,13 +323,13 @@ $pdf->SetXY($posicionX1, max($posicionY1, $posicionY2) + 10);
 //Validando si hay Servicios Extras
 if ($rowReserva['servicios_extras'] != "") {
     $pdf->SetFont('helvetica', 'B', 14); //La B es para letras en Negritas
-    $pdf->SetXY(118, 138);
+    $pdf->SetXY(127, 138);
     $pdf->Cell(200, 0, 'Detalles Servicio Adicional', 0, 0, '');
 
     // Configurar la fuente y tamaño para el párrafo
-    $pdf->SetXY(110, 146);
+    $pdf->SetXY(120, 146);
     $pdf->SetFont('Helvetica', '', 12);
-    $anchoCelda = 90;
+    $anchoCelda = 80;
     $pdf->MultiCell($anchoCelda, 10, $rowReserva['servicios_extras'], 0, 'J');
 }
 

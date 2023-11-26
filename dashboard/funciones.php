@@ -216,22 +216,37 @@
         date_default_timezone_set("Europe/Madrid");
         $fecha_pago_factura = date("Y-m-d H:i:s");
 
-        $idReserva = $_POST['idReserva'];
-        $email_cliente = trim($_POST['emailCliente']);
-        $formato_pago = $_POST['formato_pago'];
-        $servicios_extras = trim($_POST['servicios_extras']);
         $deuda = isset($_POST["deuda"]) ? trim($_POST["deuda"]) : 0;
-        $total_gasto_extras = isset($_POST['total_gasto_extras']) ? trim($_POST['total_gasto_extras']) : 0;
-        if ($total_gasto_extras != "") {
-            // Convierte las variables a números y realiza la operación aritmética
-            $deudaTotal = (int)(number_format(($deuda + $total_gasto_extras), 2, '.', ''));
+
+        $t_g_e = trim($_POST['total_gasto_extras']);
+        $total_gasto_extras = 0;
+        if ($t_g_e == "") {
+            $total_gasto_extras = 0;
+        } else {
+            $total_gasto_extras = $t_g_e;
+        }
+
+        // Verifica si $total_gasto_extras es una cadena no vacía antes de realizar la operación aritmética
+        if ($total_gasto_extras !== "") {
+            // Convierte $total_gasto_extras a número flotante
+            $total_gasto_extras = floatval($total_gasto_extras);
+
+            // Realiza la operación aritmética
+            $deudaTotal = number_format(($deuda + $total_gasto_extras), 2, '.', '');
         } else {
             $deudaTotal = $deuda;
         }
 
-        $Update = ("UPDATE tbl_reservas SET total_pago_reserva='$deudaTotal', formato_pago='$formato_pago', fecha_pago_factura='$fecha_pago_factura', servicios_extras='$servicios_extras', total_gasto_extras='$total_gasto_extras' WHERE id='$idReserva' ");
-        print($Update);
+
+        $idReserva = $_POST['idReserva'];
+        $email_cliente = trim($_POST['emailCliente']);
+        $formato_pago = $_POST['formato_pago'];
+        $servicios_extras = $_POST['servicios_extras'];
+
+        $Update = "UPDATE tbl_reservas SET total_pago_reserva='$deudaTotal', formato_pago='$formato_pago', fecha_pago_factura='$fecha_pago_factura', servicios_extras='$servicios_extras', total_gasto_extras='$total_gasto_extras' WHERE id='$idReserva'";
         $resultado = mysqli_query($con, $Update);
-        header("location:../emails/factura_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId);
+
+        // Utiliza urlencode para asegurar que los parámetros del URL estén correctamente codificados
+        header("location:../emails/factura_email.php?emailUser=" . urlencode($email_cliente) . "&IdReserva=" . urlencode($idReserva));
     }
     ?>

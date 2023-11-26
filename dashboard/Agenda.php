@@ -47,7 +47,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <tr>
                                                         <th>Nº Reserva</th>
                                                         <th>Cliente</th>
-                                                        <th>DIN</th>
+                                                        <th>DNI / CIF</th>
                                                         <th>Teléfono</th>
                                                         <th>Matrícula</th>
                                                         <th>Fecha de entrega</th>
@@ -109,7 +109,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                         <i class="bi bi-receipt sin_deuda"></i>
                                                                     </a>
                                                                 <?php } else { ?>
-                                                                    <a class="factura" title="Crear Factura" href="#" data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>">
+                                                                    <a class="factura" title="Crear Factura" href="#" data-total_gasto_extras='<?php echo $reserva["total_gasto_extras"]; ?>' data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>" data-servicios_extras=<?php echo $reserva["servicios_extras"]; ?>'>
                                                                         <i class="bi bi-receipt"></i>
                                                                     </a>
                                                                 <?php } ?>

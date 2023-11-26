@@ -95,17 +95,11 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Terminal de entrega</label>
-                                                    <select name="terminal_entrega" class="form-control form-control-lg" required>
-                                                        <option value="" selected>Seleccione</option>
-                                                        <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
-                                                    </select>
+                                                    <input type="text" name="terminal_entrega" class="form-control form-control-lg" required />
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Terminal de recogida</label>
-                                                    <select name="terminal_recogida" class="form-control form-control-lg" required>
-                                                        <option value="" selected>Seleccione</option>
-                                                        <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
-                                                    </select>
+                                                    <input type="text" name="terminal_recogida" class="form-control form-control-lg" required />
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Matrícula</label>

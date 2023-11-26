@@ -48,7 +48,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <tr>
                                                         <th>Nº Reserva</th>
                                                         <th>Cliente</th>
-                                                        <th>DIN</th>
+                                                        <th>DNI / CIF</th>
                                                         <th>Teléfono</th>
                                                         <th>Matrícula</th>
                                                         <th>Fecha de entrega</th>
