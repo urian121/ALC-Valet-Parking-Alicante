@@ -11,7 +11,10 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
     <body>
-        <?php include('bases/loader.html'); ?>
+        <?php
+        include('../msjs.php');
+        include('bases/loader.html');
+        ?>
         <div class="container-scroller">
             <?php include 'bases/navbar.php'; ?>
             <div class="container-fluid page-body-wrapper">

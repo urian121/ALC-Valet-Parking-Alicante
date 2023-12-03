@@ -40,13 +40,13 @@ if (isset($_REQUEST['errorC'])) {
     $mensaje = 'Felicitaciones, Cuenta creada correctamente.';
     $tipo = 'success';
 } elseif (isset($_REQUEST['successR'])) {
-    $mensaje = 'Felicitaciones, tu Reserva fue creda correctamente.';
+    $mensaje = 'Felicitaciones, La reserva se ha creado con éxito, en breve le llegará un email con el recibo para dicha reserva.';
     $tipo = 'success';
 } elseif (isset($_REQUEST['facturaR'])) {
-    $mensaje = 'Felicitaciones, tu factura fue creda correctamente.';
+    $mensaje = 'Felicitaciones, la factura fue creda correctamente.';
     $tipo = 'success';
 } elseif (isset($_REQUEST['successP'])) {
-    $mensaje = 'Felicitaciones, tu Perfil fue actualizado correctamente.';
+    $mensaje = 'Felicitaciones, el perfil fue actualizado correctamente.';
     $tipo = 'success';
 }
 

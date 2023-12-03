@@ -31,6 +31,7 @@ if (isset($_GET["idReserva"]) && is_numeric($_GET["idReserva"])) {
                 r.total_pago_reserva,
                 r.servicios_extras,
                 r.total_gasto_extras,
+                r.formato_pago,
                 ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
                 FROM tbl_clientes AS c 
                 INNER JOIN tbl_reservas AS r
@@ -184,8 +185,8 @@ $pdf->Ln(28);
 $cliente = array(
     'Código Cliente' => $idUser,
     'Cliente' => $rowReserva["nombre_completo"],
-    'DNI / Passport' => $rowReserva["din"],
-    'Dirección' => $rowReserva["direccion_completa"],
+    'DNI / CIF' => $rowReserva["din"],
+    'Dirección completa' => $rowReserva["direccion_completa"],
     'Teléfono' => $rowReserva["tlf"],
     'Terminal de entrega' => $rowReserva['terminal_entrega'],
     'Terminal de recogida' => $rowReserva['terminal_recogida'],
@@ -228,10 +229,11 @@ $reservaDatos = array(
     'Fecha Salida' => date("d/m/Y", strtotime($rowReserva["fecha_recogida"])),
     'Hora Salida' => $rowReserva["hora_recogida"],
     'Número Días' => $rowReserva["diferencia_dias"],
+    'Nº Vuelo de Vuelta:' => $rowReserva['numero_vuelo_de_vuelta'],
+    'Forma de Pago' => $rowReserva["formato_pago"],
 );
 
-
-$anchoColumna1 = 60;
+$anchoColumna1 = 50;
 $anchoColumna2 = 80;
 $altoCelda = 8;
 $posicionX = 10;
@@ -248,37 +250,27 @@ foreach ($reservaDatos as $campo => $valor) {
 $pdf->SetXY($posicionX, $posicionY + 10);
 
 
-$pdf->SetFont('Helvetica', 'B', 15);
-$pdf->Cell(0, 0, 'OBSERVACIONES', 0, 0, 'C');
-$pdf->Line(10, 225, 200, 225);
 
 
 // Calcular el precio real sin IVA
 $precioConIva = ($rowReserva['total_pago_reserva']); // Precio del producto con IVA
-$sumaTotal = ($precioConIva + $rowReserva['total_gasto_extras']);
+$sumaTotal =  number_format($precioConIva + $rowReserva['total_gasto_extras'], 2);
 
 //Base Impuesto
 $porcentajeIva = 21; // Porcentaje de IVA
 $precioSinIva = $sumaTotal / (1 + ($porcentajeIva / 100));
 $iva = $precioSinIva * ($porcentajeIva / 100);
 
-
-// Información para la primera tabla
 $tablaDatos1 = array(
-    'Precio Estancia'   => number_format($precioConIva, 2) . ' €',
+    'Precio Estancia' => number_format($precioConIva, 2) . ' €',
+    $rowReserva['tipo_plaza'] => '0,00 €',
+    'Servicio Adicional' => number_format($total_gasto_extras, 2) . ' €',
     'Servicio Adicional' => number_format($rowReserva['total_gasto_extras'], 2) . ' €',
     'SUMA TOTAL'        => $sumaTotal . ' €'
 );
 
-// Información para la segunda tabla
-$tablaDatos2 = array(
-    'Base Imp'          => number_format($precioSinIva, 2) . ' €',
-    'IVA 21 %'          => number_format($iva, 2) . ' €',
-    'TOTAL'             => $sumaTotal . ' €',
-);
-
 // Configuración de la tabla
-$anchoColumna1 = 60;
+$anchoColumna1 = 40;
 $anchoColumna2 = 40;
 $altoCelda = 7;
 
@@ -286,33 +278,67 @@ $altoCelda = 7;
 $posicionX1 = 10;
 $posicionY1 = $pdf->GetY() + 10;
 
+$pdf->SetDrawColor(169, 169, 169);
+$pdf->Rect($posicionX1, $posicionY1, $anchoColumna1 + $anchoColumna2, count($tablaDatos1) * $altoCelda);
+
 // Crear primera tabla
 foreach ($tablaDatos1 as $concepto => $valor) {
     $pdf->SetXY($posicionX1, $posicionY1);
     $pdf->SetFont('Helvetica', 'B', 12);
-    $pdf->Cell($anchoColumna1, $altoCelda, $concepto); // Sin bordes
+    $pdf->Cell($anchoColumna1, $altoCelda, $concepto, 0, 0, 'L'); // Sin bordes
     $pdf->SetFont('Helvetica', '', 12);
-    $pdf->Cell($anchoColumna2, $altoCelda, $valor); // Sin bordes
+    $pdf->Cell($anchoColumna2, $altoCelda, $valor, 0, 1, 'R'); // Sin bordes
     $posicionY1 += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
 
+// Información para la segunda tabla
+$datosTabla2 = array(
+    'Base Imp'          => number_format($precioSinIva, 2) . ' €',
+    'IVA 21 %'          => number_format($iva, 2) . ' €',
+    'TOTAL'             => $sumaTotal . ' €',
+);
+
+$anchoColumnaX2 = 50;
+$anchoColumnaY2 = 40;
+$altoCelda2 = 7;
+
 // Establecer posición inicial de la segunda tabla
-$posicionX2 = $posicionX1 - 110; // Desplazamiento horizontal
-$posicionY2 = $pdf->GetY() - 14;
+$posicionX2 = 110;
+$posicionY2 = $pdf->GetY() - 28;
+
+// Establecer color de borde gris
+$pdf->SetDrawColor(169, 169, 169);
+$pdf->Rect($posicionX2, $posicionY2, $anchoColumnaX2 + $anchoColumnaY2, count($datosTabla2) * $altoCelda2);
 
 // Crear segunda tabla
-foreach ($tablaDatos2 as $concepto => $valor) {
+foreach ($datosTabla2 as $concepto => $valor) {
     $pdf->SetXY($posicionX2, $posicionY2);
     $pdf->SetFont('Helvetica', 'B', 12);
-    $pdf->Cell($anchoColumna1, $altoCelda, $concepto); // Sin bordes
+    $pdf->Cell($anchoColumnaX2, $altoCelda2, $concepto, 0, 0, 'L'); // Sin bordes
     $pdf->SetFont('Helvetica', '', 12);
-    $pdf->Cell($anchoColumna2, $altoCelda, $valor); // Sin bordes
-    $posicionY2 += $altoCelda; // Ajustar la posición Y para la siguiente fila
+    $pdf->Cell($anchoColumnaY2, $altoCelda2, $valor, 0, 1, 'R'); // Sin bordes
+    $posicionY2 += $altoCelda2; // Ajustar la posición Y para la siguiente fila
 }
+
 // Ajustar según sea necesario
-$pdf->SetXY($posicionX1, max($posicionY1, $posicionY2) + 10);
+//$pdf->SetXY($posicionX2, $posicionY2 + 10);
+
+
+/**
+ *  Observaciones
+ */
+$pdf->SetFont('Helvetica', '', 14);
+$pdf->SetXY(4, 150);
+$pdf->Cell(140, 0, 'Observaciones', 0, 0, 'R');
+
+//Para escribir la observacion manualmente el cliente
+$pdf->SetXY(110, 157);
+$pdf->MultiCell(90, 45, '     ', 1, 'L');
+
+
 
 //Validando si hay Servicios Extras
+/*
 if ($rowReserva['servicios_extras'] != "") {
     $pdf->SetFont('helvetica', 'B', 14); //La B es para letras en Negritas
     $pdf->SetXY(118, 138);
@@ -324,6 +350,7 @@ if ($rowReserva['servicios_extras'] != "") {
     $anchoCelda = 90;
     $pdf->MultiCell($anchoCelda, 10, $rowReserva['servicios_extras'], 0, 'J');
 }
+*/
 
 //D en lugar de I para forzar la descarga
 $pdf->Output('Factura ' . $rowReserva["nombre_completo"] . ' ' . date('Y-m-d') . '.pdf', 'I');

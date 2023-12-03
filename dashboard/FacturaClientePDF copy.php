@@ -185,7 +185,7 @@ $pdf->Ln(28);
 $cliente = array(
     'Código Cliente' => $idUser,
     'Cliente' => $rowReserva["nombre_completo"],
-    'DNI / Passport' => $rowReserva["din"],
+    'DNI / CIF' => $rowReserva["din"],
     'Dirección' => $rowReserva["direccion_completa"],
     'Teléfono' => $rowReserva["tlf"],
     'Terminal de entrega' => $rowReserva['terminal_entrega'],

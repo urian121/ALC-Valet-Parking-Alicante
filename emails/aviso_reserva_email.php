@@ -87,7 +87,7 @@ try {
     if (!$mail->send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
     } else {
-        header("location:../dashboard/?successR=1");
+        header("location:../dashboard/Reservas.php?successR=1");
     }
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";

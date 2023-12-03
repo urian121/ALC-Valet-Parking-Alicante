@@ -78,11 +78,12 @@
         $color = trim($_POST['color']);
         $marca_modelo = trim($_POST['marca_modelo']);
         $numero_vuelo_de_vuelta = trim($_POST['numero_vuelo_de_vuelta']);
-        $servicio_adicional = isset($_POST['servicio_adicional']) ? "Si" : "No";
+        #$servicio_adicional = isset($_POST['servicio_adicional']) ? "Si" : "No";
         $total_pago_reserva = trim($_POST['total_pago_reserva']);
         $email_cliente = trim($_POST['email_cliente']);
+        $observacion_cliente = trim($_POST['observacion_cliente']);
 
-        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva) VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva')");
+        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva) VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$observacion_cliente', '$total_pago_reserva')");
         $resultInsert = mysqli_query($con, $queryInserReserva);
         if ($resultInsert) {
             // Obtener el último ID insertado

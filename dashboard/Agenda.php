@@ -48,13 +48,10 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <th>Nº Reserva</th>
                                                         <th>Cliente</th>
                                                         <th>DNI / CIF</th>
-                                                        <th>Teléfono</th>
-                                                        <th>Matrícula</th>
                                                         <th>Fecha de entrega</th>
                                                         <th>Hora de entrega</th>
                                                         <th>Fecha de recogida</th>
                                                         <th>Hora de recogida</th>
-                                                        <th>Pago</th>
                                                         <th>Acción</th>
                                                         <th>Reserva / Factura</th>
                                                     </tr>
@@ -76,18 +73,10 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             </td>
                                                             <td class="custom_td"><?php echo $reserva["nombre_completo"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["din"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["tlf"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["matricula"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_entrega"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_recogida"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
-                                                            <td class="custom_td">
-                                                                <span class="<?php echo isset($reserva['formato_pago']) ? 'sin_deuda' : 'deuda' ?>">
-                                                                    <?php echo $reserva["total_pago_reserva"]; ?>
-                                                                    <i class="bi bi-currency-euro"></i>
-                                                                </span>
-                                                            </td>
                                                             <td class="text-center custom_td">
                                                                 <?php if (isset($reserva["formato_pago"])) { ?>
                                                                     <button title="Enviar a Historial" type="button" onclick='gestionarReserva(this, <?php echo $reserva["id"]; ?>,"Agenda")' class="pad_btn btn btn-success btn-sm pd_7">
@@ -98,18 +87,21 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                         Enviar a Historial
                                                                     </button>
                                                                 <?php } ?>
-
                                                             </td>
                                                             <td class="custom_td" style="display: flex;justify-content: space-around;">
                                                                 <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Reserva">
                                                                     <i class="bi bi-filetype-pdf"></i>
                                                                 </a>
+                                                                <a class="factura" title="Crear Factura" href="#" data-total_gasto_extras='<?php echo $reserva["total_gasto_extras"]; ?>' data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>" data-servicios_extras=<?php echo $reserva["servicios_extras"]; ?>>
+                                                                    <i class="bi bi-receipt"></i>
+                                                                </a>
+
                                                                 <?php if (isset($reserva["formato_pago"])) { ?>
                                                                     <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Factura">
                                                                         <i class="bi bi-receipt sin_deuda"></i>
                                                                     </a>
                                                                 <?php } else { ?>
-                                                                    <a class="factura" title="Crear Factura" href="#" data-total_gasto_extras='<?php echo $reserva["total_gasto_extras"]; ?>' data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>" data-servicios_extras=<?php echo $reserva["servicios_extras"]; ?>'>
+                                                                    <a class="factura" title="Crear Factura" href="#" data-total_gasto_extras='<?php echo $reserva["total_gasto_extras"]; ?>' data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>" data-servicios_extras=<?php echo $reserva["servicios_extras"]; ?>>
                                                                         <i class="bi bi-receipt"></i>
                                                                     </a>
                                                                 <?php } ?>
@@ -118,6 +110,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
+
                                         </div>
                                     </div>
                                 </div>

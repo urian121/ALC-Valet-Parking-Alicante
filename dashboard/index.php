@@ -13,6 +13,11 @@ if (isset($_SESSION['emailUser']) != "") {
   include('bases/toastr.html');
   ?>
   <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <style>
+    .gj-picker-md table tr td.today div {
+      color: #BDBDBD;
+    }
+  </style>
 
   <body>
     <?php
@@ -46,11 +51,11 @@ if (isset($_SESSION['emailUser']) != "") {
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="fecha-entrega">Fecha de entrega</label>
-                            <input type="text" name="fecha_entrega" id="fecha_entrega" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg" required />
+                            <input type="text" name="fecha_entrega" id="fecha_entrega" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="hora_entrega">Hora de entrega</label>
-                            <select name="hora_entrega" id="hora_entrega" class="form-control form-control-lg" required>
+                            <select name="hora_entrega" id="hora_entrega" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected="">Seleccione</option>
                               <?php
                               $start_time = strtotime('05:00');
@@ -66,11 +71,11 @@ if (isset($_SESSION['emailUser']) != "") {
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="fecha-recogida">Fecha de recogida</label>
-                            <input type="text" name="fecha_recogida" id="fecha_recogida" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg" required />
+                            <input type="text" name="fecha_recogida" id="fecha_recogida" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="hora-recogida">Hora de recogida</label>
-                            <select name="hora_recogida" id="hora_recogida" class="form-control form-control-lg" required>
+                            <select name="hora_recogida" id="hora_recogida" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected="">Seleccione</option>
                               <?php
                               $start_time = strtotime('05:00');
@@ -89,7 +94,7 @@ if (isset($_SESSION['emailUser']) != "") {
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="">Tipo de plaza</label>
-                            <select name="tipo_plaza" id="tipo_plaza" onchange="calcularPago(this.value)" class="form-control form-control-lg" required>
+                            <select name="tipo_plaza" id="tipo_plaza" onchange="calcularPago(this.value)" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected>Seleccione</option>
                               <option value="Plaza Aire Libre">Plaza Aire Libre</option>
                               <option value="Plaza Cubierto">Plaza Cubierto</option>
@@ -97,45 +102,44 @@ if (isset($_SESSION['emailUser']) != "") {
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="">Terminal de entrega</label>
-                            <select name="terminal_entrega" class="form-control form-control-lg" required>
+                            <select name="terminal_entrega" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected>Seleccione</option>
                               <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="">Terminal de recogida</label>
-                            <select name="terminal_recogida" class="form-control form-control-lg" required>
+                            <select name="terminal_recogida" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected>Seleccione</option>
                               <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="">Matrícula</label>
-                            <input type="text" name="matricula" class="form-control form-control-lg" required />
+                            <input type="text" name="matricula" class="form-control form-control-lg campo_obligatorio" required />
                           </div>
                         </div>
                         <div class="row mb-2">
                           <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="">Color</label>
-                            <input type="text" name="color" class="form-control form-control-lg" required />
+                            <input type="text" name="color" class="form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-md-6 mb-2">
                             <label for="">Marca - Modelo</label>
-                            <input type="text" name="marca_modelo" class="form-control form-control-lg" required />
+                            <input type="text" name="marca_modelo" class="form-control form-control-lg campo_obligatorio" required />
                           </div>
 
                           <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="">Nº Vuelo de Vuelta</label>
-                            <input type="text" name="numero_vuelo_de_vuelta" class="form-control form-control-lg" />
+                            <input type="text" name="numero_vuelo_de_vuelta" class="form-control form-control-lg campo_obligatorio" />
                           </div>
                         </div>
 
                         <div class="row mb-2">
                           <div class="col-md-6 mb-2">
-                            <label for="">Servicios Adicionales</label>
-                            <div class="mb-3 form-check">
-                              <input type="checkbox" name="servicio_adicional" id="servicio_adicional" class="form-check-input" style="margin-left: 0;" value="Si">
-                              <label class="form-check-label" for="servicio_adicional">Lavado Exterior Básico (Gratuito)</label>
+                            <label for="observacion_cliente">Observaciones</label>
+                            <div class="form-floating">
+                              <textarea class="form-control" name="observacion_cliente" style="height: 100px"></textarea>
                             </div>
                           </div>
                         </div>
