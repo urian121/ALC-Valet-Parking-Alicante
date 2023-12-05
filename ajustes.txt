@@ -7,4 +7,5 @@ en breve le llegará un email con el recibo de aparcamiento para dicha reserva"
 6. El PDF de la reserva le sale como factura, tiene que salir como reserva (Recibo de Aparcamiento)
 7. En el PDF Een lugar de DNI / Passport colocar DNI / Passport y en lugar de Dirección colocar (Dirección completa)
 8. Agregar imagen de un vehiculo en el PDF reserva.
+9. El intervalo de Hora que sea de 10 minutos.
 

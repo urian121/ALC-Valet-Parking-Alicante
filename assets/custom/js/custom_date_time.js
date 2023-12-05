@@ -13,7 +13,7 @@ $("#fecha_entrega").datepicker({
   },
 });
 
-$("#fecha_entregaXX").datepicker({
+$("#fecha_entrega_admin").datepicker({
   minDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
   format: "dd-mm-yyyy",
   showMonthAfterYear: true,

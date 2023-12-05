@@ -2,8 +2,8 @@ let pago_original = 0;
 console.log("pago_original iniciando en", pago_original);
 
 const calcularDiferenciaDias = () => {
-  let fechaEntrega = document.getElementById("fecha_entrega").value;
-  let fechaRecogida = document.getElementById("fecha_recogida").value;
+  let fechaEntrega = document.getElementById("fecha_entrega_admin").value;
+  let fechaRecogida = document.getElementById("hora_entrega_admin").value;
 
   if (fechaEntrega == "") {
     mi_alerta("Debe seleccionar una fecha de entrega", 0);
@@ -111,8 +111,8 @@ const calcularPago = async (tipoPlaza) => {
   let totalR = document.querySelector("#totalReserva");
   let pagoTotalBD = document.querySelector("#total_pago_reserva");
 
-  let fechaEntregaDate = document.getElementById("fecha_entrega").value;
-  let fechaRecogidaDate = document.getElementById("fecha_recogida").value;
+  let fechaEntregaDate = document.getElementById("fecha_entrega_admin").value;
+  let fechaRecogidaDate = document.getElementById("hora_entrega_admin").value;
   if (fechaEntregaDate == "" || fechaRecogidaDate == "") {
     mi_alerta("Debe existir una fecha de entrega y una fecha de recogida", 0);
     totalR.innerHTML = "";

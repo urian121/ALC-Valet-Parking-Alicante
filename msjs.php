@@ -42,6 +42,9 @@ if (isset($_REQUEST['errorC'])) {
 } elseif (isset($_REQUEST['successR'])) {
     $mensaje = 'Felicitaciones, La reserva se ha creado con éxito, en breve le llegará un email con el recibo para dicha reserva.';
     $tipo = 'success';
+} elseif (isset($_REQUEST['successUC'])) {
+    $mensaje = 'Felicitaciones, Los datos del cliente fuerón actualizados correctamente.';
+    $tipo = 'success';
 } elseif (isset($_REQUEST['facturaR'])) {
     $mensaje = 'Felicitaciones, la factura fue creda correctamente.';
     $tipo = 'success';

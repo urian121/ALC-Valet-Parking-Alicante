@@ -25,6 +25,28 @@
     }
 
     /**
+     * Informacion perfil Cliente desde perfil Administrador
+     */
+    function infoClienteBD($con, $idCliente)
+    {
+        $infoCliente = "SELECT 
+                    IdUser,
+                    emailUser, 
+                    nombre_completo,
+                    din,
+                    direccion_completa, 
+                    tlf
+                FROM tbl_clientes
+                WHERE IdUser='$idCliente' LIMIT 1";
+        $query = mysqli_query($con, $infoCliente);
+        if (!$query) {
+            return false;
+        }
+        $data = mysqli_fetch_assoc($query);
+        mysqli_free_result($query);
+        return $data;
+    }
+    /**
      * Actualizar Perfil
      */
     if (isset($_POST["accion"]) && $_POST["accion"] == "actualizarPerfil") {
@@ -182,7 +204,7 @@
     }
 
     /**
-     * Crear cuenta de Cliente desde el Administrado
+     * Crear cuenta de Cliente desde el Administrador
      */
     if (isset($_POST["accion"]) && $_POST["accion"] == "crearCliente") {
         date_default_timezone_set("Europe/Madrid");
@@ -193,8 +215,8 @@
         $direccion_completa = $_POST['direccion_completa'];
         $passwordUser = trim($_POST['passwordUser']);
         $emailUser = trim($_POST['emailUser']);
-        $tlf = $_POST['tlf'];
-        $observaciones = $_POST['observaciones'];
+        $tlf = trim($_POST['tlf']);
+        $observaciones = trim($_POST['observaciones']);
 
         $PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT); //Incriptando clave,
 
@@ -209,6 +231,29 @@
             header("location:./CrearCliente.php?successC=1");
         }
     }
+
+    /**
+     * Actualizar datos del Cliente desde el perfil Administrador
+     */
+    if (isset($_POST["accion"]) && $_POST["accion"] == "actualizarClienteAdmin") {
+
+        $nombre_completo = $_POST['nombre_completo'];
+        $din = $_POST['din'];
+        $direccion_completa = $_POST['direccion_completa'];
+        $passwordUser = trim($_POST['passwordUser']);
+        $emailUser = trim($_POST['emailUser']);
+        $tlf = $_POST['tlf'];
+        $observaciones = $_POST['observaciones'];
+        $IdUser = trim($_POST['IdUser']);
+
+        $PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT); //Incriptando clave,
+
+        $Update = "UPDATE tbl_clientes SET emailUser='$emailUser', passwordUser='$PasswordHash', nombre_completo='$nombre_completo', din='$din', direccion_completa='$direccion_completa', tlf='$tlf', observaciones='$observaciones', observaciones='$observaciones' WHERE IdUser='$IdUser'";
+        $resultado = mysqli_query($con, $Update);
+
+        header("location:./CrearCliente.php?successUC=1");
+    }
+
 
     /**
      * Crear Factura

@@ -60,7 +60,7 @@ if (isset($_SESSION['emailUser']) != "") {
                               <?php
                               $start_time = strtotime('05:00');
                               $end_time     = strtotime('24:00');
-                              $interval = 15 * 60; // 15 minutos en segundos
+                              $interval = 10 * 60; // 10 minutos en segundos
                               for ($time = $start_time; $time <= $end_time; $time += $interval) {
                                 $hora_militar = date("H:i", $time);
                                 $hora_am_pm = date("h:i A", $time);
@@ -80,7 +80,7 @@ if (isset($_SESSION['emailUser']) != "") {
                               <?php
                               $start_time = strtotime('05:00');
                               $end_time     = strtotime('24:00');
-                              $interval = 15 * 60; // 15 minutos en segundos
+                              $interval = 10 * 60; // 10 minutos en segundos
                               for ($time = $start_time; $time <= $end_time; $time += $interval) {
                                 $hora_militar = date("H:i", $time);
                                 $hora_am_pm = date("h:i A", $time);

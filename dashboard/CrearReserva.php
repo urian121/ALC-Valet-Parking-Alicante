@@ -44,16 +44,16 @@ if (isset($_SESSION['emailUser']) != "") {
                                             <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="fecha-entrega">Fecha de entrega</label>
-                                                    <input type="text" name="fecha_entrega" id="fecha_entrega" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg" required />
+                                                    <input type="text" name="fecha_entrega" id="fecha_entrega_admin" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg" required />
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="hora_entrega">Hora de entrega</label>
-                                                    <select name="hora_entrega" id="hora_entrega" class="form-control form-control-lg" required>
+                                                    <select name="hora_entrega" id="hora_entrega_admin" class="form-control form-control-lg" required>
                                                         <option value="" selected="">Seleccione</option>
                                                         <?php
                                                         $start_time = strtotime('05:00');
                                                         $end_time     = strtotime('24:00');
-                                                        $interval = 15 * 60; // 15 minutos en segundos
+                                                        $interval = 10 * 60; // 10 minutos en segundos
                                                         for ($time = $start_time; $time <= $end_time; $time += $interval) {
                                                             $hora_militar = date("H:i", $time);
                                                             $hora_am_pm = date("h:i A", $time);
@@ -73,7 +73,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                         <?php
                                                         $start_time = strtotime('05:00');
                                                         $end_time     = strtotime('24:00');
-                                                        $interval = 15 * 60; // 15 minutos en segundos
+                                                        $interval = 10 * 60; // 10 minutos en segundos
                                                         for ($time = $start_time; $time <= $end_time; $time += $interval) {
                                                             $hora_militar = date("H:i", $time);
                                                             $hora_am_pm = date("h:i A", $time);
@@ -121,7 +121,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Asignar Reserva</label>
-                                                    <select name="IdUser" class="form-control form-control-lg" style="border: 1px solid #f60 !important;" required>
+                                                    <select name="IdUser" class="form-control form-control-lg" required>
                                                         <option value="" selected>Seleccione</option>
                                                         <?php
                                                         while ($cliente = mysqli_fetch_array($clientesBD)) { ?>
@@ -160,22 +160,12 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 <div class="col-md-6">
                                                     <div class="mt-3">
                                                         <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                                                            Crear Cuenta
+                                                            Crear Reserva
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card card-light-danger">
-                                    <div class="card-body">
-                                        <h2 class="mb-4 text-center">Total a Pagar
-                                            <hr>
-                                        </h2>
-                                        <p id="totalReserva" class="fs-30 mb-2" style="line-height: 1.8rem;"></p>
                                     </div>
                                 </div>
                             </div>
