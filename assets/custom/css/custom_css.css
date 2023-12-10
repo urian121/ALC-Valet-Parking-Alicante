@@ -89,11 +89,17 @@ select.form-control {
 }
 .bi-filetype-pdf,
 .bi-receipt {
-  color: #f60 !important;
   font-size: 25px;
+}
+.bi-filetype-pdf,
+.bi-receipt {
+  color: green !important;
 }
 .sin_deuda {
   color: green !important;
+}
+.con_deuda {
+  color: #f60 !important;
 }
 .modal .modal-dialog .modal-content .modal-header {
   padding: 10px !important;

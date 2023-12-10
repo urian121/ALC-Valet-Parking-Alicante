@@ -1,7 +1,6 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require '../PHPMailer/src/Exception.php';
@@ -83,13 +82,15 @@ try {
     $headers = 'From: ALC Valet Parking Alicante <info@alcvaletparking.com>' . "\r\n";
     $headers .= 'Cc: urianwebdeveloper@gmail.com' . "\r\n";
     //$headers .= 'Cc: info@alcvaletparking.com' . "\r\n";
+    $mail->send();
+    header("location:../?successC=1");
 
-
-    if (!$mail->send()) {
+    /* if (!$mail->send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
     } else {
         header("location:../?successC=1");
     }
+    */
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

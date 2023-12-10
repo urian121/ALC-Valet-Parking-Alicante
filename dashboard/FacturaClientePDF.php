@@ -29,8 +29,8 @@ if (isset($_GET["idReserva"]) && is_numeric($_GET["idReserva"])) {
                 r.numero_vuelo_de_vuelta,
                 r.servicio_adicional,
                 r.total_pago_reserva,
-                r.servicios_extras,
-                r.total_gasto_extras,
+                r.servicios_extras1,
+                r.total_gasto_extras1,
                 r.formato_pago,
                 ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
                 FROM tbl_clientes AS c 
@@ -335,22 +335,6 @@ $pdf->Cell(140, 0, 'Observaciones', 0, 0, 'R');
 $pdf->SetXY(110, 157);
 $pdf->MultiCell(90, 45, '     ', 1, 'L');
 
-
-
-//Validando si hay Servicios Extras
-/*
-if ($rowReserva['servicios_extras'] != "") {
-    $pdf->SetFont('helvetica', 'B', 14); //La B es para letras en Negritas
-    $pdf->SetXY(118, 138);
-    $pdf->Cell(200, 0, 'Detalles Servicio Adicional', 0, 0, '');
-
-    // Configurar la fuente y tamaño para el párrafo
-    $pdf->SetXY(110, 146);
-    $pdf->SetFont('Helvetica', '', 12);
-    $anchoCelda = 90;
-    $pdf->MultiCell($anchoCelda, 10, $rowReserva['servicios_extras'], 0, 'J');
-}
-*/
 
 //D en lugar de I para forzar la descarga
 $pdf->Output('Factura ' . $rowReserva["nombre_completo"] . ' ' . date('Y-m-d') . '.pdf', 'I');

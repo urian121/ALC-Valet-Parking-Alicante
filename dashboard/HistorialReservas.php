@@ -27,7 +27,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                 include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $mis_reservas = getAllReservasPorEstadoReserva($con, 2);
+                $mis_reservas = getAllHistorialReservas($con);
                 ?>
                 <div class="main-panel">
                     <div class="content-wrapper">
@@ -36,9 +36,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                 <div class="card">
                                     <div class="card-body">
                                         <h2 class="card-title text-center mb-4" style="font-size: 30px;">Historial de todas las Reservas
-                                            <a title="Historial de todas las Reservas" href="../acciones/exportDataReservas.php?expo=3" download="Data_clientes.xls" style="float: right;font-size: 25px;">
-                                                <i class="bi bi-filetype-csv"></i>
-                                            </a>
                                             <hr>
                                         </h2>
                                         <div class="table-responsive">
@@ -54,9 +51,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <th>Hora de entrega</th>
                                                         <th>Fecha de recogida</th>
                                                         <th>Hora de recogida</th>
-                                                        <th>Pago</th>
-                                                        <th>Tipo de plaza</th>
-                                                        <th>Serv. Adicionales</th>
                                                         <th>Reserva / Factura</th>
                                                     </tr>
                                                 </thead>
@@ -83,14 +77,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_recogida"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
-                                                            <td class="custom_td">
-                                                                <span class="<?php echo isset($reserva['formato_pago']) ? 'sin_deuda' : 'deuda' ?>">
-                                                                    <?php echo $reserva["total_pago_reserva"]; ?>
-                                                                    <i class="bi bi-currency-euro"></i>
-                                                                </span>
-                                                            </td>
-                                                            <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["servicio_adicional"]; ?></td>
                                                             <td class="custom_td" style="display: flex;justify-content: space-around;">
                                                                 <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Reserva">
                                                                     <i class="bi bi-filetype-pdf"></i>

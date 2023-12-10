@@ -1,7 +1,6 @@
 <?php
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require '../PHPMailer/src/Exception.php';
@@ -84,11 +83,8 @@ try {
     $headers .= 'Cc: urianwebdeveloper@gmail.com' . "\r\n";
     //$headers .= 'Cc: ' . $email_info . "\r\n";
 
-    if (!$mail->send()) {
-        echo "Mailer Error: " . $mail->ErrorInfo;
-    } else {
-        header("location:../dashboard/Reservas.php?successR=1");
-    }
+    $mail->send();
+    header("location:../dashboard/Reservas.php?successR=1");
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

@@ -32,14 +32,14 @@
                        </div>
 
                        <div class="form-floating mb-2">
-                           <label for="servicios_extras">Servicios adicionales</label>
-                           <textarea class="form-control" name="servicios_extras" id="servicios_extras"></textarea>
+                           <label for="servicios_extras1">Servicios adicionales</label>
+                           <textarea class="form-control" name="servicios_extras1" id="servicios_extras"></textarea>
                        </div>
                        <div class="mb-3">
-                           <label for="total_gasto_extras" class="form-label">
+                           <label for="total_gasto_extras1" class="form-label">
                                Total gasto adicional
                                <i class="bi bi-currency-euro"></i></label>
-                           <input type="text" name="total_gasto_extras" id="total_gasto_extras" oninput="formatCurrency(event)" class="form-control">
+                           <input type="text" name="total_gasto_extras1" id="total_gasto_extras" oninput="formatCurrency(event)" class="form-control">
                        </div>
                    </div>
                    <div class="modal-footer">

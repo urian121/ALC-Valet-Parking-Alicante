@@ -38,13 +38,24 @@ if (isset($_SESSION['emailUser']) != "") {
                                             <hr>
                                         </h2>
 
-                                        <form action="funciones.php" method="post" autocomplete="off">
-                                            <input type="hidden" name="accion" value="crearReserva">
-                                            <input type="hidden" name="total_pago_reserva" id="total_pago_reserva">
+                                        <form action="RecibeCrearReservaAdmin.php" method="post" autocomplete="off">
+                                            <input type="text" name="emailUser" id="emailUser" hidden />
                                             <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                                                    <label for="">Asignar Clientes</label>
+                                                    <select name="IdUser" onchange="selectCliente(this.value)" class="form-control form-control-lg" required>
+                                                        <option value="" selected>Seleccione</option>
+                                                        <?php
+                                                        while ($cliente = mysqli_fetch_array($clientesBD)) { ?>
+                                                            <option value="<?php echo $cliente["IdUser"]; ?>">
+                                                                DIN: <?php echo $cliente["din"]; ?> - <?php echo $cliente["nombre_completo"]; ?>
+                                                            </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="fecha-entrega">Fecha de entrega</label>
-                                                    <input type="text" name="fecha_entrega" id="fecha_entrega_admin" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg" required />
+                                                    <input type="text" name="fecha_entrega" id="fecha_entrega_admin" class="borderInput form-control form-control-lg" required />
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="hora_entrega">Hora de entrega</label>
@@ -64,8 +75,11 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="fecha-recogida">Fecha de recogida</label>
-                                                    <input type="text" name="fecha_recogida" id="fecha_recogida" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg" required />
+                                                    <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg" required />
                                                 </div>
+                                            </div>
+
+                                            <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="hora-recogida">Hora de recogida</label>
                                                     <select name="hora_recogida" id="hora_recogida" class="form-control form-control-lg" required>
@@ -82,12 +96,9 @@ if (isset($_SESSION['emailUser']) != "") {
                                                         ?>
                                                     </select>
                                                 </div>
-                                            </div>
-
-                                            <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Tipo de plaza</label>
-                                                    <select name="tipo_plaza" id="tipo_plaza" onchange="calcularPago(this.value)" class="form-control form-control-lg" required>
+                                                    <select name="tipo_plaza" id="tipo_plaza" class="form-control form-control-lg" required>
                                                         <option value="" selected>Seleccione</option>
                                                         <option value="Plaza Aire Libre">Plaza Aire Libre</option>
                                                         <option value="Plaza Cubierto">Plaza Cubierto</option>
@@ -101,12 +112,12 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     <label for="">Terminal de recogida</label>
                                                     <input type="text" name="terminal_recogida" class="form-control form-control-lg" required />
                                                 </div>
+                                            </div>
+                                            <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Matrícula</label>
                                                     <input type="text" name="matricula" class="form-control form-control-lg" required />
                                                 </div>
-                                            </div>
-                                            <div class="row mb-2">
                                                 <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Color</label>
                                                     <input type="text" name="color" class="form-control form-control-lg" require />
@@ -119,21 +130,10 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     <label for="">Nº Vuelo de Vuelta</label>
                                                     <input type="text" name="numero_vuelo_de_vuelta" class="form-control form-control-lg" />
                                                 </div>
-                                                <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Asignar Reserva</label>
-                                                    <select name="IdUser" class="form-control form-control-lg" required>
-                                                        <option value="" selected>Seleccione</option>
-                                                        <?php
-                                                        while ($cliente = mysqli_fetch_array($clientesBD)) { ?>
-                                                            <option value="<?php echo $cliente["IdUser"]; ?>">
-                                                                <?php echo $cliente["nombre_completo"]; ?>
-                                                            </option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
+
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="">Aplicar Descuento %</label>
-                                                    <input type="number" name="descuento" id="descuento" value="0" oninput="actualizarTotalConDescuento(this.value)" class="form-control form-control-lg" />
+                                                    <input type="number" name="descuento" id="descuento" value="0" class="form-control form-control-lg" />
                                                 </div>
                                                 <div class="col-md-6 mb-2">
                                                     <label for="">Servicios Adicionales</label>
@@ -145,14 +145,52 @@ if (isset($_SESSION['emailUser']) != "") {
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
-                                                    <label for="servicios_extras">Servicios adicionales</label>
-                                                    <textarea class="form-control" name="servicios_extras"></textarea>
+                                                    <label for="servicios_extras1">
+                                                        Servicios adicional <span style="font-size: 20px; font-weight: bold">1</span>
+                                                    </label>
+                                                    <textarea class="form-control" name="servicios_extras1"></textarea>
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="total_gasto_extras" class="form-label">
-                                                        Total gasto adicional
+                                                    <label for="total_gasto_extras1" class="form-label">
+                                                        Total gasto adicional <span style="font-size: 20px; font-weight: bold">1</span>
                                                     </label>
-                                                    <input type="text" name="total_gasto_extras" oninput="formatCurrency(event)" class="form-control">
+                                                    <input type="text" name="total_gasto_extras1" oninput="formatCurrency(event)" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
+                                                    <label for="servicios_extras2">
+                                                        Servicios adicional <span style="font-size: 20px; font-weight: bold">2</span>
+                                                    </label>
+                                                    <textarea class="form-control" name="servicios_extras2"></textarea>
+                                                </div>
+                                                <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                                                    <label for="total_gasto_extras2" class="form-label">
+                                                        Total gasto adicional <span style="font-size: 20px; font-weight: bold">2</span>
+                                                    </label>
+                                                    <input type="text" name="total_gasto_extras2" oninput="formatCurrency(event)" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">
+                                                    <label for="servicios_extras3">
+                                                        Servicios adicional <span style="font-size: 20px; font-weight: bold">3</span>
+                                                    </label>
+                                                    <textarea class="form-control" name="servicios_extras3"></textarea>
+                                                </div>
+                                                <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                                                    <label for="total_gasto_extras3" class="form-label">
+                                                        Total gasto adicional <span style="font-size: 20px; font-weight: bold">3</span>
+                                                    </label>
+                                                    <input type="text" name="total_gasto_extras3" oninput="formatCurrency(event)" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-md-6 mb-2">
+                                                    <label for="observacion_cliente">Observaciones</label>
+                                                    <div class="form-floating">
+                                                        <textarea class="form-control" name="observacion_cliente" style="height: 100px"></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
 

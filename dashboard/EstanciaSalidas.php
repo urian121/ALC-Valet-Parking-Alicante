@@ -27,7 +27,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                 include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $mis_reservas = getAllReservasPorEstadoReserva($con, 0);
+                $mis_reservas = getEstanciaSalidas($con);
                 ?>
                 <div class="main-panel">
                     <div class="content-wrapper">
@@ -36,7 +36,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">Resumen de Reservas Pendientes
+                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">Estancia de Salidas
                                             <a title="Todas las Reservas Pendientes" href="../acciones/exportDataReservas.php?expo=2" download="Data_clientes.xls" style="float: right;font-size: 25px;">
                                                 <i class="bi bi-filetype-csv"></i>
                                             </a>
@@ -55,10 +55,8 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <th>Hora de entrega</th>
                                                         <th>Fecha de recogida</th>
                                                         <th>Hora de recogida</th>
-                                                        <th>Pago</th>
                                                         <th>Tipo de plaza</th>
-                                                        <th>Estado Reserva</th>
-                                                        <th>Recibo de Aparcamiento </th>
+                                                        <th>Acciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -84,21 +82,15 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_recogida"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
-                                                            <td class="custom_td">
-                                                                <span class="<?php echo isset($reserva['formato_pago']) ? 'sin_deuda' : 'deuda' ?>">
-                                                                    <?php echo $reserva["total_pago_reserva"]; ?>
-                                                                    <i class="bi bi-currency-euro"></i>
-                                                                </span>
-                                                            </td>
                                                             <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
-                                                            <td class="text-center custom_td">
-                                                                <button title="Aprobar Reserva" type="button" onclick='gestionarReserva(this, <?php echo $reserva["id"]; ?>,"ReservasPendientes")' class="pad_btn btn btn-danger btn-sm pd_7">
-                                                                    Aceptar Reserva
-                                                                </button>
-                                                            </td>
                                                             <td class="custom_td" style="display: flex;justify-content: center;">
                                                                 <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Recibo de Aparcamiento">
-                                                                    <i class="bi bi-filetype-pdf"></i>
+                                                                    <i class="bi bi-filetype-pdf" style="color: green;"></i>
+                                                                </a>
+                                                                &nbsp;
+                                                                &nbsp;
+                                                                <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Factura">
+                                                                    <i class="bi bi-receipt sin_deuda"></i>
                                                                 </a>
                                                             </td>
                                                         </tr>

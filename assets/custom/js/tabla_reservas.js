@@ -18,7 +18,7 @@ if (tbody) {
       let tableBody = document.querySelector("table").getAttribute("id");
       console.log(tableBody);
       if (tableBody == "tablaReservasPendientes") {
-        if (cellIndex === 11 || cellIndex === undefined) {
+        if (cellIndex === 10 || cellIndex === undefined) {
           //no hacer nada xq se hizo click en el primer td de cualquier fila tr
           return;
         }

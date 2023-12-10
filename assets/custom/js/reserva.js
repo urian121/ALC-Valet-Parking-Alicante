@@ -1,224 +1,49 @@
-let pago_original = 0;
-console.log("pago_original iniciando en", pago_original);
-
-const calcularDiferenciaDias = () => {
-  let fechaEntrega = document.getElementById("fecha_entrega_admin").value;
-  let fechaRecogida = document.getElementById("hora_entrega_admin").value;
-
-  if (fechaEntrega == "") {
-    mi_alerta("Debe seleccionar una fecha de entrega", 0);
-    return null;
+const selectCliente = async (idCliente) => {
+  const emailUser = document.querySelector("#emailUser");
+  if (idCliente == "") {
+    emailUser.value = "";
+    return;
   }
 
-  if (fechaRecogida == "") {
-    mi_alerta("Debe seleccionar una fecha de recogida", 0);
-    return null;
-  }
-
-  // Convertir las cadenas de fecha en objetos Date
-  let fechaEntregaDate = new Date(
-    fechaEntrega.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-  );
-  let fechaRecogidaDate = new Date(
-    fechaRecogida.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-  );
-
-  resp = validarFechas(fechaEntregaDate, fechaRecogidaDate);
-  /**
-   * Actualizando los dias de la reserva cada vez que se modifique cualquier fecha
-   */
-  dias_reserva(resp);
-
-  /**
-   * Obtengo el valor de tipo plaza para llamar a la funcion calcularPago pasarle la plaza y actualizar el
-   * pago cada vez que modifiquen cualquier fecha
-   */
-  calcularPago(document.querySelector("#tipo_plaza").value);
-  limpiarDescuento();
-
-  return resp;
-};
-
-/**
- * Funcion para limpiar el aplicar descuento
- */
-const limpiarDescuento = () => {
-  document.querySelector("#descuento").value = 0;
-};
-
-/**
- * Obtener dias de la reserva
- */
-function dias_reserva(nuevoValor) {
-  const clave = "dias_reservas";
-  // Verificar si la clave existe en localStorage
-  if (localStorage.getItem(clave) !== null) {
-    // Actualizando el valor
-    localStorage.setItem(clave, nuevoValor);
-    return nuevoValor;
-  } else {
-    // La clave no existe, la creamos y le asignamos un valor
-    localStorage.setItem(clave, nuevoValor);
-    return nuevoValor;
-  }
-}
-
-/**
- * Funcion para validar las fechas, aplicando algunas reglas
- */
-function validarFechas(fechaEntregaDate, fechaRecogidaDate) {
-  let m = "";
-  let totaR = document.querySelector("#totalReserva");
-  let totalPR = document.querySelector("#total_pago_reserva");
-  if (fechaEntregaDate > fechaRecogidaDate) {
-    m = "La fecha de entraga no puede ser mayor a la fecha de Recogida";
-    totaR.innerHTML = "";
-    totalPR.innerHTML = "";
-    mi_alerta(m, 0);
-    return null;
-  } else if (fechaRecogidaDate < fechaEntregaDate) {
-    m = "La fecha de recogida no puede ser mayor a la fecha de Entrega";
-    totaR.innerHTML = "";
-    totalPR.innerHTML = "";
-    mi_alerta(m, 0);
-    return null;
-  } else if (fechaEntregaDate.getTime() === fechaRecogidaDate.getTime()) {
-    m = "La fecha de Entrega no puede ser igual a la fecha de Recogida";
-    totaR.innerHTML = "";
-    totalPR.innerHTML = "";
-    mi_alerta(m, 0);
-    return null;
-  }
-
-  const divExist = document.querySelector(".alert");
-  if (divExist) {
-    divExist.remove();
-  }
-
-  // Calcular la diferencia en milisegundos
-  var diferenciaMilisegundos = fechaRecogidaDate - fechaEntregaDate;
-  // Calcular la diferencia en días
-  var diferenciaDias = Math.floor(
-    diferenciaMilisegundos / (1000 * 60 * 60 * 24)
-  );
-  return diferenciaDias;
-}
-
-/**
- * Funcion para calcular el total de la reserva en Euros
- */
-const calcularPago = async (tipoPlaza) => {
-  let totalR = document.querySelector("#totalReserva");
-  let pagoTotalBD = document.querySelector("#total_pago_reserva");
-
-  let fechaEntregaDate = document.getElementById("fecha_entrega_admin").value;
-  let fechaRecogidaDate = document.getElementById("hora_entrega_admin").value;
-  if (fechaEntregaDate == "" || fechaRecogidaDate == "") {
-    mi_alerta("Debe existir una fecha de entrega y una fecha de recogida", 0);
-    totalR.innerHTML = "";
-    dias_reserva("");
-    return false;
-  }
-
-  if (tipoPlaza == "") {
-    mi_alerta("Debe seleccionar un Tipo de Plaza", 0);
-    totalR.innerHTML = "";
-    pagoTotalBD.innerHTML = "";
-    return false;
-  }
-  /**
-   * Verificar que existen ambas fechas
-   */
-  var fechaEntregaD = new Date(
-    fechaEntregaDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-  );
-  var fechaRecogidaD = new Date(
-    fechaRecogidaDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
-  );
-
-  // Convertir las cadenas de fecha en objetos Date
-
-  let msj = "";
-  if (fechaEntregaD > fechaRecogidaD) {
-    totalR.innerHTML = "";
-    msj = "La fecha de entraga no puede ser mayor a la fecha de Recogida";
-    mi_alerta(msj, 0);
-    return null;
-  } else if (fechaRecogidaD < fechaEntregaD) {
-    totalR.innerHTML = "";
-    msj = "La fecha de recogida no puede ser mayor a la fecha de Entrega";
-    mi_alerta(msj, 0);
-    return null;
-  } else if (fechaEntregaD.getTime() === fechaRecogidaD.getTime()) {
-    totalR.innerHTML = "";
-    msj = "La fecha de Entrega no puede ser igual a la fecha de Recogida";
-    mi_alerta(msj, 0);
-    return null;
-  }
-
-  let TotalDias = localStorage.getItem("dias_reservas");
   try {
-    const formData = {
-      tipo_plaza: tipoPlaza,
-      total_dias: TotalDias,
-    };
+    const url = "../acciones/servicio_api/buscar_cliente_reserva.php";
+    const response = await axios.post(url, { idCliente });
 
-    // Puedes ajustar la URL a la que deseas enviar el formulario
-    const url = "../acciones/servicio_api/api_dias_reserva.php";
-    const response = await axios.post(url, formData);
+    const { success, data } = response.data;
 
-    // Manejar la respuesta según sea necesario
-    const dataFromServer = response.data;
-    const valor = dataFromServer[0].valor;
+    const terminal_entrega = document.querySelector(
+      'input[name="terminal_entrega"]'
+    );
+    const terminal_recogida = document.querySelector(
+      'input[name="terminal_recogida"]'
+    );
+    const matricula = document.querySelector('input[name="matricula"]');
+    const color = document.querySelector('input[name="color"]');
+    const marca_modelo = document.querySelector('input[name="marca_modelo"]');
 
-    //Actualizando valor para el pago_original
-    pago_original = valor;
-    //console.log("Pago a pagar: " + pago_original);
+    if (success === true && data.length === 0) {
+      console.log("El cliente nunca a creado una reserva");
+      emailUser.value = "";
+      terminal_entrega.value = "";
+      terminal_recogida.value = "";
+      matricula.value = "";
+      color.value = "";
+      marca_modelo.value = "";
+      mi_alerta("El cliente nunca a creado una reserva", 0);
+      return;
+    }
 
-    totalR.innerHTML = `${valor} €, con el IVA incluido.`;
-    pagoTotalBD.value = valor;
-
-    limpiarDescuento();
+    emailUser.value = data[0][0];
+    terminal_entrega.value = data[0][1];
+    terminal_recogida.value = data[0][2];
+    matricula.value = data[0][3];
+    color.value = data[0][4];
+    marca_modelo.value = data[0][5];
   } catch (error) {
-    // Manejar errores
     console.error("Error al consultar el valor a Pagar:", error);
   }
 };
 
-const actualizarTotalConDescuento = (PorcentajeDescuento) => {
-  //console.log("en la funcion actualizarTotalConDescuento", pago_original);
-  // Eliminar cualquier caracter no numérico del porcentaje de descuento
-  const porcentajeNumerico = parseFloat(
-    PorcentajeDescuento.replace(/[^\d.]/g, "")
-  );
-
-  if (isNaN(porcentajeNumerico)) {
-    mi_alerta("Porcentaje solo debe ser numerico", 0);
-    return;
-  }
-
-  if (PorcentajeDescuento > 100) {
-    mi_alerta("El porcentaje de descuento no puede ser mayor a 100", 0);
-    PorcentajeDescuento = 100;
-    return;
-  }
-
-  // Calcula el nuevo total con descuento
-  const nuevoTotal =
-    pago_original - pago_original * (PorcentajeDescuento / 100);
-  const descuentoTotal = nuevoTotal.toFixed(2);
-
-  let totalReserva = document.querySelector("#totalReserva");
-  document.querySelector("#total_pago_reserva").value = descuentoTotal;
-
-  totalReserva.innerHTML = `
-            ${descuentoTotal} €, con el IVA incluido.
-        `;
-};
-
-/**
- * Funcion para mostrar alerta
- */
 function mi_alerta(msj, tipo_msj) {
   const divExistente = document.querySelector(".alert");
   if (divExistente) {
