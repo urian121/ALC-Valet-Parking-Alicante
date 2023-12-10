@@ -7,7 +7,10 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
 ?>
     <!DOCTYPE html>
     <html lang="es">
-    <?php include('bases/head.html'); ?>
+    <?php
+    include('bases/head.html');
+    include('bases/toastr.html');
+    ?>
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
     <body>
