@@ -24,7 +24,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
             <?php include 'bases/navbar.php'; ?>
             <div class="container-fluid page-body-wrapper">
                 <?php
-                include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
                 $mis_reservas = getEstanciaEntradas($con);
@@ -36,7 +35,8 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">Estancias de Entradas
+                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">
+                                            Estancias de Entradas
                                             <hr>
                                         </h2>
                                         <div class="table-responsive">
@@ -92,11 +92,10 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                         <i class="bi bi-receipt sin_deuda"></i>
                                                                     </a>
                                                                 <?php } else { ?>
-                                                                    <a class="factura" title="Crear Factura" href="#" data-total_gasto_extras='<?php echo $reserva["total_gasto_extras1"]; ?>' data-email="<?php echo $reserva["emailUser"]; ?>" data-cliente="<?php echo $reserva["nombre_completo"]; ?>" data-din="<?php echo $reserva["din"]; ?>" data-matric="<?php echo $reserva["matricula"]; ?>" data-deuda="<?php echo $reserva["total_pago_reserva"]; ?>" data-id="<?php echo $reserva["id"]; ?>" data-servicios_extras="<?php echo $reserva["servicios_extras1"]; ?>">
+                                                                    <a class="factura" title="Crear Factura" href="CrearFactura.php?idReserva=<?php echo $reserva["id"]; ?>">
                                                                         <i class="bi bi-receipt con_deuda"></i>
                                                                     </a>
                                                                 <?php } ?>
-                                                            </td>
                                                         </tr>
                                                     <?php } ?>
                                                 </tbody>
@@ -112,13 +111,11 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
 
             <?php
             include('ModalDetallesReserva.html');
-            include('ModalCrearFactura.php');
             ?>
         </div>
 
         <?php include 'bases/PageJs.html'; ?>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
-        <script src="../assets/custom/js/factura.js"></script>
         <script src="../assets/custom/js/funciones_generales.js"></script>
         <script>
             $(document).ready(function() {

@@ -243,44 +243,32 @@
     }
 
 
-    /**
-     * Crear Factura
-     */
-    if (isset($_POST["accion"]) && $_POST["accion"] == "crearFacturaCliente") {
-        date_default_timezone_set("Europe/Madrid");
-        $fecha_pago_factura = date("Y-m-d H:i:s");
-
-        $deuda = isset($_POST["deuda"]) ? trim($_POST["deuda"]) : 0;
-
-        $t_g_e = trim($_POST['total_gasto_extras1']);
-        $total_gasto_extras = 0;
-        if ($t_g_e == "") {
-            $total_gasto_extras = 0;
-        } else {
-            $total_gasto_extras = $t_g_e;
-        }
-
-        // Verifica si $total_gasto_extras es una cadena no vacía antes de realizar la operación aritmética
-        if ($total_gasto_extras !== "") {
-            // Convierte $total_gasto_extras a número flotante
-            $total_gasto_extras = floatval($total_gasto_extras);
-
-            // Realiza la operación aritmética
-            $deudaTotal = number_format(($deuda + $total_gasto_extras), 2, '.', '');
-        } else {
-            $deudaTotal = $deuda;
-        }
-
-
-        $idReserva = $_POST['idReserva'];
-        $email_cliente = trim($_POST['emailCliente']);
-        $formato_pago = $_POST['formato_pago'];
-        $servicios_extras = $_POST['servicios_extras1'];
-
-        $Update = "UPDATE tbl_reservas SET estado_reserva='1', total_pago_reserva='$deudaTotal', formato_pago='$formato_pago', fecha_pago_factura='$fecha_pago_factura', servicios_extras1='$servicios_extras', total_gasto_extras1='$total_gasto_extras' WHERE id='$idReserva'";
-        $resultado = mysqli_query($con, $Update);
-
-        // Utiliza urlencode para asegurar que los parámetros del URL estén correctamente codificados
-        header("location:../emails/factura_email.php?emailUser=" . urlencode($email_cliente) . "&IdReserva=" . urlencode($idReserva));
+    function crearFacturaCliente($con, $idReserva)
+    {
+        $idReserva = $_GET["idReserva"];
+        $sqlReserva     = ("SELECT
+                c.idUser,
+                c.nombre_completo,
+                c.din,
+                c.emailUser,
+                r.matricula,
+                r.servicio_adicional,
+                r.total_pago_reserva,
+                r.servicios_extras1,
+                r.total_gasto_extras1,
+                r.servicios_extras2,
+                r.total_gasto_extras2,
+                r.servicios_extras3,
+                r.total_gasto_extras3,
+                r.observacion_cliente,
+                ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
+                FROM tbl_clientes AS c 
+                INNER JOIN tbl_reservas AS r
+                ON c.idUser=r.id_cliente
+                WHERE r.id='$idReserva' LIMIT 1");
+        $resulReserva = mysqli_query($con, $sqlReserva);
+        $rowReserva = mysqli_fetch_assoc($resulReserva);
+        mysqli_free_result($resulReserva);
+        return $rowReserva;
     }
     ?>

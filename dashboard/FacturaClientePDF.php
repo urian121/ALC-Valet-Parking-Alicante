@@ -31,6 +31,11 @@ if (isset($_GET["idReserva"]) && is_numeric($_GET["idReserva"])) {
                 r.total_pago_reserva,
                 r.servicios_extras1,
                 r.total_gasto_extras1,
+                r.servicios_extras2,
+                r.total_gasto_extras2,
+                r.servicios_extras3,
+                r.total_gasto_extras3,
+                r.observacion_cliente,
                 r.formato_pago,
                 ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
                 FROM tbl_clientes AS c 
@@ -247,7 +252,7 @@ foreach ($reservaDatos as $campo => $valor) {
     $pdf->Cell($anchoColumna2, $altoCelda, $valor, 0, 1, 'L'); // Sin borde y salto de línea
     $posicionY += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
-$pdf->SetXY($posicionX, $posicionY + 10);
+//$pdf->SetXY($posicionX, $posicionY + 10);
 
 
 
@@ -261,16 +266,22 @@ $porcentajeIva = 21; // Porcentaje de IVA
 $precioSinIva = $sumaTotal / (1 + ($porcentajeIva / 100));
 $iva = $precioSinIva * ($porcentajeIva / 100);
 
+$serv1 = $rowReserva['servicios_extras1'] ? $rowReserva['servicios_extras1'] . ' - ' . number_format($rowReserva['total_gasto_extras1'], 2) . ' €' : '';
+$serv2 = $rowReserva['servicios_extras2'] ? $rowReserva['servicios_extras2'] . ' - ' . number_format($rowReserva['total_gasto_extras2'], 2) . ' €' : '';
+$serv3 = $rowReserva['servicios_extras3'] ? $rowReserva['servicios_extras3'] . ' - ' . number_format($rowReserva['total_gasto_extras3'], 2) . ' €' : '';
+
+$clavee_serv3 = $rowReserva['clavee_serv3'] ? $rowReserva['clavee_serv3'] : '';
 $tablaDatos1 = array(
     'Precio Estancia' => number_format($precioConIva, 2) . ' €',
     $rowReserva['tipo_plaza'] => '0,00 €',
-    'Servicio Adicional' => number_format($total_gasto_extras, 2) . ' €',
-    'Servicio Adicional' => number_format($rowReserva['total_gasto_extras'], 2) . ' €',
+    $serv1 ? 'Servicio  1' : ''  =>  $serv1,
+    $serv2 ? 'Servicio  2' : ''  =>  $serv2,
+    $serv3 ? 'Servicio  3' : ''  =>  $serv3,
     'SUMA TOTAL'        => $sumaTotal . ' €'
 );
 
 // Configuración de la tabla
-$anchoColumna1 = 40;
+$anchoColumna1 = 60;
 $anchoColumna2 = 40;
 $altoCelda = 7;
 
@@ -298,13 +309,13 @@ $datosTabla2 = array(
     'TOTAL'             => $sumaTotal . ' €',
 );
 
-$anchoColumnaX2 = 50;
+$anchoColumnaX2 = 40;
 $anchoColumnaY2 = 40;
 $altoCelda2 = 7;
 
 // Establecer posición inicial de la segunda tabla
-$posicionX2 = 110;
-$posicionY2 = $pdf->GetY() - 28;
+$posicionX2 = 120;
+$posicionY2 = $pdf->GetY() - 42;
 
 // Establecer color de borde gris
 $pdf->SetDrawColor(169, 169, 169);
@@ -331,9 +342,17 @@ $pdf->SetFont('Helvetica', '', 14);
 $pdf->SetXY(4, 150);
 $pdf->Cell(140, 0, 'Observaciones', 0, 0, 'R');
 
-//Para escribir la observacion manualmente el cliente
+$obs = trim($rowReserva['observacion_cliente']) ? trim($rowReserva['observacion_cliente']) : '';
+$pdf->SetFont('Helvetica', '', 10);
 $pdf->SetXY(110, 157);
-$pdf->MultiCell(90, 45, '     ', 1, 'L');
+
+if (!empty($obs)) {
+    $pdf->MultiCell(90, 50, $obs, 1, 'L');
+} else {
+    // Mostrar un mensaje o realizar alguna acción en caso de que no haya datos
+    $pdf->MultiCell(90, 10, '', 1, 'L');
+}
+
 
 
 //D en lugar de I para forzar la descarga

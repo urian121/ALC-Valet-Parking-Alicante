@@ -5,10 +5,6 @@
     */
     include('../config/config.php');
 
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
-
     /**
      * Calcular la diferencia de dias entre ambas fechas, 
      * retornando la cantidad de dias
@@ -24,7 +20,6 @@
     }
     $diferencia = diferenciaDias($_POST['fecha_entrega'], $_POST['fecha_recogida']);
     $total_dias_reserva = $diferencia;
-
 
 
     /**

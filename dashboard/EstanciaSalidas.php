@@ -24,7 +24,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
             <?php include 'bases/navbar.php'; ?>
             <div class="container-fluid page-body-wrapper">
                 <?php
-                include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
                 $mis_reservas = getEstanciaSalidas($con);
@@ -108,7 +107,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
 
             <?php
             include('ModalDetallesReserva.html');
-            include('ModalCrearFactura.php');
             ?>
         </div>
 

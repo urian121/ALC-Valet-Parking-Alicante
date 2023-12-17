@@ -15,7 +15,6 @@ if (isset($_SESSION['emailUser']) != "") {
       <?php include 'bases/navbar.php' ?>
       <div class="container-fluid page-body-wrapper">
         <?php
-        include 'bases/config.html';
         include 'bases/nav.php';
         include 'funciones.php';
         $perfilBD = perfilUser($con, $IdUser);
@@ -39,7 +38,7 @@ if (isset($_SESSION['emailUser']) != "") {
                           <input type="text" name="nombre_completo" class="form-control form-control-lg" required value="<?php echo $perfilBD['nombre_completo']; ?>" placeholder="Nombre completo" />
                         </div>
                         <div class="col-md-6">
-                          <input type="text" name="din" class="form-control form-control-lg" value="<?php echo $perfilBD['din']; ?>" placeholder="DIN" required />
+                          <input type="text" name="din" class="form-control form-control-lg" value="<?php echo $perfilBD['din']; ?>" placeholder="DNI" required />
                         </div>
                       </div>
                       <div class="form-group">

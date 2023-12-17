@@ -257,3 +257,40 @@ try {
 
 
 ¡Únete a nosotros ahora y crea tu cuenta en segundos!
+
+
+
+
+
+
+
+
+
+
+/**
+ *  Observaciones
+ */
+$pdf->SetFont('Helvetica', '', 14);
+$pdf->SetXY(4, 150);
+$pdf->Cell(140, 0, 'Observaciones', 0, 0, 'R');
+
+$servicios_extras1 = $rowReserva['servicios_extras1'] ?? '';
+$total_gasto_extras1 = $rowReserva['total_gasto_extras1'] ?? '';
+
+$servicios_extras2 = $rowReserva['servicios_extras2'] ?? '';
+$total_gasto_extras2 = $rowReserva['total_gasto_extras2'] ?? '';
+
+$servicios_extras3 = $rowReserva['servicios_extras3'] ?? '';
+$total_gasto_extras3 = $rowReserva['total_gasto_extras3'] ?? '';
+
+$_serv1 = $servicios_extras1 ? $servicios_extras1 . ' - ' . number_format($total_gasto_extras1, 2) . ' €' : '';
+$_serv2 = $servicios_extras2 ? $servicios_extras2 . ' - ' . number_format($total_gasto_extras2, 2) . ' €' : '';
+$_serv3 = $servicios_extras3 ? $servicios_extras3 . ' - ' . number_format($total_gasto_extras3, 2) . ' €' : '';
+$obs = trim($rowReserva['observacion_cliente']) ? trim($rowReserva['observacion_cliente']) : '';
+
+// Para escribir la observación manualmente el cliente
+$pdf->SetFont('Helvetica', '', 10);
+$pdf->SetXY(110, 157);
+
+// Verificar si hay datos antes de imprimir en el PDF
+$observaciones = array_filter([$_serv1, $_serv2, $_serv3, $obs]);

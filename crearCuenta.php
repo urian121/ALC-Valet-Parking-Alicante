@@ -30,7 +30,7 @@
                     <input type="text" name="nombre_completo" class="form-control form-control-lg" required placeholder="Nombre completo" />
                   </div>
                   <div class="col-md-6">
-                    <input type="text" name="din" class="form-control form-control-lg" placeholder="DIN" required />
+                    <input type="text" name="din" class="form-control form-control-lg" placeholder="DNI" required />
                   </div>
                 </div>
                 <div class="form-group">

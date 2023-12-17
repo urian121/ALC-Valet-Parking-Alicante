@@ -21,7 +21,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
         <div class="container-scroller">
             <?php include 'bases/navbar.php'; ?>
             <div class="container-fluid page-body-wrapper">
-                <?php include 'bases/config.html'; ?>
                 <?php include 'bases/nav.php';
                 include 'funciones.php';
                 $mis_reservas = getReservaPerfil($con, $IdUser);

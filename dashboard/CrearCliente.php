@@ -21,7 +21,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
             <?php include 'bases/navbar.php' ?>
             <div class="container-fluid page-body-wrapper">
                 <?php
-                include 'bases/config.html';
                 include 'bases/nav.php';
                 include 'funciones.php';
                 $clientesBD = getClientes($con);
@@ -50,7 +49,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <input type="text" name="nombre_completo" class="form-control form-control-lg" required="" placeholder="Nombre completo / Razón social" value="<?php echo isset($infoCliente['nombre_completo']) ? $infoCliente['nombre_completo'] : ''; ?>">
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="text" name="din" class="form-control form-control-lg" placeholder="DIN / CIF" value="<?php echo isset($infoCliente['din']) ? $infoCliente['din'] : ''; ?>">
+                                                        <input type="text" name="din" class="form-control form-control-lg" placeholder="DNI / CIF" value="<?php echo isset($infoCliente['din']) ? $infoCliente['din'] : ''; ?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -102,7 +101,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <tr>
                                                         <th>Nº Cliente</th>
                                                         <th>Cliente</th>
-                                                        <th>DIN / CIF</th>
+                                                        <th>DNI / CIF</th>
                                                         <th>Email</th>
                                                         <th>Teléfono</th>
                                                         <th>Dirección</th>

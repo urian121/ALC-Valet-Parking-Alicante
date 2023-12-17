@@ -28,8 +28,8 @@ if (isset($_SESSION['emailUser']) != "") {
       <?php include 'bases/navbar.php' ?>
       <div class="container-fluid page-body-wrapper">
         <?php
-        include 'bases/config.html';
         include 'bases/nav.php';
+        include 'selectDate.php';
         ?>
         <div class="main-panel">
           <div class="content-wrapper">
@@ -57,16 +57,7 @@ if (isset($_SESSION['emailUser']) != "") {
                             <label for="hora_entrega">Hora de entrega</label>
                             <select name="hora_entrega" id="hora_entrega" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected="">Seleccione</option>
-                              <?php
-                              $start_time = strtotime('05:00');
-                              $end_time     = strtotime('24:00');
-                              $interval = 10 * 60; // 10 minutos en segundos
-                              for ($time = $start_time; $time <= $end_time; $time += $interval) {
-                                $hora_militar = date("H:i", $time);
-                                $hora_am_pm = date("h:i A", $time);
-                                echo '<option value="' . $hora_militar . '">' . $hora_am_pm . '</option>';
-                              }
-                              ?>
+                              <?php echo generarOpcionesDeHora(); ?>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
@@ -77,16 +68,7 @@ if (isset($_SESSION['emailUser']) != "") {
                             <label for="hora-recogida">Hora de recogida</label>
                             <select name="hora_recogida" id="hora_recogida" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected="">Seleccione</option>
-                              <?php
-                              $start_time = strtotime('05:00');
-                              $end_time     = strtotime('24:00');
-                              $interval = 10 * 60; // 10 minutos en segundos
-                              for ($time = $start_time; $time <= $end_time; $time += $interval) {
-                                $hora_militar = date("H:i", $time);
-                                $hora_am_pm = date("h:i A", $time);
-                                echo '<option value="' . $hora_militar . '">' . $hora_am_pm . '</option>';
-                              }
-                              ?>
+                              <?php echo generarOpcionesDeHora(); ?>
                             </select>
                           </div>
                         </div>

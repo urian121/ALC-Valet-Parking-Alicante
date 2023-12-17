@@ -31,7 +31,13 @@ if (isset($_GET["idReserva"])) {
                     r.total_pago_reserva,
                     r.servicios_extras1,
                     r.total_gasto_extras1,
+                    r.servicios_extras2,
+                    r.total_gasto_extras2,
+                    r.servicios_extras3,
+                    r.total_gasto_extras3,
+
                     r.formato_pago,
+                    r.observacion_cliente,
                     ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
                 FROM tbl_clientes AS c 
                 INNER JOIN tbl_reservas AS r
@@ -90,7 +96,7 @@ class MYPDF extends TCPDF
     {
         $watermarkImg = dirname(__FILE__) . '/../assets/custom/imgs/esqueleto_vehiculo.png'; // Ruta de la imagen de la marca de agua
         //$this->Image($watermarkImg, 90, 110, 30, 0, 'PNG', '', '', false, 300, '', false, false, 0);
-        $this->Image($watermarkImg, 105, 140, 100, 0, 'PNG', '', '', false, 300, '', false, false, 0);
+        $this->Image($watermarkImg, 105, 140, 90, 0, 'PNG', '', '', false, 300, '', false, false, 0);
 
         $fechaActual = new DateTime();
         $nombreDia = $this->traducirDia($fechaActual->format('l'));
@@ -201,11 +207,11 @@ $pdf->SetFont('Helvetica', 'B', 9);
 // Configuración de la tabla
 $anchoColumna1 = 60;
 $anchoColumna2 = 80;
-$altoCelda = 8;
+$altoCelda = 7;
 
 // Establecer posición inicial de la tabla
 $posicionX = 10;
-$posicionY = $pdf->GetY() + 10;
+$posicionY = $pdf->GetY() + 17;
 
 // Crear tabla
 foreach ($cliente as $campo => $valor) {
@@ -241,7 +247,7 @@ $reservaDatos = array(
 
 $anchoColumna1 = 60;
 $anchoColumna2 = 80;
-$altoCelda = 8;
+$altoCelda = 6;
 $posicionX = 10;
 $posicionY = $pdf->GetY() + 10;
 foreach ($reservaDatos as $campo => $valor) {
@@ -259,17 +265,24 @@ $pdf->SetXY($posicionX, $posicionY + 1);
 // Calcular el precio real sin IVA
 $precioConIva = ($rowReserva['total_pago_reserva']); // Precio del producto con IVA
 
+
+$serv1 = $rowReserva['servicios_extras1'] ? $rowReserva['servicios_extras1'] . ' - ' . number_format($rowReserva['total_gasto_extras1'], 2) . ' €' : '';
+$serv2 = $rowReserva['servicios_extras2'] ? $rowReserva['servicios_extras2'] . ' - ' . number_format($rowReserva['total_gasto_extras2'], 2) . ' €' : '';
+$serv3 = $rowReserva['servicios_extras3'] ? $rowReserva['servicios_extras3'] . ' - ' . number_format($rowReserva['total_gasto_extras3'], 2) . ' €' : '';
+
 $tablaDatos1 = array(
     'Precio Estancia' => number_format($precioConIva, 2) . ' €',
     $rowReserva['tipo_plaza'] => '0,00 €',
-    'Servicio Adicional' => number_format($total_gasto_extras, 2) . ' €',
+    $serv1 ? 'Servicio  1' : ''  =>  $serv1,
+    $serv2 ? 'Servicio  2' : ''  =>  $serv2,
+    $serv3 ? 'Servicio  3' : ''  =>  $serv3,
     'SUMA TOTAL' => number_format($precioConIva, 2) . ' €',
 );
 
 // Configuración de la tabla
 $anchoColumna1 = 60;
 $anchoColumna2 = 40;
-$altoCelda = 7;
+$altoCelda = 6;
 
 // Establecer posición inicial de la primera tabla
 $posicionX1 = 10;
@@ -283,7 +296,7 @@ foreach ($tablaDatos1 as $concepto => $valor) {
     $pdf->SetXY($posicionX1, $posicionY1);
     $pdf->SetFont('Helvetica', 'B', 12);
     $pdf->Cell($anchoColumna1, $altoCelda, $concepto, 0, 0, 'L'); // Sin bordes
-    $pdf->SetFont('Helvetica', '', 12);
+    $pdf->SetFont('Helvetica', '', 10);
     $pdf->Cell($anchoColumna2, $altoCelda, $valor, 0, 1, 'R'); // Sin bordes
     $posicionY1 += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
@@ -293,12 +306,19 @@ foreach ($tablaDatos1 as $concepto => $valor) {
  *  Observaciones
  */
 $pdf->SetFont('Helvetica', '', 14);
-$pdf->SetXY(9, 214);
-$pdf->Cell(145, 0, 'Observaciones', 0, 0, 'R');
+$pdf->SetXY(143, 204);
+$pdf->Cell(10, 0, 'Observaciones', 0, 0, 'R');
 
-//Para escribir la observacion manualmente el cliente
-$pdf->SetXY(120, 227);
-$pdf->MultiCell(80, 32, '     ', 1, 'L');
+$obs = trim($rowReserva['observacion_cliente']) ? trim($rowReserva['observacion_cliente']) : '';
+$pdf->SetFont('Helvetica', '', 10);
+$pdf->SetXY(120, 210);
+
+if (!empty($obs)) {
+    $pdf->MultiCell(80, 50, $obs, 1, 'L');
+} else {
+    $pdf->MultiCell(80, 32, '     ', 1, 'L');
+}
+
 
 
 // Texto en la parte inferior izquierda
