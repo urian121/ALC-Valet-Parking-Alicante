@@ -36,7 +36,7 @@ $("#fecha_recogida").datepicker({
   locale: "es-es",
   disableDates: function (date) {
     var today = new Date();
-    let dia_actual = today.setDate(today.getDate() - 1);
+    let dia_actual = today.setDate(today.getDate() + 1);
     return date > dia_actual;
   },
 });

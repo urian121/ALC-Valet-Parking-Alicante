@@ -35,10 +35,9 @@ if (isset($_GET["idReserva"])) {
                     r.total_gasto_extras2,
                     r.servicios_extras3,
                     r.total_gasto_extras3,
-
                     r.formato_pago,
                     r.observacion_cliente,
-                    ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
+                    r.total_dias_reserva
                 FROM tbl_clientes AS c 
                 INNER JOIN tbl_reservas AS r
                 ON c.idUser=r.id_cliente
@@ -237,10 +236,10 @@ $reservaDatos = array(
     'Matrícula' => $rowReserva["matricula"],
     'Fecha Entrada' => date("d/m/Y", strtotime($rowReserva["fecha_entrega"])),
     'Hora Entrada' => $rowReserva["hora_entrega"],
-    'Fecha Salida' => date("d/m/Y", strtotime($rowReserva["fecha_recogida"])),
+    'Fecha Salida' => $rowReserva['fecha_recogida'] != 'Sin definir' ? date("d/m/Y", strtotime($rowReserva['fecha_recogida'])) : 'Sin definir',
     'Hora Salida' => $rowReserva["hora_recogida"],
     'Nº Vuelo de Vuelta:' => $rowReserva['numero_vuelo_de_vuelta'],
-    'Número Días' => $rowReserva["diferencia_dias"],
+    'Número Días' => $rowReserva["total_dias_reserva"],
     'Forma de Pago' => $rowReserva["formato_pago"],
 );
 
@@ -270,13 +269,23 @@ $serv1 = $rowReserva['servicios_extras1'] ? $rowReserva['servicios_extras1'] . '
 $serv2 = $rowReserva['servicios_extras2'] ? $rowReserva['servicios_extras2'] . ' - ' . number_format($rowReserva['total_gasto_extras2'], 2) . ' €' : '';
 $serv3 = $rowReserva['servicios_extras3'] ? $rowReserva['servicios_extras3'] . ' - ' . number_format($rowReserva['total_gasto_extras3'], 2) . ' €' : '';
 
+$deudaTotal = 0;
+for ($i = 1; $i <= 3; $i++) {
+    $total_gasto_extra = isset($rowReserva["total_gasto_extras{$i}"]) ? trim($rowReserva["total_gasto_extras{$i}"]) : 0;
+    if ($total_gasto_extra !== "") {
+        $deudaTotal = number_format(($deudaTotal + $total_gasto_extra), 2, '.', '');
+    }
+}
+
+$deudaFinal = number_format($deudaTotal + $precioConIva, 2, '.', '');
+
 $tablaDatos1 = array(
     'Precio Estancia' => number_format($precioConIva, 2) . ' €',
     $rowReserva['tipo_plaza'] => '0,00 €',
     $serv1 ? 'Servicio  1' : ''  =>  $serv1,
     $serv2 ? 'Servicio  2' : ''  =>  $serv2,
     $serv3 ? 'Servicio  3' : ''  =>  $serv3,
-    'SUMA TOTAL' => number_format($precioConIva, 2) . ' €',
+    'SUMA TOTAL' => number_format($deudaFinal, 2) . ' €',
 );
 
 // Configuración de la tabla

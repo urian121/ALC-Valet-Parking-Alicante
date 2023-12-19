@@ -116,7 +116,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
 
         <?php include 'bases/PageJs.html'; ?>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
-        <script src="../assets/custom/js/funciones_generales.js"></script>
         <script>
             $(document).ready(function() {
                 $("#tablaReservasPendientes").DataTable({

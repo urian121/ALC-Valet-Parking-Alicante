@@ -1,3 +1,11 @@
+window.addEventListener("load", (event) => {
+  const loader = document.querySelector(".page-loading");
+  setTimeout(function () {
+    loader.classList.remove("active");
+    loader.remove();
+  }, 500);
+});
+
 const formatCurrency = (inputClick) => {
   let cantidad = inputClick.target.value.replace(/\D/g, ""); // Eliminar caracteres no numéricos
   cantidad = parseInt(cantidad, 10); // Convertir a número entero

@@ -270,14 +270,23 @@ $serv1 = $rowReserva['servicios_extras1'] ? $rowReserva['servicios_extras1'] . '
 $serv2 = $rowReserva['servicios_extras2'] ? $rowReserva['servicios_extras2'] . ' - ' . number_format($rowReserva['total_gasto_extras2'], 2) . ' €' : '';
 $serv3 = $rowReserva['servicios_extras3'] ? $rowReserva['servicios_extras3'] . ' - ' . number_format($rowReserva['total_gasto_extras3'], 2) . ' €' : '';
 
-$clavee_serv3 = $rowReserva['clavee_serv3'] ? $rowReserva['clavee_serv3'] : '';
+$deudaTotal = 0;
+for ($i = 1; $i <= 3; $i++) {
+    $total_gasto_extra = isset($rowReserva["total_gasto_extras{$i}"]) ? trim($rowReserva["total_gasto_extras{$i}"]) : 0;
+    if ($total_gasto_extra !== "") {
+        $deudaTotal = number_format(($deudaTotal + $total_gasto_extra), 2, '.', '');
+    }
+}
+
+$deudaFinal = number_format($deudaTotal + $precioConIva, 2, '.', '');
+
 $tablaDatos1 = array(
     'Precio Estancia' => number_format($precioConIva, 2) . ' €',
     $rowReserva['tipo_plaza'] => '0,00 €',
     $serv1 ? 'Servicio  1' : ''  =>  $serv1,
     $serv2 ? 'Servicio  2' : ''  =>  $serv2,
     $serv3 ? 'Servicio  3' : ''  =>  $serv3,
-    'SUMA TOTAL'        => $sumaTotal . ' €'
+    'SUMA TOTAL'        => $deudaFinal . ' €'
 );
 
 // Configuración de la tabla

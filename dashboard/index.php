@@ -44,14 +44,13 @@ if (isset($_SESSION['emailUser']) != "") {
                       </h1>
 
                       <form action="funciones.php" method="post" autocomplete="off">
-                        <input type="hidden" name="email_cliente" value="<?php echo $email; ?>">
-                        <input type="hidden" name="IdUser" value="<?php echo $IdUser; ?>">
-                        <input type="hidden" name="accion" value="crearReservaClienteDashboard">
-                        <input type="hidden" name="total_pago_reserva" id="total_pago_reserva">
+                        <input type="text" name="email_cliente" value="<?php echo $email; ?>" hidden>
+                        <input type="text" name="IdUser" value="<?php echo $IdUser; ?>" hidden>
+                        <input type="text" name="accion" value="crearReservaClienteDashboard" hidden>
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="fecha-entrega">Fecha de entrega</label>
-                            <input type="text" name="fecha_entrega" id="fecha_entrega" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg campo_obligatorio" required />
+                            <input type="text" name="fecha_entrega" id="fecha_entrega" class="borderInput form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="hora_entrega">Hora de entrega</label>
@@ -62,12 +61,12 @@ if (isset($_SESSION['emailUser']) != "") {
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="fecha-recogida">Fecha de recogida</label>
-                            <input type="text" name="fecha_recogida" id="fecha_recogida" onchange="calcularDiferenciaDias()" class="borderInput form-control form-control-lg campo_obligatorio" required />
+                            <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg campo_obligatorio" />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="hora-recogida">Hora de recogida</label>
-                            <select name="hora_recogida" id="hora_recogida" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected="">Seleccione</option>
+                            <select name="hora_recogida" class="form-control form-control-lg campo_obligatorio">
+                              <option value="No la sé" selected="">No la sé</option>
                               <?php echo generarOpcionesDeHora(); ?>
                             </select>
                           </div>
@@ -76,7 +75,7 @@ if (isset($_SESSION['emailUser']) != "") {
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="">Tipo de plaza</label>
-                            <select name="tipo_plaza" id="tipo_plaza" onchange="calcularPago(this.value)" class="form-control form-control-lg campo_obligatorio" required>
+                            <select name="tipo_plaza" id="tipo_plaza" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected>Seleccione</option>
                               <option value="Plaza Aire Libre">Plaza Aire Libre</option>
                               <option value="Plaza Cubierto">Plaza Cubierto</option>
@@ -133,16 +132,6 @@ if (isset($_SESSION['emailUser']) != "") {
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="card card-light-danger">
-                    <div class="card-body">
-                      <h2 class="mb-4 text-center">Total a Pagar
-                        <hr>
-                      </h2>
-                      <p id="totalReserva" class="fs-30 mb-2" style="line-height: 1.8rem;"></p>
-                    </div>
-                  </div>
-                </div>
               </div>
             <?php } ?>
           </div>
@@ -155,8 +144,6 @@ if (isset($_SESSION['emailUser']) != "") {
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <script src="https://unpkg.com/gijgo@1.9.14/js/messages/messages.es-es.js" type="text/javascript"></script>
     <script src="../assets/custom/js/custom_date_time.js"></script>
-    <script src="../assets/custom/js/reserva_cliente.js"></script>
-
   </body>
 
   </html>

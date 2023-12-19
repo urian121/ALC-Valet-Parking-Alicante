@@ -66,15 +66,15 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="fecha-recogida">Fecha de recogida</label>
-                                                    <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg" required />
+                                                    <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg" />
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="hora-recogida">Hora de recogida</label>
-                                                    <select name="hora_recogida" id="hora_recogida" class="form-control form-control-lg" required>
-                                                        <option value="" selected="">Seleccione</option>
+                                                    <select name="hora_recogida" id="hora_recogida" class="form-control form-control-lg">
+                                                        <option value="No la sé" selected="">No la sé</option>
                                                         <?php echo generarOpcionesDeHora(); ?>
                                                     </select>
                                                 </div>
@@ -196,7 +196,6 @@ if (isset($_SESSION['emailUser']) != "") {
         </div>
 
         <?php include 'bases/PageJs.html'; ?>
-        <script src="../assets/custom/js/funciones_generales.js"></script>
         <script src="../assets/custom/js/reserva.js"></script>
         <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
         <script src="https://unpkg.com/gijgo@1.9.14/js/messages/messages.es-es.js" type="text/javascript"></script>

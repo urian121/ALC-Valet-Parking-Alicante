@@ -47,7 +47,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
                                                         <th>Terminal de entrega</th>
                                                         <th>Terminal de recogida</th>
                                                         <th>Matrícula</th>
-                                                        <th>Serv. Adicionales</th>
                                                         <th>Reserva PDF</th>
                                                     </tr>
                                                 </thead>
@@ -73,7 +72,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
                                                             <td><?php echo $reserva["terminal_entrega"]; ?></td>
                                                             <td><?php echo $reserva["terminal_recogida"]; ?></td>
                                                             <td><?php echo $reserva["matricula"]; ?></td>
-                                                            <td><?php echo $reserva["servicio_adicional"]; ?></td>
                                                             <td>
                                                                 <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Reserva en PDF">
                                                                     <i class="bi bi-filetype-pdf"></i>
