@@ -79,7 +79,11 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["matricula"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_entrega"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
-                                                            <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_recogida"])); ?></td>
+                                                            <td class="custom_td">
+                                                                <?php
+                                                                echo ($reserva["fecha_recogida"] != 'Sin definir' ? date("d/m/Y", strtotime($reserva["fecha_recogida"])) : $reserva["fecha_recogida"]);
+                                                                ?>
+                                                            </td>
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
                                                             <td class="custom_td" style="display: flex;justify-content: center;">

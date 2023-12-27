@@ -44,9 +44,9 @@ if (isset($_SESSION['emailUser']) != "") {
                       </h1>
 
                       <form action="funciones.php" method="post" autocomplete="off">
+                        <input type="text" name="accion" value="crearReservaClienteDashboard" hidden>
                         <input type="text" name="email_cliente" value="<?php echo $email; ?>" hidden>
                         <input type="text" name="IdUser" value="<?php echo $IdUser; ?>" hidden>
-                        <input type="text" name="accion" value="crearReservaClienteDashboard" hidden>
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="fecha-entrega">Fecha de entrega</label>

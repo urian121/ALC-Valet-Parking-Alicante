@@ -34,6 +34,7 @@ try {
     // Destinatario
     $emailUser = trim($_REQUEST['emailUser']);
     $IdReserva = trim($_REQUEST['IdReserva']);
+    $desde = trim($_REQUEST['desde']);
     $email_info = "info@alcvaletparking.com";
 
     $mail->addAddress($emailUser, '');
@@ -84,7 +85,11 @@ try {
     //$headers .= 'Cc: ' . $email_info . "\r\n";
 
     $mail->send();
-    header("location:../dashboard/?successR=1");
+    if ($desde == "cliente") {
+        header("location:../dashboard/Reservas.php?successR=1");
+    } else {
+        header("location:../dashboard/EstanciasEntradas.php?successR=1");
+    }
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

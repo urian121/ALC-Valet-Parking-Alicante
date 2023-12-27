@@ -51,8 +51,13 @@ if (isset($_REQUEST['errorC'])) {
 } elseif (isset($_REQUEST['successP'])) {
     $mensaje = 'Felicitaciones, el perfil fue actualizado correctamente.';
     $tipo = 'success';
+} elseif (isset($_REQUEST['errorF'])) {
+    $mensaje = 'La fecha de recogida debe ser mayor a la fecha de entrega.';
+    $tipo = 'error';
+} elseif (isset($_REQUEST['facturaFR'])) {
+    $mensaje = 'Felicitaciones, la fecha de recogida fue actualizada correctamente.';
+    $tipo = 'success';
 }
-
 
 
 if (isset($mensaje)) { ?>

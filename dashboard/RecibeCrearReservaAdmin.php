@@ -1,19 +1,22 @@
    <?php
+    /*
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
+    */
 
     include('../config/config.php');
-    $fecha_recogida = $_POST['fecha_recogida'] != '' ? date("Y-m-d", strtotime($_POST['fecha_recogida'])) : 'Sin definir';
+    $SinDefinir = 'Sin definir';
+    $fecha_recogida = $_POST['fecha_recogida'] != '' ? date("Y-m-d", strtotime($_POST['fecha_recogida'])) : $SinDefinir;
 
     //Calcular el total de dias de la reserva, esto se calcula si existe la fecha de $_POST['fecha_recogida'], de lo contrario seria 'Sin definir'
-    $total_dias_reserva = 'Sin definir';
-    if ($fecha_recogida != 'Sin definir') {
+    $total_dias_reserva = $SinDefinir;
+    if ($fecha_recogida != $SinDefinir) {
         $diferencia = diferenciaDias($_POST['fecha_entrega'], $_POST['fecha_recogida']);
         $total_dias_reserva = $diferencia;
     }
 
     /**
-     * Funcion para calcular la diferencia de dias entre ambas fechas, si la  fecha de $_POST['fecha_recogida'] !='' y retornar la cantidad de dias
+     * Función para calcular la diferencia de dias entre ambas fechas, si la  fecha de $_POST['fecha_recogida'] !='' y retornar la cantidad de dias
      */
     function diferenciaDias($fecha_entrega_str, $fecha_recogida_str)
     {
@@ -25,7 +28,21 @@
         return $dias_diferencia;
     }
 
-    function totalDeupaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva)
+
+    /**
+     * Para calcular el 'total_pago_reserva', primero validar si existen dias de reservas, si existen, retorno el valor de la deuda total de acuerdo al tipo de plaza y los dias
+     */
+    $tipo_plaza = trim($_POST['tipo_plaza']);
+    $total_pago_reserva = 0;
+    if ($total_dias_reserva != $SinDefinir) {
+        $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+    }
+
+    /**
+     * Función para calcular el total de la deuda de acuerdo al tipo de plaza y los dias, obvio debe existir un total de dias 
+     * y para que exista un total de dias debe existe una fecha 'fecha_recogida'
+     */
+    function totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva)
     {
         $tabla = $tipo_plaza == "Plaza Aire Libre" ? "tbl_parking_aire_libre" : "tbl_parking_cubierto";
         $sqlData   = ("SELECT valor FROM $tabla WHERE dia='$total_dias_reserva' LIMIT 1");
@@ -39,79 +56,57 @@
     }
 
     /**
-     * Para calcular el 'total_pago_reserva', primero validar si existen dias de reservas, si existen, retorno el valor de la deuda total de acuerdo al tipo de plaza y los dias
+     * Sumar todos los gastos extras, y se los asignar a la variable 'deudaTotalGatosExtra' ademas ese total de la deuda 'deudaFinal' se la sumo a la deuda 'deudaFinal'
      */
-    $tipo_plaza = trim($_POST['tipo_plaza']);
-    $total_pago_reserva = 0;
-    if ($total_dias_reserva != 'Sin definir') {
-        $total_pago_reserva = totalDeupaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+    $total_pago_final = 0;
+    $deudaTotalGatosExtra = 0;
+    for ($i = 1; $i <= 3; $i++) {
+        $total_gasto_extra = isset($_POST["total_gasto_extras{$i}"]) ? trim($_POST["total_gasto_extras{$i}"]) : 0;
+        if ($total_gasto_extra !== "") {
+            $deudaTotalGatosExtra = number_format(($deudaTotalGatosExtra + $total_gasto_extra), 2, '.', '');
+        }
     }
-
+    $total_pago_final = number_format(($deudaTotalGatosExtra + $total_pago_reserva), 2, '.', '');
 
     /**
      * Verificar si hay descuento para aplicarlo en total_pago_reserva, caso contrario solo retornar el total de total_pago_reserva
      */
-    $deudaFinal = 0;
     $descuento = trim($_POST['descuento']);
     if ($descuento != 0) {
         // Aplica el descuento
-        $deudaFinal = number_format($total_pago_reserva - ($total_pago_reserva * ($descuento / 100)), 2, '.', '');
-    } else {
-        $deudaFinal = $total_pago_reserva;
+        $total_pago_final = number_format($total_pago_final - ($total_pago_final * ($descuento / 100)), 2, '.', '');
     }
 
 
-    $id_cliente = trim($_POST['IdUser']);
-    $fecha_entrega = date("Y-m-d", strtotime($_POST['fecha_entrega']));
-    $hora_entrega = trim($_POST['hora_entrega']);
-    $hora_recogida = trim($_POST['hora_recogida']);
-    $terminal_entrega = trim($_POST['terminal_entrega']);
-    $terminal_recogida = trim($_POST['terminal_recogida']);
-    $matricula = trim($_POST['matricula']);
-    $color = trim($_POST['color']);
-    $marca_modelo = trim($_POST['marca_modelo']);
+    $id_cliente         = trim($_POST['IdUser']);
+    $fecha_entrega      = date("Y-m-d", strtotime($_POST['fecha_entrega']));
+    $hora_entrega       = trim($_POST['hora_entrega']);
+    $hora_recogida      = trim($_POST['hora_recogida']);
+    $terminal_entrega   = trim($_POST['terminal_entrega']);
+    $terminal_recogida  = trim($_POST['terminal_recogida']);
+    $matricula          = trim($_POST['matricula']);
+    $color              = trim($_POST['color']);
+    $marca_modelo       = trim($_POST['marca_modelo']);
     $numero_vuelo_de_vuelta = trim($_POST['numero_vuelo_de_vuelta']);
-    $servicio_adicional = isset($_POST['servicio_adicional']) ? "Si" : "No";
-    $observacion_cliente = trim($_POST['observacion_cliente']);
-    $email_cliente = trim($_POST['emailUser']); //Email del cliente
+    $servicio_adicional     = isset($_POST['servicio_adicional']) ? "Si" : "No";
+    $observacion_cliente    = trim($_POST['observacion_cliente']);
+    $email_cliente          = trim($_POST['emailUser']); //Email del cliente
 
-    // echo $total_gasto_extras1 = "8.500";
-    $total_gasto_extras1 = trim($_POST['total_gasto_extras1']);
-    echo $total_gasto_extras1 = str_replace(",", ".", $total_gasto_extras1);
-    echo '<br>';
-
+    $total_gasto_extras1 = trim($_POST['total_gasto_extras1']) ? trim($_POST['total_gasto_extras1']) : 0;
+    $total_gasto_extras2 = trim($_POST['total_gasto_extras2']) ? trim($_POST['total_gasto_extras2']) : 0;
+    $total_gasto_extras3 = trim($_POST['total_gasto_extras3']) ? trim($_POST['total_gasto_extras3']) : 0;
     $servicios_extras1 = trim($_POST['servicios_extras1']);
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
-    //echo $total_pago_reserva;
-
-    $total_gasto_extras2 = "8500";
-    $dos_decimales = substr($total_gasto_extras2, 0, 0);
-
-    echo $total_gasto_extras2_formateado = number_format($dos_decimales, 2);
-    exit();
-
-
-    // Resto de tu lógica para guardar en la base de datos
     $servicios_extras2 = trim($_POST['servicios_extras2']);
-
-    $total_gasto_extras3 = "31.02";
     $servicios_extras3 = trim($_POST['servicios_extras3']);
 
-    $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta,servicio_adicional, total_pago_reserva, descuento, observacion_cliente, total_dias_reserva, servicios_extras1, total_gasto_extras1, servicios_extras2, total_gasto_extras2, servicios_extras3, total_gasto_extras3) 
-                            VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$deudaFinal', '$descuento', '$observacion_cliente', '$total_dias_reserva', '$servicios_extras1', '$total_gasto_extras1', '$servicios_extras2', '$total_gasto_extras2', '$servicios_extras3', '$total_gasto_extras3')");
+
+    $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, total_pago_final, descuento, observacion_cliente, total_dias_reserva, servicios_extras1, total_gasto_extras1, servicios_extras2, total_gasto_extras2, servicios_extras3, total_gasto_extras3) 
+                            VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva', '$total_pago_final', '$descuento', '$observacion_cliente', '$total_dias_reserva', '$servicios_extras1', '$total_gasto_extras1', '$servicios_extras2', '$total_gasto_extras2', '$servicios_extras3', '$total_gasto_extras3')");
     $resultInsert = mysqli_query($con, $queryInserReserva);
-
-    echo '<pre>';
-    print_r($queryInserReserva);
-    echo '</pre>';
-
-    exit();
     if ($resultInsert) {
         // Obtener el último ID insertado
         $lastInsertId = mysqli_insert_id($con);
-        header("location:../emails/aviso_reserva_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId);
+        header("location:../emails/aviso_reserva_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=admin");
     }
 
     ?>

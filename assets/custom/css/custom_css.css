@@ -72,7 +72,7 @@ select.form-control {
   background-color: #f60 !important;
 }
 .card.card-light-danger {
-  background: #f60 !important;
+  background: #f98851 !important;
 }
 .toast {
   border: none !important;
@@ -135,4 +135,8 @@ body tr td:hover {
 }
 .form-control-lg {
   padding: 10px !important;
+}
+.list-group-item {
+  background-color: transparent !important;
+  padding: 0.25rem 0.25rem !important;
 }

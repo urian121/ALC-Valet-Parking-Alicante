@@ -231,7 +231,7 @@ $reservaDatos = array(
     'Matrícula' => $rowReserva["matricula"],
     'Fecha Entrada' => date("d/m/Y", strtotime($rowReserva["fecha_entrega"])),
     'Hora Entrada' => $rowReserva["hora_entrega"],
-    'Fecha Salida' => date("d/m/Y", strtotime($rowReserva["fecha_recogida"])),
+    'Fecha Salida' => $rowReserva["fecha_recogida"] != 'Sin definir' ? date("d/m/Y", strtotime($rowReserva["fecha_recogida"])) : $rowReserva["fecha_recogida"],
     'Hora Salida' => $rowReserva["hora_recogida"],
     'Número Días' => $rowReserva["diferencia_dias"],
     'Nº Vuelo de Vuelta:' => $rowReserva['numero_vuelo_de_vuelta'],
