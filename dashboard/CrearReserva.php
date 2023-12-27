@@ -136,7 +136,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     <label for="total_gasto_extras1" class="form-label">
                                                         Total gasto adicional <span style="font-size: 20px; font-weight: bold">1</span>
                                                     </label>
-                                                    <input type="text" name="total_gasto_extras1" oninput="formatCurrency(event)" class="form-control">
+                                                    <input type="text" name="total_gasto_extras1" oninput="formatCurrency(this)" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -150,7 +150,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     <label for="total_gasto_extras2" class="form-label">
                                                         Total gasto adicional <span style="font-size: 20px; font-weight: bold">2</span>
                                                     </label>
-                                                    <input type="text" name="total_gasto_extras2" oninput="formatCurrency(event)" class="form-control">
+                                                    <input type="text" name="total_gasto_extras2" oninput="formatCurrency(this)" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -164,7 +164,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     <label for="total_gasto_extras3" class="form-label">
                                                         Total gasto adicional <span style="font-size: 20px; font-weight: bold">3</span>
                                                     </label>
-                                                    <input type="text" name="total_gasto_extras3" oninput="formatCurrency(event)" class="form-control">
+                                                    <input type="text" name="total_gasto_extras3" oninput="formatCurrency(this)" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row mb-2">

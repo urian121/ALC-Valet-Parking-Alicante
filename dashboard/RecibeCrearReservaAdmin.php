@@ -1,8 +1,7 @@
    <?php
-    /*
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
-    */
+
     include('../config/config.php');
     $fecha_recogida = $_POST['fecha_recogida'] != '' ? date("Y-m-d", strtotime($_POST['fecha_recogida'])) : 'Sin definir';
 
@@ -76,16 +75,28 @@
     $observacion_cliente = trim($_POST['observacion_cliente']);
     $email_cliente = trim($_POST['emailUser']); //Email del cliente
 
-    $total_gasto_extras1 = isset($_POST['total_gasto_extras1']) ? trim($_POST['total_gasto_extras1']) : 0;
-    $total_gasto_extras1 = ($total_gasto_extras1 !== '' && is_numeric($total_gasto_extras1)) ? $total_gasto_extras1 : 0;
-    $servicios_extras1 = trim($_POST['servicios_extras1']);
+    // echo $total_gasto_extras1 = "8.500";
+    $total_gasto_extras1 = trim($_POST['total_gasto_extras1']);
+    echo $total_gasto_extras1 = str_replace(",", ".", $total_gasto_extras1);
+    echo '<br>';
 
-    $total_gasto_extras2 = isset($_POST['total_gasto_extras2']) ? trim($_POST['total_gasto_extras2']) : 0;
-    $total_gasto_extras2 = ($total_gasto_extras2 !== '' && is_numeric($total_gasto_extras2)) ? $total_gasto_extras2 : 0;
+    $servicios_extras1 = trim($_POST['servicios_extras1']);
+    echo '<pre>';
+    print_r($_POST);
+    echo '</pre>';
+    //echo $total_pago_reserva;
+
+    $total_gasto_extras2 = "8500";
+    $dos_decimales = substr($total_gasto_extras2, 0, 0);
+
+    echo $total_gasto_extras2_formateado = number_format($dos_decimales, 2);
+    exit();
+
+
+    // Resto de tu lógica para guardar en la base de datos
     $servicios_extras2 = trim($_POST['servicios_extras2']);
 
-    $total_gasto_extras3 = isset($_POST['total_gasto_extras3']) ? trim($_POST['total_gasto_extras3']) : 0;
-    $total_gasto_extras3 = ($total_gasto_extras3 !== '' && is_numeric($total_gasto_extras3)) ? $total_gasto_extras3 : 0;
+    $total_gasto_extras3 = "31.02";
     $servicios_extras3 = trim($_POST['servicios_extras3']);
 
     $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta,servicio_adicional, total_pago_reserva, descuento, observacion_cliente, total_dias_reserva, servicios_extras1, total_gasto_extras1, servicios_extras2, total_gasto_extras2, servicios_extras3, total_gasto_extras3) 
