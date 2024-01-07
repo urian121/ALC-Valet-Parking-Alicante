@@ -56,7 +56,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                 <tbody>
                                                     <?php
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
-                                                        $reserva_id = $reserva["id"]; ?>
+                                                        $reserva_id = $reserva["id_reserva"]; ?>
                                                         <tr id="<?php echo $reserva_id; ?>">
                                                             <td class="custom_td">
                                                                 <?php
@@ -81,11 +81,11 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             </td>
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
                                                             <td class="custom_td" style="display: flex;justify-content: space-around;">
-                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Reserva">
+                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Reserva">
                                                                     <i class="bi bi-filetype-pdf"></i>
                                                                 </a>
                                                                 <?php if (isset($reserva["formato_pago"])) { ?>
-                                                                    <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Factura">
+                                                                    <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Factura">
                                                                         <i class="bi bi-receipt sin_deuda"></i>
                                                                     </a>
                                                                 <?php } ?>

@@ -7,10 +7,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = json_decode(file_get_contents("php://input"), TRUE);
     $reserva_id = $data['reserva_id'];
 
-    $sqlReservasAdmin = ("SELECT c.*, r.* FROM tbl_clientes AS c
-                    INNER JOIN tbl_reservas AS r ON c.idUser = r.id_cliente
-                    WHERE r.id = '$reserva_id'
-                    ORDER BY r.date_registro DESC");
+    $sqlReservasAdmin = ("SELECT 
+					    c.*,
+                        r.*,
+                        v.*
+                   FROM tbl_clientes AS c 
+                   LEFT JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
+                   LEFT JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE r.id = '$reserva_id'
+                   ORDER BY r.date_registro DESC");
     $queryReserva = mysqli_query($con, $sqlReservasAdmin);
     if ($queryReserva) {
         $rowData = mysqli_fetch_assoc($queryReserva);

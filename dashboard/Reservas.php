@@ -55,7 +55,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) { ?>
                                                         <tr>
                                                             <td><?php
-                                                                $reserva_id = $reserva["id"];
+                                                                $reserva_id = $reserva["id_reserva"];
                                                                 if ($reserva_id < 10) {
                                                                     echo 'R-00' . $reserva_id;
                                                                 } elseif ($reserva_id < 100) {
@@ -73,7 +73,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
                                                             <td><?php echo $reserva["terminal_recogida"]; ?></td>
                                                             <td><?php echo $reserva["matricula_car"]; ?></td>
                                                             <td>
-                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Reserva en PDF">
+                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Reserva en PDF">
                                                                     <i class="bi bi-filetype-pdf"></i>
                                                                 </a>
                                                             </td>

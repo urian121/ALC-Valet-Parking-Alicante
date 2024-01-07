@@ -135,7 +135,7 @@
             $color_car = trim($_POST['color_car']);
             $matricula_car = trim($_POST['matricula_car']);
 
-            $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$lastInsertId', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
+            $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
             $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
 
             header("location:../emails/aviso_reserva_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente");
@@ -174,13 +174,14 @@
     function getReservaPerfil($con, $idUser)
     {
         $sqlReservasP = "SELECT 
-                        r.*,
-                        v.*
-                    FROM tbl_reservas AS r
-                    INNER JOIN tbl_vehiculos AS v
-                    ON r.id_cliente = v.id_cliente
-                    WHERE r.id_cliente ='$idUser'
-                    ORDER BY r.fecha_entrega DESC";
+                    r.*,
+                    r.id AS id_reserva,
+                    v.*
+                FROM tbl_reservas AS r
+                INNER JOIN tbl_vehiculos AS v ON r.id_cliente = v.id_cliente
+                WHERE r.id_cliente ='$idUser'
+                GROUP BY v.matricula_car
+                ORDER BY r.date_registro DESC";
         $queryR = mysqli_query($con, $sqlReservasP);
         if (!$queryR) {
             return false;
@@ -209,13 +210,14 @@
         $sqlReservasAdmin = ("SELECT 
 					    c.*,
                         r.*,
+                        r.id AS id_reserva,
                         v.*
                    FROM tbl_clientes AS c 
                 	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
                    INNER JOIN tbl_vehiculos AS v
                    ON r.id_cliente = v.id_cliente
                    WHERE r.estado_reserva = 0
-                   GROUP BY r.id_cliente 
+                   GROUP BY r.id 
                    ORDER BY r.date_registro ASC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
         if (!$queryReserva) {
@@ -232,13 +234,14 @@
         $sqlReservasAdmin = ("SELECT 
 					    c.*,
                         r.*,
+                        r.id AS id_reserva,
                         v.*
                    FROM tbl_clientes AS c 
                 	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
                    INNER JOIN tbl_vehiculos AS v
                    ON r.id_cliente = v.id_cliente
                    WHERE  r.estado_reserva != 0 
-                   GROUP BY r.id_cliente 
+                   GROUP BY r.id
                    ORDER BY r.date_registro ASC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
         if (!$queryReserva) {
@@ -254,6 +257,7 @@
     {
         $sqlReservasAdmin = ("SELECT 
                         r.*,
+                        r.id AS id_reserva,
                         v.*
                     FROM tbl_reservas AS r
                     INNER JOIN tbl_vehiculos AS v
@@ -341,31 +345,15 @@
     function crearFacturaCliente($con, $idReserva)
     {
         $idReserva = $_GET["idReserva"];
-        $sqlReserva     = ("SELECT
-                c.idUser,
-                c.nombre_completo,
-                c.din,
-                c.emailUser,
-                r.fecha_entrega,
-                r.fecha_recogida,
-                r.total_dias_reserva,
-                r.descuento,
-                r.tipo_plaza,
-                r.matricula,
-                r.servicio_adicional,
-                r.total_pago_reserva,
-                r.servicios_extras1,
-                r.total_gasto_extras1,
-                r.servicios_extras2,
-                r.total_gasto_extras2,
-                r.servicios_extras3,
-                r.total_gasto_extras3,
-                r.observacion_cliente,
-                ABS(DATEDIFF(r.fecha_entrega, r.fecha_recogida)) AS diferencia_dias
-                FROM tbl_clientes AS c 
-                INNER JOIN tbl_reservas AS r
-                ON c.idUser=r.id_cliente
-                WHERE r.id='$idReserva' LIMIT 1");
+        $sqlReserva     = ("SELECT 
+                        c.*,
+                        r.*,
+                        v.*
+                    FROM tbl_clientes AS c 
+                    LEFT JOIN tbl_reservas AS r ON c.idUser = r.id_cliente            
+                    LEFT JOIN tbl_vehiculos AS v ON r.id_cliente = v.id_cliente
+                    WHERE r.id='$idReserva'
+                    LIMIT 1");
         $resulReserva = mysqli_query($con, $sqlReserva);
 
         if (mysqli_num_rows($resulReserva) > 0) {

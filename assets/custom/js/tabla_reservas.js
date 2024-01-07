@@ -16,7 +16,6 @@ if (tbody) {
       let cellIndex = target.cellIndex;
 
       let tableBody = document.querySelector("table").getAttribute("id");
-      console.log(tableBody);
       if (tableBody == "tablaReservasPendientes") {
         if (cellIndex === 10 || cellIndex === 11 || cellIndex === undefined) {
           //no hacer nada xq se hizo click en el primer td de cualquier fila tr
@@ -39,6 +38,7 @@ if (tbody) {
           "../acciones/CustomDetalleReserva.php",
           { reserva_id }
         );
+
         const {
           nombre_completo,
           din,
@@ -65,7 +65,6 @@ if (tbody) {
           fecha_pago_factura,
           date_registro,
         } = response.data;
-        console.log(emailUser);
 
         infoR1.innerHTML = `
         <h3 class="mt-3">

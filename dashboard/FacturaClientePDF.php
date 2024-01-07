@@ -210,7 +210,7 @@ $reservaDatos = array(
     'Hora Entrada' => $rowReserva["hora_entrega"],
     'Fecha Salida' => $rowReserva["fecha_recogida"] != 'Sin definir' ? date("d/m/Y", strtotime($rowReserva["fecha_recogida"])) : $rowReserva["fecha_recogida"],
     'Hora Salida' => $rowReserva["hora_recogida"],
-    'Número Días' => $rowReserva["diferencia_dias"],
+    'Número Días' => $rowReserva["total_dias_reserva"],
     'Nº Vuelo de Vuelta:' => $rowReserva['numero_vuelo_de_vuelta'],
     'Forma de Pago' => $rowReserva["formato_pago"],
 );

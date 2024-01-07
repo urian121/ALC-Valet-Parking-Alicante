@@ -61,7 +61,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                 <tbody>
                                                     <?php
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
-                                                        $reserva_id = $reserva["id"]; ?>
+                                                        $reserva_id = $reserva["id_reserva"]; ?>
                                                         <tr id="<?php echo $reserva_id; ?>" class="reserva_<?php echo $reserva_id; ?>">
                                                             <td class="custom_td">
                                                                 <?php
@@ -87,18 +87,18 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
                                                             <td class="custom_td" style="display: flex;justify-content: center;">
-                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Recibo de Aparcamiento">
+                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Recibo de Aparcamiento">
                                                                     <i class="bi bi-filetype-pdf" style="color: green;"></i>
                                                                 </a>
                                                                 &nbsp;&nbsp;
                                                                 &nbsp;&nbsp;
                                                                 <?php
                                                                 if ($reserva["formato_pago"] != "") { ?>
-                                                                    <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Factura">
+                                                                    <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Factura">
                                                                         <i class="bi bi-receipt sin_deuda"></i>
                                                                     </a>
                                                                 <?php } else { ?>
-                                                                    <a class="factura" title="Crear Factura" href="CrearFactura.php?idReserva=<?php echo $reserva["id"]; ?>">
+                                                                    <a class="factura" title="Crear Factura" href="CrearFactura.php?idReserva=<?php echo $reserva_id; ?>">
                                                                         <i class="bi bi-receipt con_deuda"></i>
                                                                     </a>
                                                                 <?php } ?>
