@@ -34,7 +34,7 @@ if (isset($_SESSION['emailUser']) != "") {
                             <div class="col-md-8 grid-margin">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="card-title text-center mb-5">Crea tu reserva aquí en segundos
+                                        <h2 class="card-title text-center mb-5">Crea tu estancia aquí en segundos
                                             <hr>
                                         </h2>
 
@@ -184,7 +184,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 <div class="col-md-6">
                                                     <div class="mt-3">
                                                         <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                                                            Crear Reserva
+                                                            Crear Nueva Estancia
                                                         </button>
                                                     </div>
                                                 </div>
