@@ -57,7 +57,12 @@ if (isset($_REQUEST['errorC'])) {
 } elseif (isset($_REQUEST['facturaFR'])) {
     $mensaje = 'Felicitaciones, la fecha de recogida fue actualizada correctamente.';
     $tipo = 'success';
+} elseif (isset($_REQUEST['AceptarReserva'])) {
+    $mensaje = 'Felicitaciones, la reserva fue aceptada correctamente.';
+    $tipo = 'success';
 }
+
+
 
 
 if (isset($mensaje)) { ?>

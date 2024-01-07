@@ -50,7 +50,7 @@
                     <input type="text" name="tlf" class="form-control form-control-lg" placeholder="Teléfono" required />
                   </div>
                   <div class="col-md-6 mb-2">
-                    <label for="">¿Cómo nos ha conocido?</label>
+                    <label for="conocido_por">¿Cómo nos ha conocido?</label>
                     <select name="conocido_por" class="form-control form-control-lg">
                       <option value="Seleccione">Seleccione</option>
                       <option value="Ya soy cliente">Ya soy cliente</option>

@@ -14,14 +14,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 c.emailUser,
                 r.terminal_entrega,
                 r.terminal_recogida,
-                r.matricula,
-                r.color,
-                r.marca_modelo
+                v.matricula_car,
+                v.color_car,
+                v.marca_car,
+                v.modelo_car
             FROM tbl_clientes AS c
             LEFT JOIN tbl_reservas AS r 
             ON c.idUser = r.id_cliente
-            WHERE c.IdUser = '$idCliente'
-            ORDER BY r.date_registro DESC LIMIT 1");
+            LEFT JOIN tbl_vehiculos AS v
+            ON r.id_cliente = v.id_cliente
+            WHERE c.IdUser = '$idCliente' LIMIT 1");
         $querySQL = mysqli_query($con, $sqlData);
         $dataBD = array();
         while ($fila_data = mysqli_fetch_array($querySQL)) {

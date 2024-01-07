@@ -53,7 +53,8 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <th>Fecha de recogida</th>
                                                         <th>Hora de recogida</th>
                                                         <th>Tipo de plaza</th>
-                                                        <th>Reserva / Factura </th>
+                                                        <th>Reserva</th>
+                                                        <th>Aceptar</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -74,7 +75,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["nombre_completo"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["din"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["tlf"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["matricula"]; ?></td>
+                                                            <td class="custom_td"><?php echo $reserva["matricula_car"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_entrega"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
                                                             <td class="custom_td">
@@ -90,16 +91,12 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                 </a>
                                                                 &nbsp;&nbsp;
                                                                 &nbsp;&nbsp;
-                                                                <?php
-                                                                if ($reserva["formato_pago"] != "") { ?>
-                                                                    <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva["id"]; ?>" title="Descargar Factura">
-                                                                        <i class="bi bi-receipt sin_deuda"></i>
-                                                                    </a>
-                                                                <?php } else { ?>
-                                                                    <a class="factura" title="Crear Factura" href="CrearFactura.php?idReserva=<?php echo $reserva["id"]; ?>">
-                                                                        <i class="bi bi-receipt con_deuda"></i>
-                                                                    </a>
-                                                                <?php } ?>
+                                                            </td>
+                                                            <td class="custom_td" style="text-align: center;">
+                                                                <a class="aceptar" title="Aceptar Reserva" href="javascript:void(0);" onclick="confirmarAceptacion(<?php echo $reserva['id']; ?>)">
+                                                                    <i class="bi bi-check-circle" style="font-size: 25px; color:red"></i>
+                                                                </a>
+                                                            </td>
                                                         </tr>
                                                     <?php } ?>
                                                 </tbody>
@@ -121,6 +118,12 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
         <?php include 'bases/PageJs.html'; ?>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
         <script>
+            function confirmarAceptacion(idReserva) {
+                var confirmacion = confirm("¿Realmente desea aceptar la reserva?");
+                if (confirmacion) {
+                    window.location.href = "../acciones/AceptarReserva.php?idReserva=" + idReserva;
+                } else {}
+            }
             $(document).ready(function() {
                 $("#tablaReservasPendientes").DataTable({
                     language: {

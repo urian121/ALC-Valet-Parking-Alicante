@@ -69,7 +69,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                         <div class="row mb-2 justify-content-between">
                                             <div class="col-md-6 mb-2">
                                                 Matrícula:
-                                                <strong> <?php echo $miReserva['matricula']; ?></strong>
+                                                <strong> <?php echo $miReserva['matricula_car']; ?></strong>
                                             </div>
                                             <?php
                                             if ($fechaRecogida != 'Sin definir') { ?>

@@ -18,7 +18,7 @@ if (tbody) {
       let tableBody = document.querySelector("table").getAttribute("id");
       console.log(tableBody);
       if (tableBody == "tablaReservasPendientes") {
-        if (cellIndex === 10 || cellIndex === undefined) {
+        if (cellIndex === 10 || cellIndex === 11 || cellIndex === undefined) {
           //no hacer nada xq se hizo click en el primer td de cualquier fila tr
           return;
         }
@@ -47,9 +47,10 @@ if (tbody) {
           tlf,
           conocido_por,
           observaciones,
-          color,
-          matricula,
-          marca_modelo,
+          color_car,
+          matricula_car,
+          marca_car,
+          modelo_car,
           tipo_plaza,
           terminal_entrega,
           terminal_recogida,
@@ -87,9 +88,9 @@ if (tbody) {
             Información de la Reserva
           <hr />
         </h3>
-        <h4 class="card-text buttom mb-3">Matrícula: ${matricula}</h4>
-        <h4 class="card-text buttom mb-3">Color: ${color}</h4>
-        <h4 class="card-text buttom mb-3">Marca - Modelo: ${marca_modelo}</h4>
+        <h4 class="card-text buttom mb-3">Matrícula: ${matricula_car}</h4>
+        <h4 class="card-text buttom mb-3">Color: ${color_car}</h4>
+        <h4 class="card-text buttom mb-3">Marca - Modelo: ${marca_car} - ${modelo_car}</h4>
         <h4 class="card-text buttom mb-3">Tipo de Plaza: ${tipo_plaza}</h4>
         <h4 class="card-text buttom mb-3">Servicio Adicional: ${servicio_adicional}</h4>
         <h4 class="card-text buttom mb-3">Terminal de Entrega: ${terminal_entrega}</h4>

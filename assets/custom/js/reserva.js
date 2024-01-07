@@ -17,18 +17,20 @@ const selectCliente = async (idCliente) => {
     const terminal_recogida = document.querySelector(
       'input[name="terminal_recogida"]'
     );
-    const matricula = document.querySelector('input[name="matricula"]');
-    const color = document.querySelector('input[name="color"]');
-    const marca_modelo = document.querySelector('input[name="marca_modelo"]');
+    const matricula_car = document.querySelector('input[name="matricula_car"]');
+    const color_car = document.querySelector('input[name="color_car"]');
+    const marca_car = document.querySelector('input[name="marca_car"]');
+    const modelo_car = document.querySelector('input[name="modelo_car"]');
 
     if (success === true && data.length === 0) {
       console.log("El cliente nunca a creado una reserva");
       emailUser.value = "";
       terminal_entrega.value = "";
       terminal_recogida.value = "";
-      matricula.value = "";
-      color.value = "";
-      marca_modelo.value = "";
+      matricula_car.value = "";
+      color_car.value = "";
+      marca_car.value = "";
+      modelo_car.value = "";
       mi_alerta("El cliente nunca a creado una reserva", 0);
       return;
     }
@@ -36,9 +38,10 @@ const selectCliente = async (idCliente) => {
     emailUser.value = data[0][0];
     terminal_entrega.value = data[0][1];
     terminal_recogida.value = data[0][2];
-    matricula.value = data[0][3];
-    color.value = data[0][4];
-    marca_modelo.value = data[0][5];
+    matricula_car.value = data[0][3];
+    color_car.value = data[0][4];
+    marca_car.value = data[0][5];
+    modelo_car.value = data[0][6];
   } catch (error) {
     console.error("Error al consultar el valor a Pagar:", error);
   }

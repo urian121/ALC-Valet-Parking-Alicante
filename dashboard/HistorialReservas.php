@@ -71,7 +71,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["nombre_completo"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["din"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["tlf"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["matricula"]; ?></td>
+                                                            <td class="custom_td"><?php echo $reserva["matricula_car"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_entrega"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
                                                             <td class="custom_td">

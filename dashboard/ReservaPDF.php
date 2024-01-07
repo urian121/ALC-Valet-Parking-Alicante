@@ -10,38 +10,15 @@ ob_end_clean(); //limpiar la memoria
 //Informacion de la Reserva
 if (isset($_GET["idReserva"])) {
     $idReserva = $_GET["idReserva"];
-    $sqlReserva     = ("SELECT
-                    c.idUser,
-                    c.nombre_completo,
-                    c.din,
-                    c.direccion_completa,
-                    c.tlf,
-                    r.fecha_entrega,
-                    r.hora_entrega,
-                    r.fecha_recogida,
-                    r.hora_recogida,
-                    r.tipo_plaza,
-                    r.terminal_entrega,
-                    r.terminal_recogida,
-                    r.matricula,
-                    r.color,
-                    r.marca_modelo,
-                    r.numero_vuelo_de_vuelta,
-                    r.servicio_adicional,
-                    r.total_pago_reserva,
-                    r.servicios_extras1,
-                    r.total_gasto_extras1,
-                    r.servicios_extras2,
-                    r.total_gasto_extras2,
-                    r.servicios_extras3,
-                    r.total_gasto_extras3,
-                    r.formato_pago,
-                    r.observacion_cliente,
-                    r.total_dias_reserva
-                FROM tbl_clientes AS c 
-                INNER JOIN tbl_reservas AS r
-                ON c.idUser=r.id_cliente
-                WHERE r.id='$idReserva' LIMIT 1");
+    $sqlReserva     = ("SELECT 
+					    c.*,
+                        r.*,
+                        v.*
+                   FROM tbl_clientes AS c 
+                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE r.id='$idReserva' LIMIT 1");
     $resulReserva = mysqli_query($con, $sqlReserva);
     if (!$resulReserva) {
         header("Location: https://alcvaletparking.com/");
@@ -231,9 +208,9 @@ $pdf->Line(10, 133, 200, 133);
 
 #Informacion del Vehiculo
 $reservaDatos = array(
-    'Marca y Modelo' => $rowReserva["marca_modelo"],
-    'Color' => $rowReserva["color"],
-    'Matrícula' => $rowReserva["matricula"],
+    'Marca y Modelo' => $rowReserva["marca_car"] . ' ' . $rowReserva["modelo_car"],
+    'Color' => $rowReserva["color_car"],
+    'Matrícula' => $rowReserva["matricula_car"],
     'Fecha Entrada' => date("d/m/Y", strtotime($rowReserva["fecha_entrega"])),
     'Hora Entrada' => $rowReserva["hora_entrega"],
     'Fecha Salida' => $rowReserva["fecha_recogida"] != 'Sin definir' ? date("d/m/Y", strtotime($rowReserva["fecha_recogida"])) : $rowReserva["fecha_recogida"],

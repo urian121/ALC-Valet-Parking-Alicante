@@ -24,7 +24,7 @@
         <div class="collapse" id="error">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item"> <a class="nav-link" href="EstanciasEntradas.php"> Estancias de Entradas </a></li>
-            <li class="nav-item"> <a class="nav-link" href="EstanciaSalidas.php"> Estancias de Salidas </a></li>
+            <li class="nav-item"> <a class="nav-link" href="EstanciasSalidas.php"> Estancias de Salidas </a></li>
           </ul>
         </div>
       </li>

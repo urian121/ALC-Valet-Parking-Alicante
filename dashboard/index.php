@@ -74,7 +74,7 @@ if (isset($_SESSION['emailUser']) != "") {
 
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="">Tipo de plaza</label>
+                            <label for="Tipo de plaza">Tipo de plaza</label>
                             <select name="tipo_plaza" id="tipo_plaza" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected>Seleccione</option>
                               <option value="Plaza Aire Libre">Plaza Aire Libre</option>
@@ -82,32 +82,36 @@ if (isset($_SESSION['emailUser']) != "") {
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="">Terminal de entrega</label>
+                            <label for="Terminal de entrega">Terminal de entrega</label>
                             <select name="terminal_entrega" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected>Seleccione</option>
                               <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="">Terminal de recogida</label>
+                            <label for="Terminal de recogida">Terminal de recogida</label>
                             <select name="terminal_recogida" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected>Seleccione</option>
                               <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="">Matrícula</label>
-                            <input type="text" name="matricula" class="form-control form-control-lg campo_obligatorio" required />
+                            <label for="Matrícula">Matrícula</label>
+                            <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" required />
                           </div>
                         </div>
                         <div class="row mb-2">
                           <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="">Color</label>
-                            <input type="text" name="color" class="form-control form-control-lg campo_obligatorio" required />
+                            <label for="color_car">Color</label>
+                            <input type="text" name="color_car" class="form-control form-control-lg campo_obligatorio" placeholder="Color" required />
                           </div>
                           <div class="col-md-6 mb-2">
-                            <label for="">Marca - Modelo</label>
-                            <input type="text" name="marca_modelo" class="form-control form-control-lg campo_obligatorio" required />
+                            <label for="Marca">Marca</label>
+                            <input type="text" name="marca_car" class="form-control form-control-lg campo_obligatorio" placeholder="Marca" required />
+                          </div>
+                          <div class="col-md-6 mb-2">
+                            <label for="Modelo">Modelo</label>
+                            <input type="text" name="modelo_car" class="form-control form-control-lg campo_obligatorio" placeholder="Modelo" required />
                           </div>
 
                           <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">

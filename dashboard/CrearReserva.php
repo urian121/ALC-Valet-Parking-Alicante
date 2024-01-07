@@ -42,7 +42,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                             <input type="text" name="emailUser" id="emailUser" hidden />
                                             <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Asignar Clientes</label>
+                                                    <label for="IdUser">Asignar Clientes</label>
                                                     <select name="IdUser" onchange="selectCliente(this.value)" class="form-control form-control-lg" required>
                                                         <option value="" selected>Seleccione</option>
                                                         <?php
@@ -79,7 +79,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     </select>
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Tipo de plaza</label>
+                                                    <label for="tipo_plaza">Tipo de plaza</label>
                                                     <select name="tipo_plaza" id="tipo_plaza" class="form-control form-control-lg" required>
                                                         <option value="" selected>Seleccione</option>
                                                         <option value="Plaza Aire Libre">Plaza Aire Libre</option>
@@ -87,38 +87,42 @@ if (isset($_SESSION['emailUser']) != "") {
                                                     </select>
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Terminal de entrega</label>
+                                                    <label for="terminal_entrega">Terminal de entrega</label>
                                                     <input type="text" name="terminal_entrega" class="form-control form-control-lg" required />
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Terminal de recogida</label>
+                                                    <label for="terminal_recogida">Terminal de recogida</label>
                                                     <input type="text" name="terminal_recogida" class="form-control form-control-lg" required />
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Matrícula</label>
-                                                    <input type="text" name="matricula" class="form-control form-control-lg" required />
+                                                    <label for="matricula_car">Matrícula</label>
+                                                    <input type="text" name="matricula_car" class="form-control form-control-lg" required />
                                                 </div>
                                                 <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Color</label>
-                                                    <input type="text" name="color" class="form-control form-control-lg" require />
+                                                    <label for="color_car">Color</label>
+                                                    <input type="text" name="color_car" class="form-control form-control-lg" require />
                                                 </div>
                                                 <div class="col-md-6 mb-2">
-                                                    <label for="">Marca - Modelo</label>
-                                                    <input type="text" name="marca_modelo" class="form-control form-control-lg" required />
+                                                    <label for="marca_car">Marca</label>
+                                                    <input type="text" name="marca_car" class="form-control form-control-lg" required />
+                                                </div>
+                                                <div class="col-md-6 mb-2">
+                                                    <label for="modelo_car">Modelo</label>
+                                                    <input type="text" name="modelo_car" class="form-control form-control-lg" required />
                                                 </div>
                                                 <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Nº Vuelo de Vuelta</label>
+                                                    <label for="numero_vuelo_de_vuelta">Nº Vuelo de Vuelta</label>
                                                     <input type="text" name="numero_vuelo_de_vuelta" class="form-control form-control-lg" />
                                                 </div>
 
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                                                    <label for="">Aplicar Descuento %</label>
+                                                    <label for="descuento">Aplicar Descuento %</label>
                                                     <input type="number" name="descuento" id="descuento" value="0" class="form-control form-control-lg" />
                                                 </div>
                                                 <div class="col-md-6 mb-2">
-                                                    <label for="">Servicios Adicionales</label>
+                                                    <label for="servicio_adicional">Servicios Adicionales</label>
                                                     <div class="mb-3 form-check">
                                                         <input type="checkbox" name="servicio_adicional" id="servicio_adicional" class="form-check-input" style="margin-left: 0;" value="Si">
                                                         <label class="form-check-label" for="servicio_adicional">Lavado Exterior Básico (Gratuito)</label>

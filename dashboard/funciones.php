@@ -30,13 +30,20 @@
     function infoClienteBD($con, $idCliente)
     {
         $infoCliente = "SELECT 
-                    IdUser,
-                    emailUser, 
-                    nombre_completo,
-                    din,
-                    direccion_completa, 
-                    tlf
-                FROM tbl_clientes
+                    c.IdUser,
+                    c.emailUser, 
+                    c.nombre_completo,
+                    c.din,
+                    c.direccion_completa, 
+                    c.tlf,
+                    c.observaciones,
+                    v.marca_car,
+                    v.modelo_car,
+                    v.color_car,
+                    v.matricula_car
+                FROM tbl_clientes AS  c
+                INNER JOIN tbl_vehiculos AS v
+                ON c.IdUser = v.id_cliente
                 WHERE IdUser='$idCliente' LIMIT 1";
         $query = mysqli_query($con, $infoCliente);
         if (!$query) {
@@ -96,9 +103,6 @@
         $tipo_plaza         = trim($_POST['tipo_plaza']);
         $terminal_entrega   = trim($_POST['terminal_entrega']);
         $terminal_recogida  = trim($_POST['terminal_recogida']);
-        $matricula          = trim($_POST['matricula']);
-        $color              = trim($_POST['color']);
-        $marca_modelo       = trim($_POST['marca_modelo']);
         $numero_vuelo_de_vuelta = trim($_POST['numero_vuelo_de_vuelta']);
         $email_cliente          = trim($_POST['email_cliente']);
         $observacion_cliente    = trim($_POST['observacion_cliente']);
@@ -118,14 +122,22 @@
             $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
         }
 
-        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva, total_dias_reserva)
-                 VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$observacion_cliente', '$total_pago_reserva', '$total_dias_reserva')");
+        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva, total_dias_reserva)
+                 VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$numero_vuelo_de_vuelta', '$observacion_cliente', '$total_pago_reserva', '$total_dias_reserva')");
         $resultInsert = mysqli_query($con, $queryInserReserva);
 
 
         if ($resultInsert) {
             // Obtener el último ID insertado
             $lastInsertId = mysqli_insert_id($con);
+            $marca_car = trim($_POST['marca_car']);
+            $modelo_car = trim($_POST['modelo_car']);
+            $color_car = trim($_POST['color_car']);
+            $matricula_car = trim($_POST['matricula_car']);
+
+            $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$lastInsertId', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
+            $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
+
             header("location:../emails/aviso_reserva_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente");
         }
     }
@@ -161,7 +173,14 @@
      */
     function getReservaPerfil($con, $idUser)
     {
-        $sqlReservasP = ("SELECT * FROM tbl_reservas WHERE id_cliente ='$idUser' ORDER BY fecha_entrega DESC");
+        $sqlReservasP = "SELECT 
+                        r.*,
+                        v.*
+                    FROM tbl_reservas AS r
+                    INNER JOIN tbl_vehiculos AS v
+                    ON r.id_cliente = v.id_cliente
+                    WHERE r.id_cliente ='$idUser'
+                    ORDER BY r.fecha_entrega DESC";
         $queryR = mysqli_query($con, $sqlReservasP);
         if (!$queryR) {
             return false;
@@ -187,10 +206,17 @@
      */
     function getEstanciaEntradas($con)
     {
-        $sqlReservasAdmin = ("SELECT c.*, r.* FROM tbl_clientes AS c
-                    INNER JOIN tbl_reservas AS r ON c.idUser = r.id_cliente
-                    WHERE r.estado_reserva = 0 AND formato_pago is NULL
-                    ORDER BY r.date_registro ASC");
+        $sqlReservasAdmin = ("SELECT 
+					    c.*,
+                        r.*,
+                        v.*
+                   FROM tbl_clientes AS c 
+                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE r.estado_reserva = 0
+                   GROUP BY r.id_cliente 
+                   ORDER BY r.date_registro ASC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
         if (!$queryReserva) {
             return false;
@@ -203,10 +229,17 @@
      */
     function getEstanciaSalidas($con)
     {
-        $sqlReservasAdmin = ("SELECT c.*, r.* FROM tbl_clientes AS c
-                    INNER JOIN tbl_reservas AS r ON c.idUser = r.id_cliente
-                    WHERE r.estado_reserva != 0 AND formato_pago is NOT NULL
-                    ORDER BY r.date_registro DESC");
+        $sqlReservasAdmin = ("SELECT 
+					    c.*,
+                        r.*,
+                        v.*
+                   FROM tbl_clientes AS c 
+                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE  r.estado_reserva != 0 
+                   GROUP BY r.id_cliente 
+                   ORDER BY r.date_registro ASC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
         if (!$queryReserva) {
             return false;
@@ -219,8 +252,12 @@
      */
     function getAllHistorialReservas($con)
     {
-        $sqlReservasAdmin = ("SELECT c.*, r.* FROM tbl_clientes AS c
-                    INNER JOIN tbl_reservas AS r ON c.idUser = r.id_cliente
+        $sqlReservasAdmin = ("SELECT 
+                        r.*,
+                        v.*
+                    FROM tbl_reservas AS r
+                    INNER JOIN tbl_vehiculos AS v
+                    ON r.id_cliente = v.id_cliente
                     WHERE r.estado_reserva = 2 AND formato_pago is NOT NULL
                     ORDER BY r.date_registro DESC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
@@ -255,7 +292,19 @@
         } else {
             $queryInsertUser  = ("INSERT INTO tbl_clientes(emailUser, passwordUser, nombre_completo, din, direccion_completa, tlf, observaciones, createUser) VALUES ('$emailUser','$PasswordHash','$nombre_completo','$din', '$direccion_completa', '$tlf', '$observaciones', '$createUser')");
             $resultInsertUser = mysqli_query($con, $queryInsertUser);
-            header("location:./CrearCliente.php?successC=1");
+            if ($resultInsertUser) {
+                // Obtengo el ID del último registro insertado
+                $ultimoIdInsertado = mysqli_insert_id($con);
+
+                $marca_car = trim($_POST['marca_car']);
+                $modelo_car = trim($_POST['modelo_car']);
+                $color_car = trim($_POST['color_car']);
+                $matricula_car = trim($_POST['matricula_car']);
+                //Regidtrando Vehiculo
+                $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$ultimoIdInsertado', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
+                $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
+                header("location:./CrearCliente.php?successC=1");
+            }
         }
     }
 
@@ -272,13 +321,20 @@
         $tlf = $_POST['tlf'];
         $observaciones = $_POST['observaciones'];
         $IdUser = trim($_POST['IdUser']);
+        $marca_car = trim($_POST['marca_car']);
+        $modelo_car = trim($_POST['modelo_car']);
+        $color_car = trim($_POST['color_car']);
+        $matricula_car = trim($_POST['matricula_car']);
 
         $PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT); //Incriptando clave,
 
         $Update = "UPDATE tbl_clientes SET emailUser='$emailUser', passwordUser='$PasswordHash', nombre_completo='$nombre_completo', din='$din', direccion_completa='$direccion_completa', tlf='$tlf', observaciones='$observaciones', observaciones='$observaciones' WHERE IdUser='$IdUser'";
         $resultado = mysqli_query($con, $Update);
-
-        header("location:./CrearCliente.php?successUC=1");
+        if ($resultado) {
+            $UpdateVehiculo = "UPDATE tbl_vehiculos SET  marca_car='$marca_car', modelo_car='$modelo_car', color_car='$color_car', matricula_car='$matricula_car' WHERE matricula_car='$matricula_car'";
+            $resultadoV = mysqli_query($con, $UpdateVehiculo);
+            header("location:./CrearCliente.php?successUC=1");
+        }
     }
 
 

@@ -84,9 +84,11 @@
     $hora_recogida      = trim($_POST['hora_recogida']);
     $terminal_entrega   = trim($_POST['terminal_entrega']);
     $terminal_recogida  = trim($_POST['terminal_recogida']);
-    $matricula          = trim($_POST['matricula']);
-    $color              = trim($_POST['color']);
-    $marca_modelo       = trim($_POST['marca_modelo']);
+    $matricula_car      = trim($_POST['matricula_car']);
+    $color_car          = trim($_POST['color_car']);
+    $marca_car          = trim($_POST['marca_car']);
+    $modelo_car         = trim($_POST['modelo_car']);
+
     $numero_vuelo_de_vuelta = trim($_POST['numero_vuelo_de_vuelta']);
     $servicio_adicional     = isset($_POST['servicio_adicional']) ? "Si" : "No";
     $observacion_cliente    = trim($_POST['observacion_cliente']);
@@ -100,12 +102,15 @@
     $servicios_extras3 = trim($_POST['servicios_extras3']);
 
 
-    $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, matricula, color, marca_modelo, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, total_pago_final, descuento, observacion_cliente, total_dias_reserva, servicios_extras1, total_gasto_extras1, servicios_extras2, total_gasto_extras2, servicios_extras3, total_gasto_extras3) 
-                            VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$matricula', '$color', '$marca_modelo', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva', '$total_pago_final', '$descuento', '$observacion_cliente', '$total_dias_reserva', '$servicios_extras1', '$total_gasto_extras1', '$servicios_extras2', '$total_gasto_extras2', '$servicios_extras3', '$total_gasto_extras3')");
+    $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, total_pago_final, descuento, observacion_cliente, total_dias_reserva, servicios_extras1, total_gasto_extras1, servicios_extras2, total_gasto_extras2, servicios_extras3, total_gasto_extras3) 
+                            VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$numero_vuelo_de_vuelta', '$servicio_adicional', '$total_pago_reserva', '$total_pago_final', '$descuento', '$observacion_cliente', '$total_dias_reserva', '$servicios_extras1', '$total_gasto_extras1', '$servicios_extras2', '$total_gasto_extras2', '$servicios_extras3', '$total_gasto_extras3')");
     $resultInsert = mysqli_query($con, $queryInserReserva);
     if ($resultInsert) {
         // Obtener el último ID insertado
         $lastInsertId = mysqli_insert_id($con);
+
+        $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
+        $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
         header("location:../emails/aviso_reserva_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=admin");
     }
 

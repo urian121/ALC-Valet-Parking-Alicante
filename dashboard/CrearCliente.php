@@ -57,7 +57,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                 </div>
                                                 <div class="row mb-2">
                                                     <div class="col-md-6 mb-2">
-                                                        <input type="password" name="passwordUser" class="form-control form-control-lg" placeholder="Clave" required="">
+                                                        <input type="password" name="passwordUser" class="form-control form-control-lg" placeholder="Clave" <?php (isset($infoCliente['IdUser'])) ? '' : 'required'; ?>>
                                                     </div>
                                                     <div class="col-md-6 mb-2">
                                                         <input type="email" name="emailUser" class="form-control form-control-lg" placeholder="Email" value="<?php echo isset($infoCliente['emailUser']) ? $infoCliente['emailUser'] : ''; ?>">
@@ -73,14 +73,37 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <textarea class="form-control" name="observaciones" placeholder="Observaciones" style="height: 140px"><?php echo isset($infoCliente['observaciones']) ? $infoCliente['observaciones'] : ''; ?></textarea>
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3 class="text-center">Datos del Vehiculo
+                                                            <hr>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="marca_car" class="form-control form-control-lg campo_obligatorio" placeholder="Marca" value="<?php echo isset($infoCliente['marca_car']) ? $infoCliente['marca_car'] : ''; ?>" required />
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="modelo_car" class="form-control form-control-lg campo_obligatorio" placeholder="Modelo" value="<?php echo isset($infoCliente['modelo_car']) ? $infoCliente['modelo_car'] : ''; ?>" required />
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="color_car" class="form-control form-control-lg campo_obligatorio" placeholder="Color" value="<?php echo isset($infoCliente['color_car']) ? $infoCliente['color_car'] : ''; ?>" required />
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" disabled value="<?php echo isset($infoCliente['matricula_car']) ? $infoCliente['matricula_car'] : ''; ?>" required />
+                                                </div>
+
+
                                                 <div class="mt-3">
                                                     <?php if (isset($infoCliente['IdUser'])) { ?>
                                                         <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                                                            Actualizar Cuenta
+                                                            Actualizar Cliente
                                                         </button>
                                                     <?php } else { ?>
                                                         <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                                                            Crear Cuenta
+                                                            Registrar Cliente
                                                         </button>
                                                     <?php } ?>
                                                 </div>
