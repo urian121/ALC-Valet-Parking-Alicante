@@ -7,33 +7,20 @@ $horaEnEspana = date("Y-m-d");
 
 ob_end_clean(); //limpiar la memoria
 
-//Informacion de la Reserva
-if (isset($_GET["idReserva"])) {
-    $idReserva = $_GET["idReserva"];
-    $sqlReserva     = ("SELECT 
-					    c.*,
-                        r.*,
-                        v.*
-                   FROM tbl_clientes AS c 
-                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
-                   INNER JOIN tbl_vehiculos AS v
-                   ON r.id_cliente = v.id_cliente
-                   WHERE r.id='$idReserva' LIMIT 1");
-    $resulReserva = mysqli_query($con, $sqlReserva);
-    if (!$resulReserva) {
-        header("Location: https://alcvaletparking.com/");
-        exit;
-    }
-    $rowReserva = mysqli_fetch_assoc($resulReserva);
-} else {
-    header("Location: https://alcvaletparking.com/");
-    exit;
-}
 
 
 
 class MYPDF extends TCPDF
 {
+    // Propiedad estática para almacenar $CountReserva
+    private static $CountReserva;
+
+    // Método estático para establecer $CountReserva
+    public static function setCountReserva($countReserva)
+    {
+        self::$CountReserva = $countReserva;
+    }
+
     private function traducirDia($nombreDiaEnIngles)
     {
         $traducciones = array(
@@ -98,10 +85,9 @@ class MYPDF extends TCPDF
         $this->SetXY(18, 12);
         $this->Cell(180, 0, $fechaFormateada, 0, 0, 'R');
 
-        $recibo = "4328";
         $this->SetFont('helvetica', 'B', 15);
         $this->SetXY(30, 20);
-        $this->Cell(150, 80, 'Recibo Nº: ' . $recibo, 0, 0, 'R');
+        $this->Cell(150, 80, 'Recibo Nº: ' . self::$CountReserva, 0, 0, 'R');
 
 
         $this->SetFont('helvetica', 'B', 23);
@@ -139,6 +125,33 @@ class MYPDF extends TCPDF
 }
 
 
+//Informacion de la Reserva
+if (isset($_GET["idReserva"])) {
+    $idReserva = $_GET["idReserva"];
+    $sqlReserva     = ("SELECT 
+					    c.*,
+                        r.*,
+                        r.id AS id_reserva,
+                        v.*
+                   FROM tbl_clientes AS c 
+                   INNER JOIN tbl_reservas AS r 
+                   ON c.idUser = r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE r.id='$idReserva' LIMIT 1");
+    $resulReserva = mysqli_query($con, $sqlReserva);
+    if (!$resulReserva) {
+        header("Location: https://alcvaletparking.com/");
+        exit;
+    }
+    $rowReserva = mysqli_fetch_assoc($resulReserva);
+    MYPDF::setCountReserva($rowReserva["id_reserva"]);
+    // $CountReserva = $rowReserva["id_reserva"];
+} else {
+    header("Location: https://alcvaletparking.com/");
+    exit;
+}
+
 
 
 //CREANDO NUEVO DOCUMNETO PDF
@@ -158,7 +171,7 @@ $pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PD
 // add a page
 $pdf->AddPage();
 
-$idUser = $rowReserva["idUser"];
+$idUser = $rowReserva["id_cliente"];
 if ($idUser < 10) {
     $idUser = 'C-00' . $idUser;
 } elseif ($idUser < 100) {
@@ -255,6 +268,8 @@ for ($i = 1; $i <= 3; $i++) {
 }
 
 $deudaFinal = number_format($deudaTotal + $precioConIva, 2, '.', '');
+$descuento = trim($rowReserva['descuento']);
+$deudadFinalConDescuento = number_format($deudaFinal - ($deudaFinal * ($descuento / 100)), 2, '.', '');
 
 $tablaDatos1 = array(
     'Precio Estancia' => number_format($precioConIva, 2) . ' €',
@@ -262,7 +277,8 @@ $tablaDatos1 = array(
     $serv1 ? 'Servicio  1' : ''  =>  $serv1,
     $serv2 ? 'Servicio  2' : ''  =>  $serv2,
     $serv3 ? 'Servicio  3' : ''  =>  $serv3,
-    'SUMA TOTAL' => number_format($deudaFinal, 2) . ' €',
+    $descuento ? 'Descuento' : '' => $descuento . ' %',
+    'SUMA TOTAL' => $deudadFinalConDescuento . ' €',
 );
 
 // Configuración de la tabla

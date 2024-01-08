@@ -85,7 +85,7 @@ try {
     //$headers .= 'Cc: ' . $email_info . "\r\n";
 
     $mail->send();
-    header("location:../dashboard/EstanciasEntradas.php?facturaR=1");
+    header("location:../dashboard/EstanciasSalidas.php?facturaR=1");
     /*
     if (!$mail->send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;

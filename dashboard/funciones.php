@@ -3,6 +3,31 @@
     error_reporting(E_ALL);
     include('../config/config.php');
 
+    /**
+     * obtener todas las Reservas diarias
+     */
+    function getAllAgendaDiaria($con)
+    {
+        $sqlReservasAdmin = ("SELECT 
+					    c.*,
+                        r.*,
+                        r.id AS id_reserva,
+                        v.*
+                   FROM tbl_clientes AS c 
+                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE  r.fecha_entrega = CURDATE()
+                   OR r.fecha_recogida= CURDATE()
+                   GROUP BY r.id
+                   ORDER BY r.fecha_entrega ASC");
+        $queryReserva = mysqli_query($con, $sqlReservasAdmin);
+        if (!$queryReserva) {
+            return false;
+        }
+        return $queryReserva;
+    }
+
 
     function perfilUser($con, $idUser)
     {
@@ -42,7 +67,7 @@
                     v.color_car,
                     v.matricula_car
                 FROM tbl_clientes AS  c
-                INNER JOIN tbl_vehiculos AS v
+                LEFT JOIN tbl_vehiculos AS v
                 ON c.IdUser = v.id_cliente
                 WHERE IdUser='$idCliente' LIMIT 1";
         $query = mysqli_query($con, $infoCliente);
@@ -250,26 +275,7 @@
         return $queryReserva;
     }
 
-    /**
-     * Historial de Reservas
-     */
-    function getAllHistorialReservas($con)
-    {
-        $sqlReservasAdmin = ("SELECT 
-                        r.*,
-                        r.id AS id_reserva,
-                        v.*
-                    FROM tbl_reservas AS r
-                    INNER JOIN tbl_vehiculos AS v
-                    ON r.id_cliente = v.id_cliente
-                    WHERE r.estado_reserva = 2 AND formato_pago is NOT NULL
-                    ORDER BY r.date_registro DESC");
-        $queryReserva = mysqli_query($con, $sqlReservasAdmin);
-        if (!$queryReserva) {
-            return false;
-        }
-        return $queryReserva;
-    }
+
 
     /**
      * Crear cuenta de Cliente desde el Administrador

@@ -7,19 +7,35 @@ $horaEnEspana = date("Y-m-d");
 
 ob_end_clean(); //limpiar la memoria
 
+//Informacion de la Reserva
+if (isset($_GET["idReserva"])) {
+    $idReserva = $_GET["idReserva"];
+    $sqlReserva     = ("SELECT 
+					    c.*,
+                        r.*,
+                        r.id AS id_reserva,
+                        v.*
+                   FROM tbl_clientes AS c 
+                   INNER JOIN tbl_reservas AS r 
+                   ON c.idUser = r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE r.id='$idReserva' LIMIT 1");
+    $resulReserva = mysqli_query($con, $sqlReserva);
+    if (!$resulReserva) {
+        header("Location: https://alcvaletparking.com/");
+        exit;
+    }
+    $rowReserva = mysqli_fetch_assoc($resulReserva);
+} else {
+    header("Location: https://alcvaletparking.com/");
+    exit;
+}
+
+
 
 class MYPDF extends TCPDF
 {
-    // Propiedad estática para almacenar $CountReserva
-    private static $CountReserva;
-
-    // Método estático para establecer $CountReserva
-    public static function setCountReserva($countReserva)
-    {
-        self::$CountReserva = $countReserva;
-    }
-
-
     private function traducirDia($nombreDiaEnIngles)
     {
         $traducciones = array(
@@ -56,6 +72,10 @@ class MYPDF extends TCPDF
     }
     public function Header()
     {
+        $watermarkImg = dirname(__FILE__) . '/../assets/custom/imgs/esqueleto_vehiculo.png'; // Ruta de la imagen de la marca de agua
+        //$this->Image($watermarkImg, 90, 110, 30, 0, 'PNG', '', '', false, 300, '', false, false, 0);
+        $this->Image($watermarkImg, 105, 140, 90, 0, 'PNG', '', '', false, 300, '', false, false, 0);
+
         $fechaActual = new DateTime();
         $nombreDia = $this->traducirDia($fechaActual->format('l'));
         $nombreMes = $this->traducirMes($fechaActual->format('F'));
@@ -80,15 +100,15 @@ class MYPDF extends TCPDF
         $this->SetXY(18, 12);
         $this->Cell(180, 0, $fechaFormateada, 0, 0, 'R');
 
-        $recibo = "4328";
+        $recibo = 4328;
         $this->SetFont('helvetica', 'B', 15);
         $this->SetXY(30, 20);
-        $this->Cell(150, 80, 'Factura Nº: ' . self::$CountReserva, 0, 0, 'R');
+        $this->Cell(150, 80, 'Recibo Nº: ' . $recibo, 0, 0, 'R');
 
 
-        $this->SetFont('helvetica', 'B', 30);
-        $this->SetXY(10, 5);
-        $this->Cell(0, 0, 'Factura', 0, 0, 'L');
+        $this->SetFont('helvetica', 'B', 23);
+        $this->SetXY(10, 8);
+        $this->Cell(0, 0, 'Recibo de Aparcamiento', 0, 0, 'L');
 
         $this->SetFont('Times', '', 12);
         $this->SetXY(10, 20);
@@ -120,31 +140,6 @@ class MYPDF extends TCPDF
     }
 }
 
-
-//Informacion de la Reserva
-if (isset($_GET["idReserva"]) && is_numeric($_GET["idReserva"])) {
-    $idReserva = $_GET["idReserva"];
-    $sqlReserva     = ("SELECT 
-					    c.*,
-                        r.*,
-                        r.id AS id_reserva,
-                        v.*
-                   FROM tbl_clientes AS c 
-                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
-                   INNER JOIN tbl_vehiculos AS v
-                   ON r.id_cliente = v.id_cliente
-                   WHERE r.id='$idReserva' LIMIT 1");
-    $resulReserva = mysqli_query($con, $sqlReserva);
-    if (!$resulReserva) {
-        header("Location: https://alcvaletparking.com/");
-        exit;
-    }
-    $rowReserva = mysqli_fetch_assoc($resulReserva);
-    MYPDF::setCountReserva($rowReserva["id_reserva"]);
-} else {
-    header("Location: https://alcvaletparking.com/");
-    exit;
-}
 
 
 
@@ -186,13 +181,15 @@ $cliente = array(
 );
 
 // Configuración de la fuente
+$pdf->SetFont('Helvetica', 'B', 9);
+// Configuración de la tabla
 $anchoColumna1 = 60;
 $anchoColumna2 = 80;
-$altoCelda = 8;
+$altoCelda = 7;
 
 // Establecer posición inicial de la tabla
 $posicionX = 10;
-$posicionY = $pdf->GetY() + 10;
+$posicionY = $pdf->GetY() + 17;
 
 // Crear tabla
 foreach ($cliente as $campo => $valor) {
@@ -206,9 +203,8 @@ foreach ($cliente as $campo => $valor) {
     $pdf->Cell($anchoColumna2, $altoCelda, $valor, 0);
     $posicionY += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
-$pdf->SetXY($posicionX, $posicionY + 5);
-
-
+$pdf->SetXY($posicionX, $posicionY + 1);
+//Linea Horizontal
 $pdf->Line(10, 133, 200, 133);
 
 
@@ -221,14 +217,15 @@ $reservaDatos = array(
     'Hora Entrada' => $rowReserva["hora_entrega"],
     'Fecha Salida' => $rowReserva["fecha_recogida"] != 'Sin definir' ? date("d/m/Y", strtotime($rowReserva["fecha_recogida"])) : $rowReserva["fecha_recogida"],
     'Hora Salida' => $rowReserva["hora_recogida"],
-    'Número Días' => $rowReserva["total_dias_reserva"],
     'Nº Vuelo de Vuelta:' => $rowReserva['numero_vuelo_de_vuelta'],
+    'Número Días' => $rowReserva["total_dias_reserva"],
     'Forma de Pago' => $rowReserva["formato_pago"],
 );
 
-$anchoColumna1 = 50;
+
+$anchoColumna1 = 60;
 $anchoColumna2 = 80;
-$altoCelda = 8;
+$altoCelda = 6;
 $posicionX = 10;
 $posicionY = $pdf->GetY() + 10;
 foreach ($reservaDatos as $campo => $valor) {
@@ -240,19 +237,12 @@ foreach ($reservaDatos as $campo => $valor) {
     $pdf->Cell($anchoColumna2, $altoCelda, $valor, 0, 1, 'L'); // Sin borde y salto de línea
     $posicionY += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
-//$pdf->SetXY($posicionX, $posicionY + 10);
-
-
+$pdf->SetXY($posicionX, $posicionY + 1);
 
 
 // Calcular el precio real sin IVA
 $precioConIva = ($rowReserva['total_pago_reserva']); // Precio del producto con IVA
-$sumaTotal =  number_format($precioConIva + $rowReserva['total_gasto_extras'], 2);
 
-//Base Impuesto
-$porcentajeIva = 21; // Porcentaje de IVA
-$precioSinIva = $sumaTotal / (1 + ($porcentajeIva / 100));
-$iva = $precioSinIva * ($porcentajeIva / 100);
 
 $serv1 = $rowReserva['servicios_extras1'] ? $rowReserva['servicios_extras1'] . ' - ' . number_format($rowReserva['total_gasto_extras1'], 2) . ' €' : '';
 $serv2 = $rowReserva['servicios_extras2'] ? $rowReserva['servicios_extras2'] . ' - ' . number_format($rowReserva['total_gasto_extras2'], 2) . ' €' : '';
@@ -277,13 +267,13 @@ $tablaDatos1 = array(
     $serv2 ? 'Servicio  2' : ''  =>  $serv2,
     $serv3 ? 'Servicio  3' : ''  =>  $serv3,
     $descuento ? 'Descuento' : '' => $descuento . ' %',
-    'SUMA TOTAL'        => $deudadFinalConDescuento . ' €'
+    'SUMA TOTAL' => $deudadFinalConDescuento . ' €',
 );
 
 // Configuración de la tabla
 $anchoColumna1 = 60;
 $anchoColumna2 = 40;
-$altoCelda = 7;
+$altoCelda = 6;
 
 // Establecer posición inicial de la primera tabla
 $posicionX1 = 10;
@@ -297,63 +287,44 @@ foreach ($tablaDatos1 as $concepto => $valor) {
     $pdf->SetXY($posicionX1, $posicionY1);
     $pdf->SetFont('Helvetica', 'B', 12);
     $pdf->Cell($anchoColumna1, $altoCelda, $concepto, 0, 0, 'L'); // Sin bordes
-    $pdf->SetFont('Helvetica', '', 12);
+    $pdf->SetFont('Helvetica', '', 10);
     $pdf->Cell($anchoColumna2, $altoCelda, $valor, 0, 1, 'R'); // Sin bordes
     $posicionY1 += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
-
-// Información para la segunda tabla
-$datosTabla2 = array(
-    'Base Imp'          => number_format($precioSinIva, 2) . ' €',
-    'IVA 21 %'          => number_format($iva, 2) . ' €',
-    'TOTAL'             => $sumaTotal . ' €',
-);
-
-$anchoColumnaX2 = 40;
-$anchoColumnaY2 = 40;
-$altoCelda2 = 7;
-
-// Establecer posición inicial de la segunda tabla
-$posicionX2 = 120;
-$posicionY2 = $pdf->GetY() - 42;
-
-// Establecer color de borde gris
-$pdf->SetDrawColor(169, 169, 169);
-$pdf->Rect($posicionX2, $posicionY2, $anchoColumnaX2 + $anchoColumnaY2, count($datosTabla2) * $altoCelda2);
-
-// Crear segunda tabla
-foreach ($datosTabla2 as $concepto => $valor) {
-    $pdf->SetXY($posicionX2, $posicionY2);
-    $pdf->SetFont('Helvetica', 'B', 12);
-    $pdf->Cell($anchoColumnaX2, $altoCelda2, $concepto, 0, 0, 'L'); // Sin bordes
-    $pdf->SetFont('Helvetica', '', 12);
-    $pdf->Cell($anchoColumnaY2, $altoCelda2, $valor, 0, 1, 'R'); // Sin bordes
-    $posicionY2 += $altoCelda2; // Ajustar la posición Y para la siguiente fila
-}
-
-// Ajustar según sea necesario
-//$pdf->SetXY($posicionX2, $posicionY2 + 10);
 
 
 /**
  *  Observaciones
  */
 $pdf->SetFont('Helvetica', '', 14);
-$pdf->SetXY(4, 150);
-$pdf->Cell(140, 0, 'Observaciones', 0, 0, 'R');
+$pdf->SetXY(143, 204);
+$pdf->Cell(10, 0, 'Observaciones', 0, 0, 'R');
 
 $obs = trim($rowReserva['observacion_cliente']) ? trim($rowReserva['observacion_cliente']) : '';
 $pdf->SetFont('Helvetica', '', 10);
-$pdf->SetXY(110, 157);
+$pdf->SetXY(120, 210);
 
 if (!empty($obs)) {
-    $pdf->MultiCell(90, 50, $obs, 1, 'L');
+    $pdf->MultiCell(80, 50, $obs, 1, 'L');
 } else {
-    // Mostrar un mensaje o realizar alguna acción en caso de que no haya datos
-    $pdf->MultiCell(90, 10, '', 1, 'L');
+    $pdf->MultiCell(80, 32, '     ', 1, 'L');
 }
 
 
 
+// Texto en la parte inferior izquierda
+$pdf->SetFont('Helvetica', 'B', 12);
+$pdf->SetXY(10, 270); // Ajusta las coordenadas según sea necesario
+$pdf->Cell(0, 0, 'Conforme Cliente', 0, 0, 'L');
+
+$pdf->SetXY(50, 270);
+$pdf->MultiCell(50, 18, '     ', 1, 'L');
+
+// Texto en la parte inferior derecha
+$pdf->SetXY(120, 270); // Ajusta las coordenadas según sea necesario
+$pdf->Cell(0, 0, 'Conforme ALC', 0, 0, 'L');
+$pdf->SetXY(155, 270);
+$pdf->MultiCell(45, 18, '     ', 1, 'L');
+
 //D en lugar de I para forzar la descarga
-$pdf->Output('Factura ' . $rowReserva["nombre_completo"] . ' ' . date('Y-m-d') . '.pdf', 'I');
+$pdf->Output('Reserva ' . $rowReserva["nombre_completo"] . ' ' . date('d_m_Y') . '.pdf', 'I');

@@ -63,7 +63,7 @@ if (tbody) {
           numero_vuelo_de_vuelta,
           formato_pago,
           fecha_pago_factura,
-          date_registro,
+          descuento,
         } = response.data;
 
         infoR1.innerHTML = `
@@ -94,11 +94,18 @@ if (tbody) {
         <h4 class="card-text buttom mb-3">Servicio Adicional: ${servicio_adicional}</h4>
         <h4 class="card-text buttom mb-3">Terminal de Entrega: ${terminal_entrega}</h4>
         <h4 class="card-text buttom mb-3">Terminal de Recorida: ${terminal_recogida}</h4>
-        <h4 class="card-text buttom mb-3">Fecha de Entrega: ${fecha_entrega}</h4>
+        <h4 class="card-text buttom mb-3">Fecha de Entrega: ${formatDate(
+          fecha_entrega
+        )}</h4>
         <h4 class="card-text buttom mb-3">Hora de Entrega: ${hora_entrega}</h4>
-        <h4 class="card-text buttom mb-3">Fecha de Recogida: ${fecha_recogida}</h4>
+        <h4 class="card-text buttom mb-3">Fecha de Recogida: ${
+          fecha_recogida !== "Sin definir"
+            ? formatDate(fecha_recogida)
+            : fecha_recogida
+        }</h4>
+
         <h4 class="card-text buttom mb-3">Hora de Recogida: ${hora_recogida}</h4>
-        <h4 class="card-text buttom mb-3">terminal_entrega: ${numero_vuelo_de_vuelta}</h4>
+        <h4 class="card-text buttom mb-3">terminal de Entrega: ${numero_vuelo_de_vuelta}</h4>
         <h4 class="card-text buttom mb-3">Total Deauda: ${
           formato_pago !== null
             ? "<span style='color:green;'>" +
@@ -117,9 +124,12 @@ if (tbody) {
 
         ${
           fecha_pago_factura !== null
-            ? `<h4 class="card-text buttom mb-3">Fecha Pago: ${fecha_pago_factura}</h4>`
+            ? `<h4 class="card-text buttom mb-3">Fecha Pago: ${formatDate(
+                fecha_pago_factura
+              )}</h4>`
             : ""
         }
+        <h4 class="card-text buttom mb-3">Descuento: ${descuento} %</h4>
         `;
       } catch (error) {
         // Puedes manejar los errores aquí si es necesario
@@ -127,4 +137,11 @@ if (tbody) {
       }
     }
   });
+}
+function formatDate(dateString) {
+  const dateObject = new Date(dateString);
+  const formattedDate = `${dateObject.getDate()}/${
+    dateObject.getMonth() + 1
+  }/${dateObject.getFullYear()}`;
+  return formattedDate;
 }

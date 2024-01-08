@@ -4,11 +4,18 @@
     <?php
     if ($rolUser == 1) { ?>
       <li class="nav-item">
+        <a class="nav-link" href="AgendaDiaria.php">
+          <i class="bi bi-calendar3 menu-icon"></i>
+          <span class="menu-title">Agenda diaria</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="CrearReserva.php">
           <img src="../assets/custom/imgs/carro.png" alt="car" style="padding: 0px 10px 0px 0px" />
           <span class="menu-title">Crear Nueva Estancia</span>
         </a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link" href="CrearCliente.php">
           <i class="bi bi-person-fill-add menu-icon"></i>
@@ -28,12 +35,7 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="HistorialReservas.php">
-          <i class="bi bi-calendar3 menu-icon"></i>
-          <span class="menu-title">Historial de Estancias</span>
-        </a>
-      </li>
+
     <?php } else { ?>
       <li class="nav-item active">
         <a class="nav-link" href="./">

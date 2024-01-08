@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             LEFT JOIN tbl_reservas AS r 
             ON c.idUser = r.id_cliente
             LEFT JOIN tbl_vehiculos AS v
-            ON r.id_cliente = v.id_cliente
+            ON c.IdUser = v.id_cliente
             WHERE c.IdUser = '$idCliente' LIMIT 1");
         $querySQL = mysqli_query($con, $sqlData);
         $dataBD = array();

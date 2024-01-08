@@ -26,7 +26,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                 <?php
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $mis_reservas = getAllHistorialReservas($con);
+                $mis_reservas = getAllAgendaDiaria($con);
                 ?>
                 <div class="main-panel">
                     <div class="content-wrapper">
@@ -34,23 +34,24 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">Historial de todas las Reservas
+                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">Agenda diaria
                                             <hr>
                                         </h2>
                                         <div class="table-responsive">
                                             <table id="tablaHistorialReservas" class="table table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>Nº Reserva</th>
+                                                        <th>Fecha Entrada</th>
+                                                        <th>Hora Entrada</th>
+                                                        <th>Fecha Salida</th>
+                                                        <th>Hora Salida</th>
                                                         <th>Cliente</th>
-                                                        <th>DNI / CIF</th>
                                                         <th>Teléfono</th>
                                                         <th>Matrícula</th>
-                                                        <th>Fecha de entrega</th>
-                                                        <th>Hora de entrega</th>
-                                                        <th>Fecha de recogida</th>
-                                                        <th>Hora de recogida</th>
-                                                        <th>Reserva / Factura</th>
+                                                        <th>Marca - Modelo</th>
+                                                        <th>Precio</th>
+                                                        <th>Número Vuelo</th>
+                                                        <th>Observaciones</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -58,20 +59,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
                                                         $reserva_id = $reserva["id_reserva"]; ?>
                                                         <tr id="<?php echo $reserva_id; ?>">
-                                                            <td class="custom_td">
-                                                                <?php
-                                                                if ($reserva_id < 10) {
-                                                                    echo 'R-00' . $reserva_id;
-                                                                } elseif ($reserva_id < 100) {
-                                                                    echo 'R-0' . $reserva_id;
-                                                                } else {
-                                                                    echo 'R-' . $reserva_id;
-                                                                } ?>
-                                                            </td>
-                                                            <td class="custom_td"><?php echo $reserva["nombre_completo"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["din"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["tlf"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["matricula_car"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_entrega"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
                                                             <td class="custom_td">
@@ -80,16 +67,13 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                 ?>
                                                             </td>
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
-                                                            <td class="custom_td" style="display: flex;justify-content: space-around;">
-                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Reserva">
-                                                                    <i class="bi bi-filetype-pdf"></i>
-                                                                </a>
-                                                                <?php if (isset($reserva["formato_pago"])) { ?>
-                                                                    <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Factura">
-                                                                        <i class="bi bi-receipt sin_deuda"></i>
-                                                                    </a>
-                                                                <?php } ?>
-                                                            </td>
+                                                            <td class="custom_td"><?php echo $reserva["nombre_completo"]; ?></td>
+                                                            <td class="custom_td"><?php echo $reserva["tlf"]; ?></td>
+                                                            <td class="custom_td"><?php echo $reserva["matricula_car"]; ?></td>
+                                                            <td class="custom_td"><?php echo $reserva["marca_car"] . " - " . $reserva["modelo_car"]; ?></td>
+                                                            <td class="custom_td"><?php echo $reserva["total_pago_reserva"]; ?> €</td>
+                                                            <td><?php echo $reserva["numero_vuelo_de_vuelta"]; ?></td>
+                                                            <td><?php echo $reserva["observacion_cliente"]; ?></td>
                                                         </tr>
                                                     <?php } ?>
                                                 </tbody>

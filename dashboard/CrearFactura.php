@@ -157,7 +157,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <label for="total_gasto_extras1" class="form-label">
                                                                 Total gasto adicional 1
                                                                 <i class="bi bi-currency-euro"></i></label>
-                                                            <input type="text" name="total_gasto_extras1" value="<?php echo $miReserva['total_gasto_extras1']; ?>" oninput="formatCurrency(this)" class="form-control">
+                                                            <input type="text" name="total_gasto_extras1" value="<?php echo $miReserva['total_gasto_extras1'] == '0.00 ' ? '' : $miReserva['total_gasto_extras1']; ?>" oninput="formatCurrency(this)" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -173,7 +173,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <label for="total_gasto_extras2" class="form-label">
                                                                 Total gasto adicional 2
                                                                 <i class="bi bi-currency-euro"></i></label>
-                                                            <input type="text" name="total_gasto_extras2" value="<?php echo $miReserva['total_gasto_extras2']; ?>" oninput="formatCurrency(this)" class="form-control">
+                                                            <input type="text" name="total_gasto_extras2" value="<?php echo $miReserva['total_gasto_extras2'] == '0.00 ' ? '' : $miReserva['total_gasto_extras2']; ?>" oninput="formatCurrency(this)" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -189,7 +189,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <label for="total_gasto_extras3" class="form-label">
                                                                 Total gasto adicional 3
                                                                 <i class="bi bi-currency-euro"></i></label>
-                                                            <input type="text" name="total_gasto_extras3" value="<?php echo $miReserva['total_gasto_extras3']; ?>" oninput="formatCurrency(this)" class="form-control">
+                                                            <input type="text" name="total_gasto_extras3" value="<?php echo $miReserva['total_gasto_extras3'] == '0.00 ' ? '' : $miReserva['total_gasto_extras3']; ?>" oninput="formatCurrency(this)" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
