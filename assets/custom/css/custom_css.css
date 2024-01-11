@@ -140,3 +140,9 @@ body tr td:hover {
   background-color: transparent !important;
   padding: 0.25rem 0.25rem !important;
 }
+.verde {
+  background-color: #bef2be !important; /* verde */
+}
+.amarilla {
+  background-color: #fdfd8b !important; /* amarillo */
+}

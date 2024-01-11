@@ -34,11 +34,39 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="card-title text-center mb-4" style="font-size: 30px;">Agenda diaria
+                                        <h2 class="card-title text-center mb-5" style="font-size: 30px;">Agenda diaria
                                             <hr>
                                         </h2>
-                                        <div class="table-responsive">
-                                            <table id="tablaHistorialReservas" class="table table-hover">
+                                        <form id="miFormulario" method="post" action="">
+                                            <div class="row mb-2 justify-content-center">
+                                                <div class="col-md-2 mb-2">
+                                                    <input type="date" name="fechaReserva" id="fechaReserva" class="form-control form-control-lg" required>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button type="submit" class="btn btn-primary mb-3 btn-lg btn-block">Buscar Reseras</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <div class="row">
+                                            <div class="col-md-12 text-center" id="loaderFiltro">
+                                            </div>
+                                            <div class="col-md-12" id="contentPrint" style="display: none;">
+                                                <span style="display: flex; justify-content: flex-end;">
+                                                    <a id="descargarFiltroReservas" href="desacargarFiltroAgendaDiaria.php" download="Mi_Agenda">
+                                                        <i class="bi bi-filetype-csv"></i>
+                                                        Descargar Reservas
+                                                    </a>
+                                                    &nbsp; &nbsp;
+                                                    &nbsp; &nbsp;
+                                                    <a href="#" title="Descargar" onclick="convertirADescargar()"">
+                                                    <i class=" bi bi-printer" style="font-size: 20px;"></i>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive mt-5">
+                                            <table id="TablaReservasDiarias" class="table table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th>Fecha Entrada</th>
@@ -54,7 +82,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <th>Observaciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody class="resultadoFiltro">
                                                     <?php
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
                                                         $reserva_id = $reserva["id_reserva"]; ?>
@@ -93,15 +121,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
 
         <?php include 'bases/PageJs.html'; ?>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
-        <script>
-            $(document).ready(function() {
-                $("#tablaHistorialReservas").DataTable({
-                    language: {
-                        url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json",
-                    },
-                });
-            });
-        </script>
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     </body>
 
     </html>

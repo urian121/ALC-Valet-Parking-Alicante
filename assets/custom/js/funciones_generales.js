@@ -32,3 +32,57 @@ function formatCurrency(buttonEvent) {
   // Asigna el valor formateado al campo de texto
   document.querySelector(`input[name="${nameInput}"]`).value = value;
 }
+
+/***
+ * filtar Reservas por fechas
+ */
+function enviarFiltroFechaReserva(event) {
+  event.preventDefault();
+  loaderF(true);
+
+  let fechaReserva = document.querySelector("#fechaReserva").value;
+
+  $.post("filtrar_reservas.php", { fechaReserva }, function (data) {
+    loaderF(false);
+
+    let enlace = document.getElementById("descargarFiltroReservas");
+    enlace.href = `desacargarFiltroAgendaDiaria.php?fechaReserva=${fechaReserva}`;
+    $(".resultadoFiltro").html(data);
+    document.querySelector("#contentPrint").style.display = "block";
+  });
+}
+
+// Agrega el evento al formulario
+$(document).ready(function () {
+  $("#miFormulario").submit(enviarFiltroFechaReserva);
+});
+
+function loaderF(statusLoader) {
+  if (statusLoader) {
+    $("#loaderFiltro").show();
+    $("#loaderFiltro").html(
+      '<img class="img-fluid" src="../assets/custom/imgs/cargando.svg" style="left:50%; right: 50%; width:50px;">'
+    );
+  } else {
+    $("#loaderFiltro").hide();
+  }
+}
+
+function convertirADescargar() {
+  let divToConvert = document.querySelector(".table-responsive");
+  html2canvas(divToConvert).then(function (canvas) {
+    let imageData = canvas.toDataURL("image/png"); // También puedes usar 'image/jpeg'
+
+    // Crear un enlace para descargar la imagen
+    let link = document.createElement("a");
+    link.href = imageData;
+
+    var fechaActual = new Date();
+    var dia = fechaActual.getDate();
+    link.download = `reservas_${dia}.png`; // Puedes cambiar el nombre del archivo según tus necesidades
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+}

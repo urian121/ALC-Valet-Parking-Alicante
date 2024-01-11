@@ -45,7 +45,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <tr>
                                                         <th>Nº Reserva</th>
                                                         <th>Cliente</th>
-                                                        <th>DNI / CIF</th>
                                                         <th>Teléfono</th>
                                                         <th>Matrícula</th>
                                                         <th>Fecha de entrega</th>
@@ -73,7 +72,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                                 } ?>
                                                             </td>
                                                             <td class="custom_td"><?php echo $reserva["nombre_completo"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["din"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["tlf"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["matricula_car"]; ?></td>
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_entrega"])); ?></td>
