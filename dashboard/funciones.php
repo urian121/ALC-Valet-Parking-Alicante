@@ -9,18 +9,36 @@
     function getAllAgendaDiaria($con)
     {
         $sqlReservasAdmin = ("SELECT 
-					    c.*,
-                        r.*,
-                        r.id AS id_reserva,
-                        v.*
-                   FROM tbl_clientes AS c 
-                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
-                   INNER JOIN tbl_vehiculos AS v
-                   ON r.id_cliente = v.id_cliente
-                   WHERE  r.fecha_entrega = CURDATE()
-                   OR r.fecha_recogida= CURDATE()
-                   GROUP BY r.id
-                   ORDER BY r.fecha_entrega ASC");
+                    c.nombre_completo,
+                    c.tlf,
+                    r.id AS id_reserva,
+                    r.fecha_entrega,
+                    r.hora_entrega,
+                    r.fecha_recogida,
+                    r.hora_recogida,
+                    r.observacion_cliente,
+                    r.total_pago_final,
+                    r.numero_vuelo_de_vuelta,
+                    r.total_pago_reserva,
+                    v.marca_car,
+                    v.modelo_car,
+                    v.color_car,
+                    v.matricula_car
+                FROM tbl_clientes AS c 
+                LEFT JOIN tbl_reservas AS r ON c.idUser = r.id_cliente 
+                LEFT JOIN tbl_vehiculos AS v ON r.id_cliente = v.id_cliente 
+                WHERE 
+                    r.fecha_entrega = CURDATE() OR r.fecha_recogida = CURDATE()
+                GROUP BY r.id
+                ORDER BY 
+                    CASE 
+                        WHEN r.fecha_entrega = CURDATE() THEN r.hora_entrega
+                        ELSE r.hora_recogida
+                    END ASC,
+                    CASE 
+                        WHEN r.fecha_entrega = CURDATE() THEN NULL
+                        ELSE r.hora_recogida
+                    END ASC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
         if (!$queryReserva) {
             return false;

@@ -46,7 +46,7 @@ function enviarFiltroFechaReserva(event) {
     loaderF(false);
 
     let enlace = document.getElementById("descargarFiltroReservas");
-    enlace.href = `desacargarFiltroAgendaDiaria.php?fechaReserva=${fechaReserva}`;
+    enlace.href = `descargarFiltroAgendaDiariaPDF.php?fechaReserva=${fechaReserva}`;
     $(".resultadoFiltro").html(data);
     document.querySelector("#contentPrint").style.display = "block";
   });
@@ -66,23 +66,4 @@ function loaderF(statusLoader) {
   } else {
     $("#loaderFiltro").hide();
   }
-}
-
-function convertirADescargar() {
-  let divToConvert = document.querySelector(".table-responsive");
-  html2canvas(divToConvert).then(function (canvas) {
-    let imageData = canvas.toDataURL("image/png"); // También puedes usar 'image/jpeg'
-
-    // Crear un enlace para descargar la imagen
-    let link = document.createElement("a");
-    link.href = imageData;
-
-    var fechaActual = new Date();
-    var dia = fechaActual.getDate();
-    link.download = `reservas_${dia}.png`; // Puedes cambiar el nombre del archivo según tus necesidades
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
 }

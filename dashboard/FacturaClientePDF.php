@@ -80,7 +80,6 @@ class MYPDF extends TCPDF
         $this->SetXY(18, 12);
         $this->Cell(180, 0, $fechaFormateada, 0, 0, 'R');
 
-        $recibo = "4328";
         $this->SetFont('helvetica', 'B', 15);
         $this->SetXY(30, 20);
         $this->Cell(150, 80, 'Factura Nº: ' . self::$CountReserva, 0, 0, 'R');

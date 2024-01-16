@@ -22,10 +22,7 @@ if (tbody) {
           return;
         }
       } else if (tableBody == "TablaReservasDiarias") {
-        if (cellIndex === 12 || cellIndex === undefined) {
-          //no hacer nada xq se hizo click en el primer td de cualquier fila tr
-          return;
-        }
+        return;
       } else if (tableBody == "TablaAgenda") {
         if (cellIndex === 11 || cellIndex === undefined) {
           return;

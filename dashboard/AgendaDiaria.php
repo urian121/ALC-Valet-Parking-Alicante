@@ -24,6 +24,8 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
             <?php include 'bases/navbar.php'; ?>
             <div class="container-fluid page-body-wrapper">
                 <?php
+                date_default_timezone_set("Europe/Madrid");
+                $fechaActual = date("Y-m-d");
                 include 'bases/nav.php';
                 include 'funciones.php';
                 $mis_reservas = getAllAgendaDiaria($con);
@@ -40,7 +42,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                         <form id="miFormulario" method="post" action="">
                                             <div class="row mb-2 justify-content-center">
                                                 <div class="col-md-2 mb-2">
-                                                    <input type="date" name="fechaReserva" id="fechaReserva" class="form-control form-control-lg" required>
+                                                    <input type="date" name="fechaReserva" id="fechaReserva" class="form-control form-control-lg" value="<?php echo $fechaActual; ?>" required>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <button type="submit" class="btn btn-primary mb-3 btn-lg btn-block">Buscar Reseras</button>
@@ -53,15 +55,11 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                             </div>
                                             <div class="col-md-12" id="contentPrint" style="display: none;">
                                                 <span style="display: flex; justify-content: flex-end;">
-                                                    <a id="descargarFiltroReservas" href="desacargarFiltroAgendaDiaria.php" download="Mi_Agenda">
-                                                        <i class="bi bi-filetype-csv"></i>
+                                                    <a id="descargarFiltroReservas" href="descargarFiltroAgendaDiariaPDF.php" class="btn btn-primary btn-sm">
+                                                        <i class="bi bi-file-earmark-pdf"></i>
                                                         Descargar Reservas
                                                     </a>
                                                     &nbsp; &nbsp;
-                                                    &nbsp; &nbsp;
-                                                    <a href="#" title="Descargar" onclick="convertirADescargar()"">
-                                                    <i class=" bi bi-printer" style="font-size: 20px;"></i>
-                                                    </a>
                                                 </span>
                                             </div>
                                         </div>
@@ -84,9 +82,13 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                 </thead>
                                                 <tbody class="resultadoFiltro">
                                                     <?php
+                                                    $contador = 0;
+                                                    $fechaReserva = date("Y-m-d");
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
+                                                        $contador++;
+                                                        $fila_clase = $reserva["fecha_entrega"] == $fechaReserva ? 'verde' : 'amarilla';
                                                         $reserva_id = $reserva["id_reserva"]; ?>
-                                                        <tr id="<?php echo $reserva_id; ?>">
+                                                        <tr id="<?php echo $reserva_id; ?>" class="<?php echo $fila_clase; ?>">
                                                             <td class="custom_td"><?php echo date("d/m/Y", strtotime($reserva["fecha_entrega"])); ?></td>
                                                             <td class="custom_td"><?php echo $reserva["hora_entrega"]; ?></td>
                                                             <td class="custom_td">
@@ -121,7 +123,6 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
 
         <?php include 'bases/PageJs.html'; ?>
         <script src="../assets/custom/js/tabla_reservas.js"></script>
-        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     </body>
 
     </html>
