@@ -9,36 +9,37 @@
     function getAllAgendaDiaria($con)
     {
         $sqlReservasAdmin = ("SELECT 
-                    c.nombre_completo,
-                    c.tlf,
-                    r.id AS id_reserva,
-                    r.fecha_entrega,
-                    r.hora_entrega,
-                    r.fecha_recogida,
-                    r.hora_recogida,
-                    r.observacion_cliente,
-                    r.total_pago_final,
-                    r.numero_vuelo_de_vuelta,
-                    r.total_pago_reserva,
-                    v.marca_car,
-                    v.modelo_car,
-                    v.color_car,
-                    v.matricula_car
-                FROM tbl_clientes AS c 
-                LEFT JOIN tbl_reservas AS r ON c.idUser = r.id_cliente 
-                LEFT JOIN tbl_vehiculos AS v ON r.id_cliente = v.id_cliente 
-                WHERE 
-                    r.fecha_entrega = CURDATE() OR r.fecha_recogida = CURDATE()
-                GROUP BY r.id
-                ORDER BY 
-                    CASE 
-                        WHEN r.fecha_entrega = CURDATE() THEN r.hora_entrega
-                        ELSE r.hora_recogida
-                    END ASC,
-                    CASE 
-                        WHEN r.fecha_entrega = CURDATE() THEN NULL
-                        ELSE r.hora_recogida
-                    END ASC");
+            MAX(c.nombre_completo) AS nombre_completo,
+            MAX(c.tlf) AS tlf,
+			MAX(r.id) AS id_reserva,
+            MAX(r.fecha_entrega) AS fecha_entrega,
+            MAX(r.hora_entrega) AS hora_entrega,
+            MAX(r.fecha_recogida) AS fecha_recogida,
+            MAX(r.hora_recogida) AS hora_recogida,
+            MAX(r.observacion_cliente) AS observacion_cliente, 
+            MAX(r.total_pago_final) AS total_pago_final,
+            MAX(r.numero_vuelo_de_vuelta) AS numero_vuelo_de_vuelta,
+			MAX(r.total_pago_reserva) AS total_pago_reserva,
+            MAX(v.marca_car) AS marca_car,
+            MAX(v.modelo_car) AS modelo_car,
+            MAX(v.color_car) AS color_car,
+            MAX(v.matricula_car) AS matricula_car
+        
+            FROM tbl_clientes AS c 
+            LEFT JOIN tbl_reservas AS r ON c.idUser = r.id_cliente 
+            LEFT JOIN tbl_vehiculos AS v ON r.id_cliente = v.id_cliente 
+            WHERE 
+                r.fecha_entrega = CURDATE() OR r.fecha_recogida = CURDATE()
+            GROUP BY r.id
+            ORDER BY 
+                CASE 
+                    WHEN r.fecha_entrega = CURDATE() THEN r.hora_entrega
+                    ELSE r.hora_recogida
+                END ASC,
+                CASE 
+                    WHEN r.fecha_entrega = CURDATE() THEN NULL
+                    ELSE r.hora_recogida
+                END ASC");
         $queryReserva = mysqli_query($con, $sqlReservasAdmin);
         if (!$queryReserva) {
             return false;

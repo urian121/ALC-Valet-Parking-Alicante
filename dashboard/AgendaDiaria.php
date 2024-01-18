@@ -45,7 +45,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                     <input type="date" name="fechaReserva" id="fechaReserva" class="form-control form-control-lg" value="<?php echo $fechaActual; ?>" required>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <button type="submit" class="btn btn-primary mb-3 btn-lg btn-block">Buscar Reseras</button>
+                                                    <button type="submit" class="btn btn-primary mb-3 btn-lg btn-block">Buscar Reservas</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -68,13 +68,14 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                 <thead>
                                                     <tr>
                                                         <th>Fecha Entrada</th>
-                                                        <th>Hora Entrada</th>
+                                                        <th>Hora</th>
                                                         <th>Fecha Salida</th>
-                                                        <th>Hora Salida</th>
+                                                        <th>Hora</th>
                                                         <th>Cliente</th>
                                                         <th>Teléfono</th>
                                                         <th>Matrícula</th>
                                                         <th>Marca - Modelo</th>
+                                                        <th>Color</th>
                                                         <th>Precio</th>
                                                         <th>Número Vuelo</th>
                                                         <th>Observaciones</th>
@@ -82,10 +83,8 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                 </thead>
                                                 <tbody class="resultadoFiltro">
                                                     <?php
-                                                    $contador = 0;
                                                     $fechaReserva = date("Y-m-d");
                                                     while ($reserva = mysqli_fetch_array($mis_reservas)) {
-                                                        $contador++;
                                                         $fila_clase = $reserva["fecha_entrega"] == $fechaReserva ? 'verde' : 'amarilla';
                                                         $reserva_id = $reserva["id_reserva"]; ?>
                                                         <tr id="<?php echo $reserva_id; ?>" class="<?php echo $fila_clase; ?>">
@@ -101,7 +100,8 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["tlf"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["matricula_car"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["marca_car"] . " - " . $reserva["modelo_car"]; ?></td>
-                                                            <td class="custom_td"><?php echo $reserva["total_pago_reserva"]; ?> €</td>
+                                                            <td class="custom_td"><?php echo $reserva["color_car"]; ?> </td>
+                                                            <td class="custom_td"><?php echo $reserva["total_pago_final"]; ?> €</td>
                                                             <td><?php echo $reserva["numero_vuelo_de_vuelta"]; ?></td>
                                                             <td><?php echo $reserva["observacion_cliente"]; ?></td>
                                                         </tr>

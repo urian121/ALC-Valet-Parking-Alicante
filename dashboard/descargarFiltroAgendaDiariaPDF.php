@@ -83,13 +83,14 @@ $html = '
         <thead>
             <tr>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">F. Entrada</th>
-                <th style="background-color: #CCCCCC; border: 1px solid #999;">H. Entrada</th>
+                <th style="background-color: #CCCCCC; border: 1px solid #999;">Hora</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">F. Salida</th>
-                <th style="background-color: #CCCCCC; border: 1px solid #999;">H. Salida</th>
+                <th style="background-color: #CCCCCC; border: 1px solid #999;">Hora</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">Cliente</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">Teléfono</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">Matrícula</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">Marca - Modelo</th>
+                <th style="background-color: #CCCCCC; border: 1px solid #999;">Color</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">Precio</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">Nº Vuelo</th>
                 <th style="background-color: #CCCCCC; border: 1px solid #999;">Observación</th>
@@ -97,16 +98,12 @@ $html = '
         </thead>
         <tbody>';
 
-$contador = 0;
-$fechaReserva = date("Y-m-d");
-
+//$fechaReserva = date("Y-m-d");
 while ($reserva = mysqli_fetch_array($resulReserva)) {
-    $contador++;
-    // $fila_clase = $reserva["fecha_entrega"] == $fechaReserva ? 'verde' : 'amarilla';
     $fila_clase = $reserva["fecha_entrega"] == $fechaReserva ? 'background-color:#bef2be' : 'background-color:#fdfd8b';
     $reserva_id = $reserva["id_reserva"];
     $html .= '
-        <tr id="' . $reserva_id . '" class="' . $fila_clase . '" style="' . $fila_clase . '">
+        <tr id="' . $reserva_id . '" style="' . ($reserva["fecha_entrega"] == $fechaReserva ? 'background-color:#bef2be' : 'background-color:#fdfd8b') . '">
             <td class="custom_td">' . date("d/m/Y", strtotime($reserva["fecha_entrega"])) . '</td>
             <td class="custom_td">' . $reserva["hora_entrega"] . '</td>
             <td class="custom_td">' . ($reserva["fecha_recogida"] != 'Sin definir' ? date("d/m/Y", strtotime($reserva["fecha_recogida"])) : $reserva["fecha_recogida"]) . '</td>
@@ -115,7 +112,8 @@ while ($reserva = mysqli_fetch_array($resulReserva)) {
             <td class="custom_td">' . $reserva["tlf"] . '</td>
             <td class="custom_td">' . $reserva["matricula_car"] . '</td>
             <td class="custom_td">' . $reserva["marca_car"] . " - " . $reserva["modelo_car"] . '</td>
-            <td class="custom_td">' . $reserva["total_pago_reserva"] . ' €</td>
+            <td class="custom_td">' . $reserva["color_car"] . '</td>
+            <td class="custom_td">' . $reserva["total_pago_final"] . ' €</td>
             <td>' . $reserva["numero_vuelo_de_vuelta"] . '</td>
             <td>' . $reserva["observacion_cliente"] . '</td>
         </tr>';
