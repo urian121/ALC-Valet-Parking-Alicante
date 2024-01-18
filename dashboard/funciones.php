@@ -389,4 +389,30 @@
             return 0;
         }
     }
+
+
+    /**
+     * Historial de Reservas
+     */
+    function getHistorialReservas($con)
+    {
+        $sqlReservasAdmin = ("SELECT 
+					    c.*,
+                        r.*,
+                        r.id AS id_reserva,
+                        v.*
+                   FROM tbl_clientes AS c 
+                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE fecha_entrega < CURDATE()
+                   AND r.fecha_recogida < CURDATE()
+                   GROUP BY r.id 
+                   ORDER BY r.date_registro ASC");
+        $queryReserva = mysqli_query($con, $sqlReservasAdmin);
+        if (!$queryReserva) {
+            return false;
+        }
+        return $queryReserva;
+    }
     ?>
