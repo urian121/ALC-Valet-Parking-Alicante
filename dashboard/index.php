@@ -39,7 +39,7 @@ if (isset($_SESSION['emailUser']) != "") {
                 <div class="col-md-8 grid-margin">
                   <div class="card">
                     <div class="card-body">
-                      <h1 class="card-title text-center mb-5">Crea tu reserva aquí en segundos
+                      <h1 class="card-title text-center mb-5" id="title_reserva">Crea tu reserva aquí en segundos
                         <hr>
                       </h1>
 
@@ -49,24 +49,24 @@ if (isset($_SESSION['emailUser']) != "") {
                         <input type="text" name="IdUser" value="<?php echo $IdUser; ?>" hidden>
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="fecha-entrega">Fecha de entrega</label>
+                            <label for="fecha-entrega" id="labelFechaEntrega">Fecha de entrega</label>
                             <input type="text" name="fecha_entrega" id="fecha_entrega" class="borderInput form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="hora_entrega">Hora de entrega</label>
+                            <label for="hora_entrega" id="labelHoraEntrega">Hora de entrega</label>
                             <select name="hora_entrega" id="hora_entrega" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected="">Seleccione</option>
                               <?php echo generarOpcionesDeHora(); ?>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="fecha-recogida">Fecha de recogida</label>
+                            <label for="fecha-recogida" id="labelFechaRecogida">Fecha de recogida</label>
                             <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg campo_obligatorio" />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="hora-recogida">Hora de recogida</label>
+                            <label for="hora-recogida" id="labelHoraRecogida">Hora de recogida</label>
                             <select name="hora_recogida" class="form-control form-control-lg campo_obligatorio">
-                              <option value="No la sé" selected="">No la sé</option>
+                              <option value="No la sé" selected="" id="optionNo">No la sé</option>
                               <?php echo generarOpcionesDeHora(); ?>
                             </select>
                           </div>
@@ -74,55 +74,55 @@ if (isset($_SESSION['emailUser']) != "") {
 
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Tipo de plaza">Tipo de plaza</label>
+                            <label for="Tipo de plaza" id="labelTipoPlaza">Tipo de plaza</label>
                             <select name="tipo_plaza" id="tipo_plaza" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected>Seleccione</option>
-                              <option value="Plaza Aire Libre">Plaza Aire Libre</option>
-                              <option value="Plaza Cubierto">Plaza Cubierto</option>
+                              <option value="" selected id="valorSeleccione">Seleccione</option>
+                              <option value="Plaza Aire Libre" id="optionPlazaAireLibre">Plaza Aire Libre</option>
+                              <option value="Plaza Cubierto" id="optionPlazaCubierto">Plaza Cubierto</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Terminal de entrega">Terminal de entrega</label>
+                            <label for="Terminal de entrega" id="labelTerminalEntrega">Terminal de entrega</label>
                             <select name="terminal_entrega" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected>Seleccione</option>
-                              <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
+                              <option value="" selected id="valorSeleccione">Seleccione</option>
+                              <option value="Aeropuerto de Alicante" id="optionAeropuerto">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Terminal de recogida">Terminal de recogida</label>
+                            <label for="Terminal de recogida" id="labelTerminalRecogida">Terminal de recogida</label>
                             <select name="terminal_recogida" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected>Seleccione</option>
-                              <option value="Aeropuerto de Alicante">Aeropuerto de Alicante</option>
+                              <option value="" selected id="valorSeleccione">Seleccione</option>
+                              <option value="Aeropuerto de Alicante" id="optionAeropuerto">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Matrícula">Matrícula</label>
-                            <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" required />
+                            <label for="Matrícula" id="labelMatricula">Matrícula</label>
+                            <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" required />
                           </div>
                         </div>
                         <div class="row mb-2">
                           <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                             <label for="color_car">Color</label>
-                            <input type="text" name="color_car" class="form-control form-control-lg campo_obligatorio" placeholder="Color" required />
+                            <input type="text" name="color_car" class="form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-md-6 mb-2">
-                            <label for="Marca">Marca</label>
-                            <input type="text" name="marca_car" class="form-control form-control-lg campo_obligatorio" placeholder="Marca" required />
+                            <label for="Marca" id="labelMarca">Marca</label>
+                            <input type="text" name="marca_car" class="form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-md-6 mb-2">
-                            <label for="Modelo">Modelo</label>
-                            <input type="text" name="modelo_car" class="form-control form-control-lg campo_obligatorio" placeholder="Modelo" required />
+                            <label for="Modelo" id="labelModelo">Modelo</label>
+                            <input type="text" name="modelo_car" class="form-control form-control-lg campo_obligatorio" required />
                           </div>
 
                           <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="">Nº Vuelo de Vuelta</label>
+                            <label for="Numero de vuelo" id="labelNumeroVuelo">Nº Vuelo de Vuelta</label>
                             <input type="text" name="numero_vuelo_de_vuelta" class="form-control form-control-lg campo_obligatorio" />
                           </div>
                         </div>
 
                         <div class="row mb-2">
                           <div class="col-md-6 mb-2">
-                            <label for="observacion_cliente">Observaciones</label>
+                            <label for="observacion_cliente" id="labelObservaciones">Observaciones</label>
                             <div class="form-floating">
                               <textarea class="form-control" name="observacion_cliente" style="height: 100px"></textarea>
                             </div>
@@ -130,7 +130,7 @@ if (isset($_SESSION['emailUser']) != "") {
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                          <button type="submit" class="btn btn-primary mr-2">Crear mi Reserva Ahora</button>
+                          <button type="submit" class="btn btn-primary mr-2" id="btnCrearReserva">Crear mi Reserva Ahora</button>
                         </div>
                       </form>
                     </div>
@@ -148,6 +148,11 @@ if (isset($_SESSION['emailUser']) != "") {
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <script src="https://unpkg.com/gijgo@1.9.14/js/messages/messages.es-es.js" type="text/javascript"></script>
     <script src="../assets/custom/js/custom_date_time.js"></script>
+
+    <?php
+    if ($rolUser == 0) { ?>
+      <script src="../assets/custom/js/idiomaDashboard.js"></script>
+    <?php } ?>
   </body>
 
   </html>

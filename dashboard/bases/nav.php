@@ -44,15 +44,15 @@
 
     <?php } else { ?>
       <li class="nav-item active">
-        <a class="nav-link" href="./">
+        <a class="nav-link" href="index.php">
           <i class="icon-grid menu-icon"></i>
-          <span class="menu-title">Inicio</span>
+          <span class="menu-title" id="linkInicio">Inicio</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="Reservas.php">
           <img src="../assets/custom/imgs/carro.png" alt="car" style="padding: 0px 10px 0px 0px" />
-          <span class="menu-title">Mis Reservas</span>
+          <span class="menu-title" id="linkReservas">Mis Reservas</span>
         </a>
       </li>
     <?php } ?>

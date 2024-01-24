@@ -31,23 +31,23 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
                             <div class="col-lg-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title text-center mb-4">Mis Reservas
+                                        <h4 class="card-title text-center mb-4" id="title_tabla_reservas">Mis Reservas
                                             <hr>
                                         </h4>
                                         <div class="table-responsive">
                                             <table id="MiTabla" class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th>Nº Reserva</th>
-                                                        <th>Fecha de entrega</th>
-                                                        <th>hora entrega</th>
-                                                        <th>Fecha de recogida</th>
-                                                        <th>Hora de recogida</th>
-                                                        <th>Tipo de plaza</th>
-                                                        <th>Terminal de entrega</th>
-                                                        <th>Terminal de recogida</th>
-                                                        <th>Matrícula</th>
-                                                        <th>Reserva PDF</th>
+                                                        <th id="th_numeroReserva">Nº Reserva</th>
+                                                        <th id="th_fechaEntrega">Fecha de entrega</th>
+                                                        <th id="th_horaEntrega">hora entrega</th>
+                                                        <th id="th_fechaRecogida">Fecha de recogida</th>
+                                                        <th id="th_horaRecogida">Hora de recogida</th>
+                                                        <th id="th_plaza">Tipo de plaza</th>
+                                                        <th id="th_terminalEntrega">Terminal de entrega</th>
+                                                        <th id="th_terminalRecogida">Terminal de recogida</th>
+                                                        <th id="th_matricula">Matrícula</th>
+                                                        <th id="th_pdf">Reserva PDF</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -95,12 +95,22 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"></script>
+        <?php
+        if ($rolUser == 0) { ?>
+            <script src="../assets/custom/js/idiomaDashboard.js"></script>
+        <?php } ?>
         <script>
             $(document).ready(function() {
+                let idiomaActivo = localStorage.getItem("idioma");
+                let tablaEspanol = "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json";
+                let tablaIngles = "//cdn.datatables.net/plug-ins/1.10.25/i18n/English.json";
+
+                let languageConfig = {
+                    url: idiomaActivo === "es" ? tablaEspanol : tablaIngles
+                };
+
                 $("#MiTabla").DataTable({
-                    language: {
-                        url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json",
-                    },
+                    language: languageConfig
                 });
             });
         </script>

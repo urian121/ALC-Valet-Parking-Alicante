@@ -21,6 +21,7 @@ if (isset($_SESSION['emailUser']) != "") {
   <?php
   include('msjs.php');
   include("dashboard/bases/loader.html");
+  include("headerIdioma.html");
   ?>
 
   <div class="container-scroller">
@@ -34,21 +35,22 @@ if (isset($_SESSION['emailUser']) != "") {
                   <img src="assets/custom/imgs/logo_naranja.png" alt="logo" />
                 </a>
               </div>
-              <h2 class="text-center mb-4">Iniciar Sesión</h2>
+              <h2 class="text-center mb-4" id="loginTitle">Iniciar Sesión</h2>
               <form action="acciones/login/acciones_login.php" method="post" class="pt-3" autocomplete="off">
                 <div class="form-group">
                   <input type="email" name="emailUser" class="form-control form-control-lg" required placeholder="Email" />
                 </div>
                 <div class="form-group">
-                  <input type="password" name="passwordUser" class="form-control form-control-lg" placeholder="Clave" required />
+                  <input type="password" name="passwordUser" class="form-control form-control-lg" placeholder="Password" required />
                 </div>
                 <div class="mt-3">
-                  <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                    Iniciar sesión
+                  <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" id="loginBtn">
+                    Entrar
                   </button>
                 </div>
                 <div class="text-center mt-4 font-weight-light">
-                  ¿Nuevo aquí? <a href="crearCuenta.php" class="text-primary">Crear una cuenta</a>
+                  <span id="register">¿Nuevo aquí?</span>
+                  <a href="crearCuenta.php" class="text-primary" id="create_account">Crear una cuenta</a>
                 </div>
               </form>
             </div>

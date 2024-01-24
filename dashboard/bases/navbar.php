@@ -12,6 +12,15 @@
       <span class="icon-menu"></span>
     </button>
     <ul class="navbar-nav navbar-nav-right">
+      <?php
+      if ($rolUser == 0) { ?>
+        <li class="nav-item">
+          <img title="Español" src="../assets/custom/imgs/es.png" alt="Español" onclick="cambiarIdioma('es')" style="width: 30px; display: block; cursor: pointer" />
+        </li>
+        <li class="nav-item">
+          <img title="English" src=" ../assets/custom/imgs/en.png" alt="English" onclick="cambiarIdioma('en')" style="width: 30px; display: block; cursor: pointer" />
+        </li>
+      <?php } ?>
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
           <i class="bi bi-person-fill perfil_radius"></i>
@@ -20,11 +29,11 @@
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a href="MiPerfil.php?C=<?php echo $IdUser; ?>" class="dropdown-item">
             <i class="ti-settings text-primary"></i>
-            Mi Perfil
+            <span id="spanMiPerfil">Mi Perfil</span>
           </a>
           <a href="../acciones/login/exit.php" class="dropdown-item">
             <i class="ti-power-off text-primary"></i>
-            Cerrar Sesión
+            <span id="spanCerrarSesion">Cerrar Sesión</span>
           </a>
         </div>
       </li>

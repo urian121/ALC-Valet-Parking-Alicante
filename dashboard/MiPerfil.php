@@ -25,7 +25,7 @@ if (isset($_SESSION['emailUser']) != "") {
               <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h1 class="card-title text-center mb-5">Actualizar Mi Perfil
+                    <h1 class="card-title text-center mb-5" id="titleUpdatePerfil">Actualizar Mi Perfil
                       <hr>
                     </h1>
 
@@ -35,32 +35,32 @@ if (isset($_SESSION['emailUser']) != "") {
 
                       <div class="row mb-2">
                         <div class="col-md-6 mb-2">
-                          <input type="text" name="nombre_completo" class="form-control form-control-lg" required value="<?php echo $perfilBD['nombre_completo']; ?>" placeholder="Nombre completo" />
+                          <input type="text" name="nombre_completo" id="nombre_completo" class="form-control form-control-lg" required value="<?php echo $perfilBD['nombre_completo']; ?>" placeholder="Nombre completo" />
                         </div>
                         <div class="col-md-6">
-                          <input type="text" name="din" class="form-control form-control-lg" value="<?php echo $perfilBD['din']; ?>" placeholder="DNI" required />
+                          <input type="text" name="din" id="din" class="form-control form-control-lg" value="<?php echo $perfilBD['din']; ?>" placeholder="DNI" required />
                         </div>
                       </div>
                       <div class="form-group">
-                        <input type="text" name="direccion_completa" class="form-control form-control-lg" value="<?php echo $perfilBD['direccion_completa']; ?>" placeholder="Dirección completa" required />
+                        <input type="text" name="direccion_completa" id="direccion_completa" class="form-control form-control-lg" value="<?php echo $perfilBD['direccion_completa']; ?>" placeholder="Dirección completa" required />
                       </div>
                       <div class="row mb-2">
                         <div class="col-md-6 mb-2">
-                          <input type="password" name="passwordUser" class="form-control form-control-lg" placeholder="Nueva Clave" />
+                          <input type="password" name="passwordUser" id="passwordUser" class="form-control form-control-lg" placeholder="Nueva Clave" />
                         </div>
                         <div class="col-md-6 mb-2">
-                          <input type="email" name="emailUser" class="form-control form-control-lg" placeholder="Email" value="<?php echo $perfilBD['emailUser']; ?>" required />
+                          <input type="email" name="emailUser" id="emailUser" class="form-control form-control-lg" placeholder="Email" value="<?php echo $perfilBD['emailUser']; ?>" required />
                         </div>
                       </div>
 
                       <div class="row mb-2">
                         <div class="col-md-6 mb-3" style="margin-top: 32px !important;">
-                          <input type="text" name="tlf" class="form-control form-control-lg" placeholder="Teléfono" value="<?php echo $perfilBD['tlf']; ?>" required />
+                          <input type="text" name="tlf" id="tlf" class="form-control form-control-lg" placeholder="Teléfono" value="<?php echo $perfilBD['tlf']; ?>" required />
                         </div>
                       </div>
                       <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                        <button type="submit" class="btn btn-primary mr-2">Actualizar datos</button>
-                        <a href="./" class="btn btn-light">Cancelar</a>
+                        <button type="submit" class="btn btn-primary mr-2" id="btnUpdate">Actualizar datos</button>
+                        <a href="./" class="btn btn-light" id="btnCancel">Cancelar</a>
                       </div>
                     </form>
                   </div>
@@ -73,6 +73,10 @@ if (isset($_SESSION['emailUser']) != "") {
     </div>
 
     <?php include 'bases/PageJs.html'; ?>
+    <?php
+    if ($rolUser == 0) { ?>
+      <script src="../assets/custom/js/idiomaDashboard.js"></script>
+    <?php } ?>
   </body>
 
   </html>

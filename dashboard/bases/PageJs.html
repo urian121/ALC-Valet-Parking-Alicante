@@ -24,15 +24,17 @@
 
     menuItems.forEach(function (item) {
       var link = item.querySelector(".nav-link");
-      var href = link.getAttribute("href");
+      if (link) {
+        var href = link.getAttribute("href");
 
-      if (currentURL === href) {
-        menuItems.forEach(function (menuItem) {
-          menuItem.classList.remove("active");
-        });
-        item.classList.add("active");
-      } else {
-        item.classList.remove("active");
+        if (currentURL === href) {
+          menuItems.forEach(function (menuItem) {
+            menuItem.classList.remove("active");
+          });
+          item.classList.add("active");
+        } else {
+          item.classList.remove("active");
+        }
       }
     });
   });
