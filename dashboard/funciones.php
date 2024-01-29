@@ -1,6 +1,4 @@
  <?php
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
     include('../config/config.php');
 
     /**
@@ -182,7 +180,16 @@
             $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
             $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
 
-            header("location:../emails/aviso_reserva_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente");
+            if ($resultInsertVehiculo) {
+                echo '<script type="text/javascript">';
+                echo '    let idiomaActivo = localStorage.getItem("idioma");';
+                echo '    if (idiomaActivo == "es") {';
+                echo '        window.location.href = "../.emails/aviso_reserva_email_es.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
+                echo '    } else if (idiomaActivo == "en") {';
+                echo '        window.location.href = "../emails/aviso_reserva_email_en.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
+                echo '    }';
+                echo '</script>';
+            }
         }
     }
 

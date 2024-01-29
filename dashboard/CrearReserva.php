@@ -128,6 +128,14 @@ if (isset($_SESSION['emailUser']) != "") {
                                                         <label class="form-check-label" for="servicio_adicional">Lavado Exterior Básico (Gratuito)</label>
                                                     </div>
                                                 </div>
+                                                <div class="col-4 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
+                                                    <label for="idiomaCliente">Idioma del Cliente</label>
+                                                    <select name="idiomaCliente" id="idiomaCliente" class="form-control form-control-lg" required>
+                                                        <option value="" selected>Seleccione</option>
+                                                        <option value="es">Español</option>
+                                                        <option value="en">Ingles</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-2">

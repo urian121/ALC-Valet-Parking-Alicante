@@ -100,6 +100,7 @@
     $servicios_extras1 = trim($_POST['servicios_extras1']);
     $servicios_extras2 = trim($_POST['servicios_extras2']);
     $servicios_extras3 = trim($_POST['servicios_extras3']);
+    $idiomaCliente = trim($_POST['idioma']);
 
 
     $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, total_pago_final, descuento, observacion_cliente, total_dias_reserva, servicios_extras1, total_gasto_extras1, servicios_extras2, total_gasto_extras2, servicios_extras3, total_gasto_extras3) 
@@ -111,7 +112,14 @@
 
         $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
         $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
-        header("location:../emails/aviso_reserva_email.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=admin");
+
+        if ($resultInsertVehiculo) {
+            if ($idiomaCliente == "es") {
+                header("location:../emails/aviso_reserva_email_es.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=admin");
+            } else {
+                header("location:../emails/aviso_reserva_email_en.php?emailUser=" . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=admin");
+            }
+        }
     }
 
     ?>

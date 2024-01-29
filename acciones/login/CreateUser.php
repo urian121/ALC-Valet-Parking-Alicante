@@ -10,14 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$createUser = date("Y-m-d H:i:s");
 
 	$nombre_completo = $_POST['nombre_completo'];
-	$din = $_POST['din'];
+	$din 			 = $_POST['din'];
 	$direccion_completa = $_POST['direccion_completa'];
-	$passwordUser = trim($_POST['passwordUser']);
-	$emailUser = trim($_POST['emailUser']);
-	$tlf = $_POST['tlf'];
-	$conocido_por = $_POST['conocido_por'];
-	$observaciones = $_POST['observaciones'];
-	$terminos = isset($_POST['terminos']) ? 1 : 0;
+	$passwordUser 		= trim($_POST['passwordUser']);
+	$emailUser 			= trim($_POST['emailUser']);
+	$tlf 				= $_POST['tlf'];
+	$conocido_por 		= $_POST['conocido_por'];
+	$observaciones 		= $_POST['observaciones'];
+	$terminos 			= isset($_POST['terminos']) ? 1 : 0;
 
 	$PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT); //Incriptando clave,
 
@@ -31,7 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$resultInsertUser = mysqli_query($con, $queryInsertUser);
 
 		if ($resultInsertUser) {
-			header("location:../../emails/cuenta_creada_email.php?emailUser=" . $emailUser);
+			echo '<script>';
+			echo '    let idiomaActivo = localStorage.getItem("idioma");';
+			echo '    if (idiomaActivo == "es") {';
+			echo '        window.location.href = "../../emails/cuenta_creada_email_es.php?emailUser=' . $emailUser . '";';
+			echo '    } else if (idiomaActivo == "en") {';
+			echo '        window.location.href = "../../emails/cuenta_creada_email_en.php?emailUser=' . $emailUser . '";';
+			echo '    }';
+			echo '</script>';
 		}
 	}
 }

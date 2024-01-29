@@ -1,26 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
-  var idiomaGuardado = localStorage.getItem("idioma");
+  let idiomaGuardado = localStorage.getItem("idioma");
   if (idiomaGuardado) {
     cambiarIdioma(idiomaGuardado);
+  } else {
+    localStorage.setItem("idioma", "es");
   }
 });
 
 function cambiarIdioma(idioma) {
-  var loginTitle = {
+  let loginTitle = {
     es: "Iniciar Sesión",
     en: "Log in",
   };
 
-  var loginBtn = {
+  let loginBtn = {
     es: "Entrar",
     en: "get in",
   };
 
-  var register = {
+  let register = {
     es: "¿Nuevo aquí?",
     en: "New here?",
   };
-  var create_account = {
+  let create_account = {
     es: "Crear una cuenta",
     en: "Create an account",
   };
