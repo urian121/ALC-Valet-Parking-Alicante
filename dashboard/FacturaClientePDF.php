@@ -246,16 +246,14 @@ foreach ($reservaDatos as $campo => $valor) {
 
 // Calcular el precio real sin IVA
 $precioConIva = ($rowReserva['total_pago_reserva']); // Precio del producto con IVA
-$sumaTotal =  number_format($precioConIva + $rowReserva['total_gasto_extras'], 2);
 
-//Base Impuesto
-$porcentajeIva = 21; // Porcentaje de IVA
-$precioSinIva = $sumaTotal / (1 + ($porcentajeIva / 100));
-$iva = $precioSinIva * ($porcentajeIva / 100);
+$serv1 = trim($rowReserva['servicios_extras1']);
+$serv2 = trim($rowReserva['servicios_extras2']);
+$serv3 = trim($rowReserva['servicios_extras3']);
+$total_gasto_extras1 = trim($rowReserva['total_gasto_extras1']);
+$total_gasto_extras2 = trim($rowReserva['total_gasto_extras2']);
+$total_gasto_extras3 = trim($rowReserva['total_gasto_extras3']);
 
-$serv1 = $rowReserva['servicios_extras1'] ? $rowReserva['servicios_extras1'] . ' - ' . number_format($rowReserva['total_gasto_extras1'], 2) . ' €' : '';
-$serv2 = $rowReserva['servicios_extras2'] ? $rowReserva['servicios_extras2'] . ' - ' . number_format($rowReserva['total_gasto_extras2'], 2) . ' €' : '';
-$serv3 = $rowReserva['servicios_extras3'] ? $rowReserva['servicios_extras3'] . ' - ' . number_format($rowReserva['total_gasto_extras3'], 2) . ' €' : '';
 
 $deudaTotal = 0;
 for ($i = 1; $i <= 3; $i++) {
@@ -272,9 +270,10 @@ $deudadFinalConDescuento = number_format($deudaFinal - ($deudaFinal * ($descuent
 $tablaDatos1 = array(
     'Precio Estancia' => number_format($precioConIva, 2) . ' €',
     $rowReserva['tipo_plaza'] => '0,00 €',
-    $serv1 ? 'Servicio  1' : ''  =>  $serv1,
-    $serv2 ? 'Servicio  2' : ''  =>  $serv2,
-    $serv3 ? 'Servicio  3' : ''  =>  $serv3,
+    $serv1 ? $serv1 : ''  =>  $serv1 && $total_gasto_extras1 ? number_format(trim($rowReserva['total_gasto_extras1']), 2) . ' €' : '',
+    $serv2 ? $serv2 : ''  =>  $serv2 && $total_gasto_extras2 ? number_format(trim($rowReserva['total_gasto_extras2']), 2) . ' €' : '',
+    $serv3 ? $serv3 : ''  =>  $serv3 && $total_gasto_extras3 ? number_format(trim($rowReserva['total_gasto_extras3']), 2) . ' €' : '',
+
     $descuento ? 'Descuento' : '' => $descuento . ' %',
     'SUMA TOTAL'        => $deudadFinalConDescuento . ' €'
 );
@@ -301,12 +300,26 @@ foreach ($tablaDatos1 as $concepto => $valor) {
     $posicionY1 += $altoCelda; // Ajustar la posición Y para la siguiente fila
 }
 
-// Información para la segunda tabla
+
+//Base Impuesto
+$porcentajeIva = 21; // Porcentaje de IVA
+$precioSinIva = $deudadFinalConDescuento / (1 + ($porcentajeIva / 100));
+$iva = $precioSinIva * ($porcentajeIva / 100);
+
+$sumaTotal =  number_format($precioSinIva + $iva, 2);
+
 $datosTabla2 = array(
     'Base Imp'          => number_format($precioSinIva, 2) . ' €',
     'IVA 21 %'          => number_format($iva, 2) . ' €',
     'TOTAL'             => $sumaTotal . ' €',
 );
+/*
+$datosTabla2 = array(
+    'Base Imp'          => number_format($precioSinIva, 2) . ' €',
+    'IVA 21 %'          => number_format($iva, 2) . ' €',
+    'TOTAL'             => $sumaTotal . ' €',
+);
+*/
 
 $anchoColumnaX2 = 40;
 $anchoColumnaY2 = 40;

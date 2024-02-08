@@ -2,13 +2,15 @@
 require_once('../tcpdf/tcpdf.php');
 require_once('../config/config.php');
 
+/*
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+*/
+
 date_default_timezone_set("Europe/Madrid");
 $horaEnEspana = date("Y-m-d");
 
 ob_end_clean(); //limpiar la memoria
-
-
-
 
 class MYPDF extends TCPDF
 {
@@ -55,9 +57,12 @@ class MYPDF extends TCPDF
 
         return $traducciones[$nombreMesEnIngles] ?? $nombreMesEnIngles;
     }
+
+
     public function Header()
     {
-        $watermarkImg = dirname(__FILE__) . '/../assets/custom/imgs/esqueleto_vehiculo.png'; // Ruta de la imagen de la marca de agua
+
+        $watermarkImg = dirname(__FILE__) . '/../assets/custom/imgs/esqueleto_carro.png'; // Ruta de la imagen de la marca de agua
         //$this->Image($watermarkImg, 90, 110, 30, 0, 'PNG', '', '', false, 300, '', false, false, 0);
         $this->Image($watermarkImg, 105, 140, 90, 0, 'PNG', '', '', false, 300, '', false, false, 0);
 
@@ -255,9 +260,12 @@ $pdf->SetXY($posicionX, $posicionY + 1);
 $precioConIva = ($rowReserva['total_pago_reserva']); // Precio del producto con IVA
 
 
-$serv1 = $rowReserva['servicios_extras1'] ? $rowReserva['servicios_extras1'] . ' - ' . number_format($rowReserva['total_gasto_extras1'], 2) . ' €' : '';
-$serv2 = $rowReserva['servicios_extras2'] ? $rowReserva['servicios_extras2'] . ' - ' . number_format($rowReserva['total_gasto_extras2'], 2) . ' €' : '';
-$serv3 = $rowReserva['servicios_extras3'] ? $rowReserva['servicios_extras3'] . ' - ' . number_format($rowReserva['total_gasto_extras3'], 2) . ' €' : '';
+$serv1 = trim($rowReserva['servicios_extras1']);
+$serv2 = trim($rowReserva['servicios_extras2']);
+$serv3 = trim($rowReserva['servicios_extras3']);
+$total_gasto_extras1 = trim($rowReserva['total_gasto_extras1']);
+$total_gasto_extras2 = trim($rowReserva['total_gasto_extras2']);
+$total_gasto_extras3 = trim($rowReserva['total_gasto_extras3']);
 
 $deudaTotal = 0;
 for ($i = 1; $i <= 3; $i++) {
@@ -274,10 +282,10 @@ $deudadFinalConDescuento = number_format($deudaFinal - ($deudaFinal * ($descuent
 $tablaDatos1 = array(
     'Precio Estancia' => number_format($precioConIva, 2) . ' €',
     $rowReserva['tipo_plaza'] => '0,00 €',
-    $serv1 ? 'Servicio  1' : ''  =>  $serv1,
-    $serv2 ? 'Servicio  2' : ''  =>  $serv2,
-    $serv3 ? 'Servicio  3' : ''  =>  $serv3,
-    $descuento ? 'Descuento' : '' => $descuento . ' %',
+    $serv1 ? $serv1 : ''  =>  $serv1 && $total_gasto_extras1 ? number_format(trim($rowReserva['total_gasto_extras1']), 2) . ' €' : '',
+    $serv2 ? $serv2 : ''  =>  $serv2 && $total_gasto_extras2 ? number_format(trim($rowReserva['total_gasto_extras2']), 2) . ' €' : '',
+    $serv3 ? $serv3 : ''  =>  $serv3 && $total_gasto_extras3 ? number_format(trim($rowReserva['total_gasto_extras3']), 2) . ' €' : '',
+    'Descuento'  => $descuento . ' %',
     'SUMA TOTAL' => $deudadFinalConDescuento . ' €',
 );
 

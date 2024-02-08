@@ -101,7 +101,7 @@ if (tbody) {
             : fecha_recogida
         }</h4>
 
-        <h4 class="card-text buttom mb-3">Hora de Recogida: ${hora_recogida}</h4>
+        <h4 class="card-text buttom mb-3">Hora de Recogida (Aterrizaje): ${hora_recogida}</h4>
         <h4 class="card-text buttom mb-3">terminal de Entrega: ${numero_vuelo_de_vuelta}</h4>
         <h4 class="card-text buttom mb-3">Total Deauda: ${
           formato_pago !== null

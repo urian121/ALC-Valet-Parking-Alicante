@@ -46,8 +46,8 @@ function cambiarIdioma(idioma) {
   };
 
   let labelHoraRecogida = {
-    es: "Hora de recogida",
-    en: "Pick-up time",
+    es: "Hora de recogida (Aterrizaje)",
+    en: "Pick-up time (Landing)",
   };
 
   let optionNo = {
@@ -98,8 +98,8 @@ function cambiarIdioma(idioma) {
   };
 
   let labelNumeroVuelo = {
-    es: "Número de vuelo",
-    en: "Flight number",
+    es: "Número Vuelo de Vuelta",
+    en: "Return Flight number",
   };
 
   let labelObservaciones = {
@@ -141,8 +141,8 @@ function cambiarIdioma(idioma) {
   };
 
   let th_horaRecogida = {
-    es: "Hora de recogida",
-    en: "Pick-up time",
+    es: "Hora de recogida (Aterrizaje)",
+    en: "Pick-up time (Landing)",
   };
 
   let th_plaza = {

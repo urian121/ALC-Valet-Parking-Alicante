@@ -22,13 +22,29 @@ function cambiarIdioma(idioma) {
     es: "¿Nuevo aquí?",
     en: "New here?",
   };
+
   let create_account = {
     es: "Crear una cuenta",
     en: "Create an account",
   };
+
   let create_account_title = {
     es: "Crea una cuenta",
     en: "Create an account",
+  };
+
+  let old_pass = {
+    es: "¿Olvidaste tu contraseña?",
+    en: "Forgot your password?",
+  };
+  let link_recovery = {
+    es: "Recuperar clave aquí",
+    en: "Recover your password",
+  };
+
+  let btn_recovery = {
+    es: "Recuperar mi clave",
+    en: "Recover my password",
   };
 
   // Actualiza el contenido de la página según el idioma seleccionado
@@ -45,6 +61,15 @@ function cambiarIdioma(idioma) {
     : "";
   selector("#create_account")
     ? (selector("#create_account").innerText = create_account[idioma])
+    : "";
+  selector("#link_recovery")
+    ? (selector("#link_recovery").innerText = link_recovery[idioma])
+    : "";
+  selector("#old_pass")
+    ? (selector("#old_pass").innerText = old_pass[idioma])
+    : "";
+  selector("#btn_recovery")
+    ? (selector("#btn_recovery").innerText = btn_recovery[idioma])
     : "";
 
   /**

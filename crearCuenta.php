@@ -51,7 +51,7 @@
                     <input type="text" name="tlf" id="tlf" class="form-control form-control-lg" placeholder="Teléfono" required />
                   </div>
                   <div class="col-md-6 mb-2">
-                    <label for="conocido_por" id="conocido_por">¿Cómo nos ha conocido?</label>
+                    <label id="conocido_por">¿Cómo nos ha conocido?</label>
                     <select name="conocido_por" class="form-control form-control-lg">
                       <option value="Seleccione" id="first_select">Seleccione</option>
                       <option value="Ya soy cliente" id="cliente">Ya soy cliente</option>
@@ -73,7 +73,7 @@
                 <div class="row mb-2 text-center">
                   <div class="col-md-12 mb-2">
                     <input type="checkbox" name="terminos" value="1" class="form-check-input" checked>
-                    <label class="form-check-label" for="terminos" id="terminos">
+                    <label class="form-check-label" id="terminos">
                       Acepto los términos de uso
                     </label>
                   </div>

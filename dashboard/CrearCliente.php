@@ -60,7 +60,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                         <input type="password" name="passwordUser" class="form-control form-control-lg" placeholder="Clave" <?php (isset($infoCliente['IdUser'])) ? '' : 'required'; ?>>
                                                     </div>
                                                     <div class="col-md-6 mb-2">
-                                                        <input type="email" name="emailUser" class="form-control form-control-lg" placeholder="Email" value="<?php echo isset($infoCliente['emailUser']) ? $infoCliente['emailUser'] : ''; ?>">
+                                                        <input type="email" name="emailUser" class="form-control form-control-lg" placeholder="Email" value="<?php echo isset($infoCliente['emailUser']) ? $infoCliente['emailUser'] : ''; ?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-2">

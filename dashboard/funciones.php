@@ -151,9 +151,12 @@
 
         //Calculando el total de dias de la reserva, esto se calcula si existe la fecha de recogida, de lo contrario seria 'Sin definir'
         $total_dias_reserva = 'Sin definir';
-        if ($fecha_recogida != 'Sin definir') {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_recogida)) {
+            //Si existe una fecha de recogida valida
             $diferencia = diferenciaDias($fecha_entrega, $fecha_recogida);
             $total_dias_reserva = $diferencia;
+        } else {
+            //echo "El formato de fecha no es válido: $fecha_recogida";
         }
 
         /**
@@ -162,6 +165,8 @@
         $total_pago_reserva = 0;
         if ($total_dias_reserva != 'Sin definir') {
             $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+        } else {
+            $total_pago_reserva = 0;
         }
 
         $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva, total_dias_reserva)
@@ -184,7 +189,7 @@
                 echo '<script type="text/javascript">';
                 echo '    let idiomaActivo = localStorage.getItem("idioma");';
                 echo '    if (idiomaActivo == "es") {';
-                echo '        window.location.href = "../.emails/aviso_reserva_email_es.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
+                echo '        window.location.href = "../emails/aviso_reserva_email_es.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
                 echo '    } else if (idiomaActivo == "en") {';
                 echo '        window.location.href = "../emails/aviso_reserva_email_en.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
                 echo '    }';
@@ -231,7 +236,7 @@
                 FROM tbl_reservas AS r
                 INNER JOIN tbl_vehiculos AS v ON r.id_cliente = v.id_cliente
                 WHERE r.id_cliente ='$idUser'
-                GROUP BY v.matricula_car
+                GROUP BY id_reserva
                 ORDER BY r.date_registro DESC";
         $queryR = mysqli_query($con, $sqlReservasP);
         if (!$queryR) {

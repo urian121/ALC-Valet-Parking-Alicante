@@ -64,7 +64,7 @@ if (isset($_SESSION['emailUser']) != "") {
                             <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg campo_obligatorio" />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="hora-recogida" id="labelHoraRecogida">Hora de recogida</label>
+                            <label for="hora-recogida" id="labelHoraRecogida">Hora de recogida (Aterrizaje)</label>
                             <select name="hora_recogida" class="form-control form-control-lg campo_obligatorio">
                               <option value="No la sé" selected="" id="optionNo">No la sé</option>
                               <?php echo generarOpcionesDeHora(); ?>

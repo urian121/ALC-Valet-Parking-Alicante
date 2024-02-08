@@ -54,11 +54,17 @@ if (isset($_REQUEST['errorC'])) {
 } elseif (isset($_REQUEST['errorF'])) {
     $mensaje = 'La fecha de recogida debe ser mayor a la fecha de entrega.';
     $tipo = 'error';
+} elseif (isset($_REQUEST['errorE'])) {
+    $mensaje = 'Por favor verifique los datos, no existe el correo.';
+    $tipo = 'error';
 } elseif (isset($_REQUEST['facturaFR'])) {
     $mensaje = 'Felicitaciones, la fecha de recogida fue actualizada correctamente.';
     $tipo = 'success';
 } elseif (isset($_REQUEST['AceptarReserva'])) {
     $mensaje = 'Felicitaciones, la reserva fue aceptada correctamente.';
+    $tipo = 'success';
+} elseif (isset($_REQUEST['RecoveryC'])) {
+    $mensaje = 'Felicitaciones, hemos enviado un correo con la clave temporal.';
     $tipo = 'success';
 }
 

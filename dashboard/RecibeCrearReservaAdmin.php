@@ -1,18 +1,17 @@
    <?php
-    /*
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
-    */
-
     include('../config/config.php');
     $SinDefinir = 'Sin definir';
     $fecha_recogida = $_POST['fecha_recogida'] != '' ? date("Y-m-d", strtotime($_POST['fecha_recogida'])) : $SinDefinir;
 
     //Calcular el total de dias de la reserva, esto se calcula si existe la fecha de $_POST['fecha_recogida'], de lo contrario seria 'Sin definir'
     $total_dias_reserva = $SinDefinir;
-    if ($fecha_recogida != $SinDefinir) {
+    //Verificando si existe una fecha de recogida valida
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_recogida)) {
+        //Si existe una fecha de recogida valida
         $diferencia = diferenciaDias($_POST['fecha_entrega'], $_POST['fecha_recogida']);
         $total_dias_reserva = $diferencia;
+    } else {
+        //echo "El formato de fecha no es válido: $fecha_recogida";
     }
 
     /**
@@ -36,8 +35,9 @@
     $total_pago_reserva = 0;
     if ($total_dias_reserva != $SinDefinir) {
         $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+    } else {
+        $total_pago_reserva = 0;
     }
-
     /**
      * Función para calcular el total de la deuda de acuerdo al tipo de plaza y los dias, obvio debe existir un total de dias 
      * y para que exista un total de dias debe existe una fecha 'fecha_recogida'
@@ -76,7 +76,6 @@
         // Aplica el descuento
         $total_pago_final = number_format($total_pago_final - ($total_pago_final * ($descuento / 100)), 2, '.', '');
     }
-
 
     $id_cliente         = trim($_POST['IdUser']);
     $fecha_entrega      = date("Y-m-d", strtotime($_POST['fecha_entrega']));

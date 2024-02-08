@@ -52,6 +52,10 @@ if (isset($_SESSION['emailUser']) != "") {
                   <span id="register">¿Nuevo aquí?</span>
                   <a href="crearCuenta.php" class="text-primary" id="create_account">Crear una cuenta</a>
                 </div>
+                <div class="text-center mt-4 font-weight-light">
+                  <span id="old_pass">¿Olvidaste tu clave?</span>
+                  <a href="recuperarClave.php" class="text-primary" id="link_recovery">Recuperar clave aquí</a>
+                </div>
               </form>
             </div>
           </div>
