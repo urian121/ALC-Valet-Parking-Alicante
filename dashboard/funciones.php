@@ -1,6 +1,7 @@
  <?php
     include('../config/config.php');
-
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
     /**
      * obtener todas las Reservas diarias
      */
@@ -79,6 +80,7 @@
                     c.direccion_completa, 
                     c.tlf,
                     c.observaciones,
+                    c.rol,
                     v.marca_car,
                     v.modelo_car,
                     v.color_car,
@@ -148,6 +150,7 @@
         $numero_vuelo_de_vuelta = trim($_POST['numero_vuelo_de_vuelta']);
         $email_cliente          = trim($_POST['email_cliente']);
         $observacion_cliente    = trim($_POST['observacion_cliente']);
+        $id_coche_cliente       = trim($_POST['id_coche_cliente']);
 
         //Calculando el total de dias de la reserva, esto se calcula si existe la fecha de recogida, de lo contrario seria 'Sin definir'
         $total_dias_reserva = 'Sin definir';
@@ -169,32 +172,22 @@
             $total_pago_reserva = 0;
         }
 
-        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva, total_dias_reserva)
-                 VALUES('$id_cliente','$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$numero_vuelo_de_vuelta', '$observacion_cliente', '$total_pago_reserva', '$total_dias_reserva')");
+        $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, id_coche_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva, total_dias_reserva)
+                 VALUES('$id_cliente', '$id_coche_cliente', '$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$numero_vuelo_de_vuelta', '$observacion_cliente', '$total_pago_reserva', '$total_dias_reserva')");
         $resultInsert = mysqli_query($con, $queryInserReserva);
 
 
         if ($resultInsert) {
             // Obtener el último ID insertado
             $lastInsertId = mysqli_insert_id($con);
-            $marca_car = trim($_POST['marca_car']);
-            $modelo_car = trim($_POST['modelo_car']);
-            $color_car = trim($_POST['color_car']);
-            $matricula_car = trim($_POST['matricula_car']);
-
-            $queryInsertVehiculo  = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
-            $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
-
-            if ($resultInsertVehiculo) {
-                echo '<script type="text/javascript">';
-                echo '    let idiomaActivo = localStorage.getItem("idioma");';
-                echo '    if (idiomaActivo == "es") {';
-                echo '        window.location.href = "../emails/aviso_reserva_email_es.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
-                echo '    } else if (idiomaActivo == "en") {';
-                echo '        window.location.href = "../emails/aviso_reserva_email_en.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
-                echo '    }';
-                echo '</script>';
-            }
+            echo '<script type="text/javascript">';
+            echo '    let idiomaActivo = localStorage.getItem("idioma");';
+            echo '    if (idiomaActivo == "es") {';
+            echo '        window.location.href = "../emails/aviso_reserva_email_es.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
+            echo '    } else if (idiomaActivo == "en") {';
+            echo '        window.location.href = "../emails/aviso_reserva_email_en.php?emailUser=' . $email_cliente . "&IdReserva=" . $lastInsertId . "&desde=cliente" . '";';
+            echo '    }';
+            echo '</script>';
         }
     }
 
@@ -250,12 +243,52 @@
      */
     function getClientes($con)
     {
-        $sqlClientes = ("SELECT * FROM tbl_clientes ORDER BY nombre_completo");
+        $sqlClientes = ("SELECT * FROM tbl_clientes WHERE rol = 0 ORDER BY nombre_completo");
         $queryC = mysqli_query($con, $sqlClientes);
         if (!$queryC) {
             return false;
         }
         return $queryC;
+    }
+
+    /**
+     * Lista de Usuarios pra administrar el sistema
+     */
+    function getUsuariosDelSistema($con)
+    {
+        $sqlUsuarios = ("SELECT * FROM tbl_clientes WHERE rol != 0 ORDER BY nombre_completo");
+        $queryU = mysqli_query($con, $sqlUsuarios);
+        if (!$queryU) {
+            return false;
+        }
+        return $queryU;
+    }
+
+    /**
+     * Listas de cohes de acuerdo al cliente
+     */
+    function getCochesClientes($con, $idClientes)
+    {
+        $sqlCoches = ("SELECT * FROM tbl_vehiculos WHERE id_cliente = '$idClientes' ORDER BY marca_car");
+        $queryC = mysqli_query($con, $sqlCoches);
+        if (!$queryC) {
+            return false;
+        }
+        return $queryC;
+    }
+    /**
+     * Informacion del coche para actualizar desde la vista cliente
+     */
+    function infoCocheBD($con, $idCoche, $IdUser)
+    {
+        $infoCliente = "SELECT * FROM tbl_vehiculos WHERE id = '$idCoche' AND id_cliente = '$IdUser' LIMIT 1";
+        $query = mysqli_query($con, $infoCliente);
+        if (!$query) {
+            return false;
+        }
+        $data = mysqli_fetch_assoc($query);
+        mysqli_free_result($query);
+        return $data;
     }
 
     /**
@@ -378,6 +411,46 @@
         }
     }
 
+    /**
+     * Crear usuario para administrar el sistema
+     */
+    if (isset($_POST["accion"]) && $_POST["accion"] == "crearUsuarioSistema") {
+
+        $emailUser = trim($_POST['emailUser']);
+        $passwordUser = trim($_POST['passwordUser']);
+        $PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT);
+        $nombre_completo = $_POST['nombre_completo'];
+        $direccion_completa = $_POST['direccion_completa'];
+        $din = $_POST['din'];
+        $tlf = $_POST['tlf'];
+        $rol = $_POST['rol'];
+
+        $queryInsertUser  = ("INSERT INTO tbl_clientes(emailUser, passwordUser, nombre_completo, direccion_completa, din, tlf, rol) VALUES ('$emailUser','$PasswordHash','$nombre_completo', '$direccion_completa', '$din', '$tlf','$rol')");
+        $resultInsertUser = mysqli_query($con, $queryInsertUser);
+        header("location:./NuevoUsuario.php?successUC1=1");
+    }
+
+    if (isset($_POST["accion"]) && $_POST["accion"] == "actualizarUsuarioSistema") {
+        $emailUser = trim($_POST['emailUser']);
+        $passwordUser = trim($_POST['passwordUser']);
+        $PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT);
+        $nombre_completo = $_POST['nombre_completo'];
+        $direccion_completa = $_POST['direccion_completa'];
+        $din = $_POST['din'];
+        $tlf = $_POST['tlf'];
+        $rol = $_POST['rol'];
+        $IdUser = trim($_POST['IdUser']);
+
+        if ($passwordUser != "") {
+            $Update = "UPDATE tbl_clientes SET emailUser='$emailUser', passwordUser='$PasswordHash', nombre_completo='$nombre_completo', direccion_completa='$direccion_completa', din='$din',  tlf='$tlf',  rol='$rol' WHERE IdUser='$IdUser'";
+            $resultado = mysqli_query($con, $Update);
+        } else {
+            $Update = "UPDATE tbl_clientes SET emailUser='$emailUser', nombre_completo='$nombre_completo', direccion_completa='$direccion_completa', din='$din',  tlf='$tlf',  rol='$rol' WHERE IdUser='$IdUser'";
+            $resultado = mysqli_query($con, $Update);
+        }
+        header("location:./NuevoUsuario.php?successUpd=1");
+    }
+
 
     function crearFacturaCliente($con, $idReserva)
     {
@@ -427,4 +500,38 @@
         }
         return $queryReserva;
     }
+
+    /**
+     * Registrar choche desde la vista del cliente
+     */
+    if (isset($_POST["accion"]) && $_POST["accion"] == "registraCocheCliente") {
+        $id_cliente = trim($_POST['idCliente']);
+        $marca_car = trim($_POST['marca_car']);
+        $modelo_car = trim($_POST['modelo_car']);
+        $color_car = trim($_POST['color_car']);
+        $matricula_car = trim($_POST['matricula_car']);
+
+        $queryInsertVehiculo = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
+        $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
+        if ($resultInsertVehiculo) {
+            header("location:./AddCoche.php?successCoche=1");
+        }
+    }
+    /**
+     * Actualizar informacion del coche, vista cliente
+     */
+    if (isset($_POST["accion"]) && $_POST["accion"] == "actualizarCocheCliente") {
+        $id_cliente = trim($_POST['idCliente']);
+        $id_coche = trim($_POST['id']);
+        $marca_car = trim($_POST['marca_car']);
+        $modelo_car = trim($_POST['modelo_car']);
+        $color_car = trim($_POST['color_car']);
+        $matricula_car = trim($_POST['matricula_car']);
+
+        $UpdateVehiculo = "UPDATE tbl_vehiculos SET  marca_car='$marca_car', modelo_car='$modelo_car', color_car='$color_car', matricula_car='$matricula_car' WHERE id='$id_coche' AND id_cliente='$id_cliente'";
+        $resultadoV = mysqli_query($con, $UpdateVehiculo);
+        header("location:./AddCoche.php?successCocheUp=1");
+    }
+
+
     ?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['emailUser']) != "") {
-  include('../config/config.php');
+  // include('../config/config.php');
   $IdUser     = $_SESSION['IdUser'];
   $rolUser     = $_SESSION['rol'];
   $email      = $_SESSION['emailUser'];
@@ -30,6 +30,8 @@ if (isset($_SESSION['emailUser']) != "") {
         <?php
         include 'bases/nav.php';
         include 'selectDate.php';
+        include 'funciones.php';
+        $listaCochesClientes = getCochesClientes($con, $IdUser);
         ?>
         <div class="main-panel">
           <div class="content-wrapper">
@@ -49,22 +51,22 @@ if (isset($_SESSION['emailUser']) != "") {
                         <input type="text" name="IdUser" value="<?php echo $IdUser; ?>" hidden>
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="fecha-entrega" id="labelFechaEntrega">Fecha de entrega</label>
+                            <label id="labelFechaEntrega">Fecha de entrega</label>
                             <input type="text" name="fecha_entrega" id="fecha_entrega" class="borderInput form-control form-control-lg campo_obligatorio" required />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="hora_entrega" id="labelHoraEntrega">Hora de entrega</label>
+                            <label id="labelHoraEntrega">Hora de entrega</label>
                             <select name="hora_entrega" id="hora_entrega" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected="">Seleccione</option>
                               <?php echo generarOpcionesDeHora(); ?>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="fecha-recogida" id="labelFechaRecogida">Fecha de recogida</label>
+                            <label id="labelFechaRecogida">Fecha de recogida</label>
                             <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg campo_obligatorio" />
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="hora-recogida" id="labelHoraRecogida">Hora de recogida (Aterrizaje)</label>
+                            <label id="labelHoraRecogida">Hora de recogida (Aterrizaje)</label>
                             <select name="hora_recogida" class="form-control form-control-lg campo_obligatorio">
                               <option value="No la sé" selected="" id="optionNo">No la sé</option>
                               <?php echo generarOpcionesDeHora(); ?>
@@ -74,7 +76,7 @@ if (isset($_SESSION['emailUser']) != "") {
 
                         <div class="row mb-2">
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Tipo de plaza" id="labelTipoPlaza">Tipo de plaza</label>
+                            <label id="labelTipoPlaza">Tipo de plaza</label>
                             <select name="tipo_plaza" id="tipo_plaza" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected id="valorSeleccione">Seleccione</option>
                               <option value="Plaza Aire Libre" id="optionPlazaAireLibre">Plaza Aire Libre</option>
@@ -82,47 +84,39 @@ if (isset($_SESSION['emailUser']) != "") {
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Terminal de entrega" id="labelTerminalEntrega">Terminal de entrega</label>
+                            <label id="labelTerminalEntrega">Terminal de entrega</label>
                             <select name="terminal_entrega" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected id="valorSeleccione">Seleccione</option>
                               <option value="Aeropuerto de Alicante" id="optionAeropuerto">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Terminal de recogida" id="labelTerminalRecogida">Terminal de recogida</label>
+                            <label id="labelTerminalRecogida">Terminal de recogida</label>
                             <select name="terminal_recogida" class="form-control form-control-lg campo_obligatorio" required>
                               <option value="" selected id="valorSeleccione">Seleccione</option>
                               <option value="Aeropuerto de Alicante" id="optionAeropuerto">Aeropuerto de Alicante</option>
                             </select>
                           </div>
                           <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Matrícula" id="labelMatricula">Matrícula</label>
-                            <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" required />
+                            <label id="select_coche">Seleccione el coche</label>
+                            <select name="id_coche_cliente" class="form-control form-control-lg campo_obligatorio" required>
+                              <option value="" selected id="option_car_one">Seleccione</option>
+                              <?php
+                              while ($data = mysqli_fetch_array($listaCochesClientes)) { ?>
+                                <option value="<?php echo $data["id"]; ?>">
+                                  <?php echo ("Marca: " . $data["marca_car"] . " - " . "Modelo: " . $data["modelo_car"]); ?>
+                                </option>
+                              <?php } ?>
+                            </select>
                           </div>
                         </div>
                         <div class="row mb-2">
                           <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="color_car">Color</label>
-                            <input type="text" name="color_car" class="form-control form-control-lg campo_obligatorio" required />
-                          </div>
-                          <div class="col-md-6 mb-2">
-                            <label for="Marca" id="labelMarca">Marca</label>
-                            <input type="text" name="marca_car" class="form-control form-control-lg campo_obligatorio" required />
-                          </div>
-                          <div class="col-md-6 mb-2">
-                            <label for="Modelo" id="labelModelo">Modelo</label>
-                            <input type="text" name="modelo_car" class="form-control form-control-lg campo_obligatorio" required />
-                          </div>
-
-                          <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label for="Numero de vuelo" id="labelNumeroVuelo">Nº Vuelo de Vuelta</label>
+                            <label id="labelNumeroVuelo">Nº Vuelo de Vuelta</label>
                             <input type="text" name="numero_vuelo_de_vuelta" class="form-control form-control-lg campo_obligatorio" />
                           </div>
-                        </div>
-
-                        <div class="row mb-2">
                           <div class="col-md-6 mb-2">
-                            <label for="observacion_cliente" id="labelObservaciones">Observaciones</label>
+                            <label id="labelObservaciones">Observaciones</label>
                             <div class="form-floating">
                               <textarea class="form-control" name="observacion_cliente" style="height: 100px"></textarea>
                             </div>

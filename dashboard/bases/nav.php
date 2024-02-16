@@ -15,7 +15,6 @@
           <span class="menu-title">Crear Nueva Estancia</span>
         </a>
       </li>
-
       <li class="nav-item">
         <a class="nav-link" href="CrearCliente.php">
           <i class="bi bi-person-fill-add menu-icon"></i>
@@ -36,17 +35,50 @@
         </div>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="NuevoUsuario.php">
+          <i class="bi bi-person-fill-lock"></i>
+          <span class="menu-title">Crear Usuario</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="HistorialReservas.php">
           <img src="../assets/custom/imgs/carro.png" alt="car" style="padding: 0px 10px 0px 0px" />
           <span class="menu-title">Historial Reservas</span>
         </a>
       </li>
 
+    <?php } elseif ($rolUser == 2) { ?>
+      <li class="nav-item">
+        <a class="nav-link" href="AgendaDiaria.php">
+          <i class="bi bi-calendar3 menu-icon"></i>
+          <span class="menu-title">Agenda diaria</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="CrearReserva.php">
+          <img src="../assets/custom/imgs/carro.png" alt="car" style="padding: 0px 10px 0px 0px" />
+          <span class="menu-title">Crear Nueva Estancia</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="CrearCliente.php">
+          <i class="bi bi-person-fill-add menu-icon"></i>
+          <span class="menu-title">Clientes</span>
+        </a>
+      </li>
+
+
     <?php } else { ?>
+      <li class="nav-item">
+        <a class="nav-link" href="addCoche.php">
+          <img src="../assets/custom/imgs/carro.png" alt="car" style="padding: 0px 10px 0px 0px" />
+          <span class="menu-title" id="linkAddCoche">Registrar mi Coche</span>
+        </a>
+      </li>
       <li class="nav-item active">
         <a class="nav-link" href="index.php">
           <i class="icon-grid menu-icon"></i>
-          <span class="menu-title" id="linkInicio">Inicio</span>
+          <span class="menu-title" id="linkInicio">Crear Nueva Reserva</span>
         </a>
       </li>
       <li class="nav-item">

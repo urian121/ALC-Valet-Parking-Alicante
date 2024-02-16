@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
+if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
     $IdUser     = $_SESSION['IdUser'];
     $rolUser     = $_SESSION['rol'];
     $email      = $_SESSION['emailUser'];
@@ -23,9 +23,9 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                 <?php
                 include 'bases/nav.php';
                 include 'funciones.php';
-                $clientesBD = getClientes($con);
-                if (isset($_GET['idCliente'])) {
-                    $idCliente = $_GET['idCliente'];
+                $clientesBD = getUsuariosDelSistema($con);
+                if (isset($_GET['idUsuario'])) {
+                    $idCliente = $_GET['idUsuario'];
                     $infoCliente = infoClienteBD($con, $idCliente);
                 }
                 ?>
@@ -36,14 +36,16 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="auth-form-light py-2 px-4">
-                                            <h1 class="card-title text-center mb-4">Crear Cuenta Cliente
+                                            <h1 class="card-title text-center mb-4">Crear Cuenta Usuario/Administrador
                                                 <hr>
                                             </h1>
                                             <form action="funciones.php" method="post" autocomplete="off">
-                                                <input type="text" name="accion" value="<?php echo isset($infoCliente['IdUser']) ? 'actualizarClienteAdmin' : 'crearCliente'; ?>" hidden>
+                                                <input type="text" name="accion" value="<?php echo isset($infoCliente['IdUser']) ? 'actualizarUsuarioSistema' : 'crearUsuarioSistema'; ?>" hidden>
+
                                                 <?php if (isset($infoCliente['IdUser'])) { ?>
                                                     <input type="text" name="IdUser" value="<?php echo $infoCliente['IdUser']; ?>" hidden>
                                                 <?php } ?>
+
                                                 <div class="row mb-2">
                                                     <div class="col-md-6 mb-2">
                                                         <input type="text" name="nombre_completo" class="form-control form-control-lg" required="" placeholder="Nombre completo / Razón social" value="<?php echo isset($infoCliente['nombre_completo']) ? $infoCliente['nombre_completo'] : ''; ?>">
@@ -63,47 +65,30 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                                                         <input type="email" name="emailUser" class="form-control form-control-lg" placeholder="Email" value="<?php echo isset($infoCliente['emailUser']) ? $infoCliente['emailUser'] : ''; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-6 mb-2">
+                                                <div class="row mb-4">
+                                                    <div class="col-md-6 mt-4 mb-2">
                                                         <input type="text" name="tlf" class="form-control form-control-lg" placeholder="Teléfono" value="<?php echo isset($infoCliente['tlf']) ? $infoCliente['tlf'] : ''; ?>">
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="form-floating">
-                                                        <textarea class="form-control" name="observaciones" placeholder="Observaciones" style="height: 140px"><?php echo isset($infoCliente['observaciones']) ? $infoCliente['observaciones'] : ''; ?></textarea>
-                                                    </div>
-                                                </div>
+                                                    <div class="col-md-6 ">
+                                                        <label>Tipo de Usuario</label>
+                                                        <select name="rol" class="form-control form-control-lg">
+                                                            <option value="" <?php echo !isset($infoCliente['rol']) ? 'selected' : ''; ?>>Seleccione</option>
+                                                            <option value="2" <?php echo isset($infoCliente['rol']) && $infoCliente['rol'] == 2 ? 'selected' : ''; ?>>Usuario Normal</option>
+                                                            <option value="1" <?php echo isset($infoCliente['rol']) && $infoCliente['rol'] == 1 ? 'selected' : ''; ?>>Usuario Administrador</option>
+                                                        </select>
 
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h3 class="text-center">Datos del Vehiculo
-                                                            <hr>
-                                                        </h3>
                                                     </div>
-                                                </div>
-
-                                                <div class="col-md-12 mb-2">
-                                                    <input type="text" name="marca_car" class="form-control form-control-lg campo_obligatorio" placeholder="Marca" value="<?php echo isset($infoCliente['marca_car']) ? $infoCliente['marca_car'] : ''; ?>" required />
-                                                </div>
-                                                <div class="col-md-12 mb-2">
-                                                    <input type="text" name="modelo_car" class="form-control form-control-lg campo_obligatorio" placeholder="Modelo" value="<?php echo isset($infoCliente['modelo_car']) ? $infoCliente['modelo_car'] : ''; ?>" required />
-                                                </div>
-                                                <div class="col-md-12 mb-2">
-                                                    <input type="text" name="color_car" class="form-control form-control-lg campo_obligatorio" placeholder="Color" value="<?php echo isset($infoCliente['color_car']) ? $infoCliente['color_car'] : ''; ?>" required />
-                                                </div>
-                                                <div class="col-md-12 mb-2">
-                                                    <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" <?php echo isset($infoCliente['matricula_car']) ? 'disabled' : ''; ?> value="<?php echo isset($infoCliente['matricula_car']) ? $infoCliente['matricula_car'] : ''; ?>" required />
                                                 </div>
 
 
                                                 <div class="mt-3">
                                                     <?php if (isset($infoCliente['IdUser'])) { ?>
                                                         <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                                                            Actualizar Cliente
+                                                            Actualizar datos del Usuario
                                                         </button>
                                                     <?php } else { ?>
                                                         <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
-                                                            Registrar Cliente
+                                                            Registrar nuevo Usuario
                                                         </button>
                                                     <?php } ?>
                                                 </div>
@@ -115,18 +100,18 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                             <div class="col-md-7">
                                 <div class="card">
                                     <div class="card-body mt-3">
-                                        <h1 class="text-center mb-4">Lista de Clientes
+                                        <h2 class="text-center mb-4">Lista de Usuarios para administrar el Sistema
                                             <hr>
-                                        </h1>
+                                        </h2>
                                         <div class="table-responsive">
                                             <table id="MiTabla" class="table table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>Cliente</th>
+                                                        <th>Usuario</th>
                                                         <th>DNI / CIF</th>
                                                         <th>Email</th>
                                                         <th>Teléfono</th>
-                                                        <th>Dirección</th>
+                                                        <th>Tipo de Usuario</th>
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -138,9 +123,9 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                                                             <td class="custom_td"><?php echo $row["din"]; ?></td>
                                                             <td class="custom_td"><?php echo $row["emailUser"]; ?></td>
                                                             <td class="custom_td"><?php echo $row["tlf"]; ?></td>
-                                                            <td class="custom_td"><?php echo $row["direccion_completa"]; ?></td>
+                                                            <td class="custom_td"><?php echo $row["rol"] == 1 ? 'Administrador' : 'Normal'; ?></td>
                                                             <td class="custom_td">
-                                                                <a href="CrearCliente.php?idCliente=<?php echo $row["IdUser"]; ?>" class="btn btn-info btn_padding">
+                                                                <a href="NuevoUsuario.php?idUsuario=<?php echo $row["IdUser"]; ?>" class="btn btn-info btn_padding">
                                                                     <i class="bi bi-pencil"></i>
                                                                     Editar
                                                                 </a>

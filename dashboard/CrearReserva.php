@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['emailUser']) != "") {
+if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) {
     $IdUser     = $_SESSION['IdUser'];
     $rolUser     = $_SESSION['rol'];
     $email      = $_SESSION['emailUser'];

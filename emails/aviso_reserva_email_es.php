@@ -50,8 +50,10 @@ try {
     //Asunto                             
     $mail->Subject = 'ALC Valet Parking Alicante';
     $mail->Body .= "<section style='margin-top: 10px; font-size: 16px;'>";
-    $mail->Body .= "<p>En <span style='color:#ff6d0c; font-weight: bold'>ALC Valet Parking Alicante</spa> le damos la bienvenida y estamos encantados de tenerte como nuestro cliente.</p>";
-    $mail->Body .= "<p>Para acceder a tu reserva y obtener más detalles, puedes descargarla haciendo clic en el siguiente enlace:</p><br><br>";
+    $mail->Body .= "<p>CONFIRMACION DE RESERVA</p>";
+    $mail->Body .= "<p>Muchas gracias por elegir los servicios de ALC VALET PARKING.</p>";
+    $mail->Body .= "<p>PUNTO DE ENCUENTRO AEROPUERTO: PLANTA DE SALIDAS/ EN EL PRINCIPIO DEL PARKING EXPRESS. MOVIL : 601 356 356(no por via WhatsApp) LLAME CON EL NUMERO DE CONTACTO CON *15 O 20 MINUTOS DE ANTELANCION</p><br>";
+    $mail->Body .= "<p>Para acceder a tu reserva y obtener más detalles, puedes descargarla haciendo clic en el siguiente enlace:</p><br>";
     $mail->Body .= "<a href='https://alcvaletparking.com/app/dashboard/ReservaPDF.php?idReserva=" . $IdReserva . " ' style='background: #ff6d0c; font-size:15px; padding: 10px 20px; border-radius: 25px;text-decoration: unset; color:#fff;'>Descargar Reserva</a> <br><br><br>";
     $mail->Body .= "</section>";
 

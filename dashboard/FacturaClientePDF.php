@@ -368,4 +368,4 @@ if (!empty($obs)) {
 
 
 //D en lugar de I para forzar la descarga
-$pdf->Output('Factura ' . $rowReserva["nombre_completo"] . ' ' . date('Y-m-d') . '.pdf', 'I');
+$pdf->Output('Factura ' . $rowReserva["nombre_completo"] . ' ' . date('Y-m-d') . '.pdf', 'D');

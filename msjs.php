@@ -66,7 +66,20 @@ if (isset($_REQUEST['errorC'])) {
 } elseif (isset($_REQUEST['RecoveryC'])) {
     $mensaje = 'Felicitaciones, hemos enviado un correo con la clave temporal.';
     $tipo = 'success';
+} elseif (isset($_REQUEST['successCoche'])) {
+    $mensaje = 'Felicitaciones, hemos registrado el coche correctamente.';
+    $tipo = 'success';
+} elseif (isset($_REQUEST['successCocheUp'])) {
+    $mensaje = 'Felicitaciones, los datos del coche fueron actualizados correctamente.';
+    $tipo = 'success';
+} elseif (isset($_REQUEST['successUC1'])) {
+    $mensaje = 'Felicitaciones, el usuario fue credo correctamente.';
+    $tipo = 'success';
+} elseif (isset($_REQUEST['successUpd'])) {
+    $mensaje = 'Felicitaciones, el usuario fue actualizado correctamente.';
+    $tipo = 'success';
 }
+
 
 
 

@@ -6,10 +6,69 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function cambiarIdioma(idioma) {
-  let linkInicio = {
-    es: "Inicio",
-    en: "Home",
+  /**
+   *Modulo registrar carro desde el cliente
+   */
+  let title_add_coche = {
+    es: "Registrar Mi Coche",
+    en: "Register My Car",
   };
+  let marca_car_placeholder = {
+    es: "Marca",
+    en: "Car brand",
+  };
+  let modelo_car_placeholder = {
+    es: "Modelo",
+    en: "Car model",
+  };
+  let color_car_placeholder = {
+    es: "Color",
+    en: "Car color",
+  };
+  let matricula_car_placeholder = {
+    es: "Matricula",
+    en: "Car plate",
+  };
+  let btn_actualizar_coche = {
+    es: "Actualizar Coche",
+    en: "Update Car",
+  };
+  let btn_registrar_coche = {
+    es: "Registrar Coche",
+    en: "Register Car",
+  };
+  let th_acciones = {
+    es: "Acciones",
+    en: "Actions",
+  };
+
+  let idioma_btn_editar_car = {
+    es: "Editar Coche",
+    en: "Edit Car",
+  };
+  let select_coche = {
+    es: "Seleccionar Coche",
+    en: "Select Car",
+  };
+  let option_car_one = {
+    es: "Selecccioner un Coche",
+    en: "Select a Car",
+  };
+
+  let btn_edit_car = document.querySelectorAll(".btn_edit_car");
+  btn_edit_car.forEach(function (element) {
+    element.innerText = idioma_btn_editar_car[idioma];
+  });
+
+  let linkInicio = {
+    es: "Crear Nueva Reserva",
+    en: "Create Reservation",
+  };
+  let linkAddCoche = {
+    es: "Registrar mi Coche",
+    en: "Register my car",
+  };
+
   let linkReservas = {
     es: "Mis Reservas",
     en: "My Reservations",
@@ -61,7 +120,7 @@ function cambiarIdioma(idioma) {
   };
   let optionPlazaAireLibre = {
     es: "Plaza de aire libre",
-    en: "Air-park",
+    en: "Outdoor",
   };
   let optionPlazaCubierto = {
     es: "Plaza cubierta",
@@ -199,6 +258,9 @@ function cambiarIdioma(idioma) {
   };
 
   // Actualiza el contenido de la página según el idioma seleccionado
+  selector("#linkAddCoche")
+    ? (selector("#linkAddCoche").innerText = linkAddCoche[idioma])
+    : "";
   selector("#linkInicio")
     ? (selector("#linkInicio").innerText = linkInicio[idioma])
     : "";
@@ -213,6 +275,9 @@ function cambiarIdioma(idioma) {
     : "";
   selector("#title_reserva")
     ? (selector("#title_reserva").innerText = title_reserva[idioma])
+    : "";
+  selector(".title_add_coche")
+    ? (selector(".title_add_coche").innerText = title_add_coche[idioma])
     : "";
   selector("#labelFechaEntrega")
     ? (selector("#labelFechaEntrega").innerText = labelFechaEntrega[idioma])
@@ -313,6 +378,55 @@ function cambiarIdioma(idioma) {
     : "";
 
   /**
+   * Actualizar formulario crear coche desde el cliente
+   */
+  selector("#marca_car_placeholder")
+    ? (selector("#marca_car_placeholder").placeholder =
+        marca_car_placeholder[idioma])
+    : "";
+  selector("#modelo_car_placeholder")
+    ? (selector("#modelo_car_placeholder").placeholder =
+        modelo_car_placeholder[idioma])
+    : "";
+  selector("#color_car_")
+    ? (selector("#color_car_placeholder").placeholder =
+        color_car_placeholder[idioma])
+    : "";
+  selector("#matricula_car_placeholder")
+    ? (selector("#matricula_car_placeholder").placeholder =
+        matricula_car_placeholder[idioma])
+    : "";
+
+  selector("#btn_registrar_coche")
+    ? (selector("#btn_registrar_coche").innerText = btn_registrar_coche[idioma])
+    : "";
+  selector("#btn_actualizar_coche")
+    ? (selector("#btn_actualizar_coche").innerText =
+        btn_actualizar_coche[idioma])
+    : "";
+
+  selector("#option_car_one")
+    ? (selector("#option_car_one").innerText = option_car_one[idioma])
+    : "";
+  /**
+   * Actualizando la cabecera de la tabla de coches
+   */
+  selector("#th_marca")
+    ? (selector("#th_marca").innerText = marca_car_placeholder[idioma])
+    : "";
+  selector("#th_modelo")
+    ? (selector("#th_modelo").innerText = modelo_car_placeholder[idioma])
+    : "";
+  selector("#th_color")
+    ? (selector("#th_color").innerText = color_car_placeholder[idioma])
+    : "";
+  selector("#th_matricula")
+    ? (selector("#th_matricula").innerText = matricula_car_placeholder[idioma])
+    : "";
+  selector("#th_acciones")
+    ? (selector("#th_acciones").innerText = th_acciones[idioma])
+    : "";
+  /**
    * Actualizar perfil
    */
   selector("#titleUpdatePerfil")
@@ -335,7 +449,9 @@ function cambiarIdioma(idioma) {
   selector("#btnCancel")
     ? (selector("#btnCancel").innerText = btnCancel[idioma])
     : "";
-
+  selector("#select_coche")
+    ? (selector("#select_coche").innerText = select_coche[idioma])
+    : "";
   /**
    * Actualiza el idioma
    */

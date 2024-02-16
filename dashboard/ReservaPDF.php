@@ -346,4 +346,4 @@ $pdf->SetXY(155, 270);
 $pdf->MultiCell(45, 18, '     ', 1, 'L');
 
 //D en lugar de I para forzar la descarga
-$pdf->Output('Reserva ' . $rowReserva["nombre_completo"] . ' ' . date('d_m_Y') . '.pdf', 'I');
+$pdf->Output('Reserva ' . $rowReserva["nombre_completo"] . ' ' . date('d_m_Y') . '.pdf', 'D');
