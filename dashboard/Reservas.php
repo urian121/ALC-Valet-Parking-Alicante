@@ -73,7 +73,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
                                                             <td><?php echo $reserva["terminal_recogida"]; ?></td>
                                                             <td><?php echo $reserva["matricula_car"]; ?></td>
                                                             <td>
-                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Reserva en PDF">
+                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Reserva en PDF" target="_blank">
                                                                     <i class="bi bi-filetype-pdf"></i>
                                                                 </a>
                                                             </td>

@@ -66,7 +66,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
                                                     <label for="fecha-recogida">Fecha de recogida</label>
-                                                    <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg" />
+                                                    <input type="text" name="fecha_recogida" id="fecha_recogida_admin" class="borderInput form-control form-control-lg" />
                                                 </div>
                                             </div>
 

@@ -84,7 +84,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1) {
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
                                                             <td class="custom_td" style="display: flex;justify-content: center;">
-                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Recibo de Aparcamiento">
+                                                                <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Recibo de Aparcamiento" target="_blank">
                                                                     <i class="bi bi-filetype-pdf"></i>
                                                                 </a>
                                                                 &nbsp;&nbsp;

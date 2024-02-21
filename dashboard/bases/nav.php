@@ -66,11 +66,9 @@
           <span class="menu-title">Clientes</span>
         </a>
       </li>
-
-
     <?php } else { ?>
       <li class="nav-item">
-        <a class="nav-link" href="addCoche.php">
+        <a class="nav-link" href="AddCoche.php">
           <img src="../assets/custom/imgs/carro.png" alt="car" style="padding: 0px 10px 0px 0px" />
           <span class="menu-title" id="linkAddCoche">Registrar mi Coche</span>
         </a>

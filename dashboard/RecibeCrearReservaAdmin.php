@@ -1,4 +1,9 @@
    <?php
+    /*
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+    */
+
     include('../config/config.php');
     $SinDefinir = 'Sin definir';
     $fecha_recogida = $_POST['fecha_recogida'] != '' ? date("Y-m-d", strtotime($_POST['fecha_recogida'])) : $SinDefinir;
@@ -33,11 +38,14 @@
      */
     $tipo_plaza = trim($_POST['tipo_plaza']);
     $total_pago_reserva = 0;
-    if ($total_dias_reserva != $SinDefinir) {
+    if ($total_dias_reserva >= "0") {
         $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+    } elseif ($total_dias_reserva == 'Sin definir') {
+        $total_pago_reserva = 0;
     } else {
         $total_pago_reserva = 0;
     }
+
     /**
      * Función para calcular el total de la deuda de acuerdo al tipo de plaza y los dias, obvio debe existir un total de dias 
      * y para que exista un total de dias debe existe una fecha 'fecha_recogida'
@@ -99,7 +107,7 @@
     $servicios_extras1 = trim($_POST['servicios_extras1']);
     $servicios_extras2 = trim($_POST['servicios_extras2']);
     $servicios_extras3 = trim($_POST['servicios_extras3']);
-    $idiomaCliente = trim($_POST['idioma']);
+    $idiomaCliente = trim($_POST['idiomaCliente']);
 
 
     $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, servicio_adicional, total_pago_reserva, total_pago_final, descuento, observacion_cliente, total_dias_reserva, servicios_extras1, total_gasto_extras1, servicios_extras2, total_gasto_extras2, servicios_extras3, total_gasto_extras3) 
