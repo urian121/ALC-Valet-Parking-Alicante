@@ -166,11 +166,22 @@
          * Para calcular el 'total_pago_reserva', primero validar si existen dias de reservas, si existen, retorno el valor de la deuda total de acuerdo al tipo de plaza y los dias
          */
         $total_pago_reserva = 0;
+        if ($total_dias_reserva >= "0" && $total_dias_reserva != 'Sin definir') {
+            $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+        } elseif ($total_dias_reserva == 'Sin definir') {
+            $total_pago_reserva = 0;
+        } else {
+            $total_pago_reserva = 0;
+        }
+        /*
+        $total_pago_reserva = 0;
         if ($total_dias_reserva != 'Sin definir') {
             $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
         } else {
             $total_pago_reserva = 0;
         }
+        */
+
 
         $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, id_coche_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva, total_dias_reserva)
                  VALUES('$id_cliente', '$id_coche_cliente', '$fecha_entrega','$hora_entrega','$fecha_recogida','$hora_recogida', '$tipo_plaza', '$terminal_entrega', '$terminal_recogida', '$numero_vuelo_de_vuelta', '$observacion_cliente', '$total_pago_reserva', '$total_dias_reserva')");

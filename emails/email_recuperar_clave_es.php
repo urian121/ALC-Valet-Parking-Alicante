@@ -30,6 +30,7 @@ try {
 
 
     $emailUser = trim($_REQUEST['emailUser']);
+    $miClaveOne  = trim($_REQUEST['clave']);
 
     $mail->setFrom('programadorphp2017@gmail.com', 'ALC Valet Parking Alicante');  // Quien envía este mensaje
     $mail->addAddress($emailUser, '');  // Destinatario
@@ -37,13 +38,6 @@ try {
     //Copia de envio del email
     $mail->addReplyTo('info@alcvaletparking.com', 'Information');
     $mail->addCC('urian1213viera@gmail.com'); //Copia
-
-
-    function claveOne($length = 4)
-    {
-        return substr(str_shuffle(str_repeat($x = '0123456789', ceil($length / strlen($x)))), 1, $length);
-    }
-    $miClaveOne  = claveOne();
 
     //Content
     $mail->isHTML(true);

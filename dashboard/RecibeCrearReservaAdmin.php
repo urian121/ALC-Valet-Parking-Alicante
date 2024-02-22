@@ -38,7 +38,7 @@
      */
     $tipo_plaza = trim($_POST['tipo_plaza']);
     $total_pago_reserva = 0;
-    if ($total_dias_reserva >= "0") {
+    if ($total_dias_reserva >= "0" && $total_dias_reserva != 'Sin definir') {
         $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
     } elseif ($total_dias_reserva == 'Sin definir') {
         $total_pago_reserva = 0;

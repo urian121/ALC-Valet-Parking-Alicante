@@ -1,25 +1,4 @@
-Que cuando el usuario cree la cuenta automaticamente se logue
-
-
-
-    SELECT 
-        c.*,
-        r.*, 
-        r.id AS id_reserva, 
-        v.*
-    FROM tbl_clientes AS c 
-    INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente 
-    INNER JOIN tbl_vehiculos AS v ON r.id_cliente = v.id_cliente 
-    WHERE 
-        r.fecha_entrega = '$fechaReserva'
-        OR r.fecha_recogida = '$fechaReserva'
-    GROUP BY r.id
-    ORDER BY r.fecha_entrega ASC, r.hora_entrega ASC, r.fecha_recogida ASC, r.hora_recogida ASC
-
-
-
-1. QUE EL CLIENTE PUEDA REGISTRAR SU COCHE UNA SOLA VEZ PARA LA PROXIMA RESERVA YA NO SERIA NECESARIO REGISTRAR EL COCHE SOLO TENDRIA QUE ASIGNAR EL COCHE A LA RESERVA.
-
-
-* QUE SE PUEDA HACER UNA RESERVA CON TANSOLO LA FECHA DE SALIDA SIN UNA FECHA FIN,
-    QUE TAMBIEN SE PUEDA HACER UNA RESERVA SIN FECHA INICIAL Y SIN FECHA FINAL
+- Los datos del vehiculo solo de denben registrar una vez, y ya estaria disponible para futuras reservas.
+- que el administrador pueda hacer una reserva el mismo dia actual y salida del dia actual.
+- Las reserva de un dia el coste debe ser el valor de un dia.
+- Recuperar la clave
