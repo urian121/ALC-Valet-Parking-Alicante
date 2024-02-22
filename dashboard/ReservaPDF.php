@@ -64,7 +64,7 @@ class MYPDF extends TCPDF
 
         $watermarkImg = dirname(__FILE__) . '/../assets/custom/imgs/esqueleto_carro.png'; // Ruta de la imagen de la marca de agua
         //$this->Image($watermarkImg, 90, 110, 30, 0, 'PNG', '', '', false, 300, '', false, false, 0);
-        $this->Image($watermarkImg, 105, 140, 90, 0, 'PNG', '', '', false, 300, '', false, false, 0);
+        $this->Image($watermarkImg, 115, 145, 90, 0, 'PNG', '', '', false, 300, '', false, false, 0);
 
         $fechaActual = new DateTime();
         $nombreDia = $this->traducirDia($fechaActual->format('l'));

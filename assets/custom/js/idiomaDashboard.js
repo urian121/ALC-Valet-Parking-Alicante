@@ -13,6 +13,10 @@ function cambiarIdioma(idioma) {
     es: "Registrar Mi Coche",
     en: "Register My Car",
   };
+  let title_mis_coches = {
+    es: "Mis Coches",
+    en: "My Cars",
+  };
   let marca_car_placeholder = {
     es: "Marca",
     en: "Car brand",
@@ -257,6 +261,9 @@ function cambiarIdioma(idioma) {
     en: "Cancel",
   };
 
+  selector("#title_mis_coches")
+    ? (selector("#title_mis_coches").innerText = title_mis_coches[idioma])
+    : "";
   // Actualiza el contenido de la página según el idioma seleccionado
   selector("#linkAddCoche")
     ? (selector("#linkAddCoche").innerText = linkAddCoche[idioma])

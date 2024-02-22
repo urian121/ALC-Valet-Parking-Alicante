@@ -1,4 +1,5 @@
-- Los datos del vehiculo solo de denben registrar una vez, y ya estaria disponible para futuras reservas.
-- que el administrador pueda hacer una reserva el mismo dia actual y salida del dia actual.
-- Las reserva de un dia el coste debe ser el valor de un dia.
-- Recuperar la clave
+- Los datos del vehiculo solo de deben registrar una vez, y ya estaria disponible para futuras reservas, eso para cuando el cliente desea crear una nueva reserva.
+- Que el administrador pueda hacer una reserva el mismo dia actual y salida del dia actual.
+- Las reserva de un dia o mismo dia, el coste debe ser el valor de un dia.
+- Que el usuario pueda Recuperar la clave
+- Crear un perfil para un usario semi-administrador de la aplicacion

@@ -79,7 +79,7 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
                             <div class="col-md-7">
                                 <div class="card">
                                     <div class="card-body mt-3">
-                                        <h1 class="text-center mb-4">Mis Coches
+                                        <h1 class="text-center mb-4" id="title_mis_coches">Mis Coches
                                             <hr>
                                         </h1>
                                         <div class="table-responsive">
