@@ -66,6 +66,19 @@
           <span class="menu-title">Clientes</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
+          <i class="bi bi-alarm menu-icon"></i>
+          <span class="menu-title">Estancias</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="error">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="EstanciasEntradas.php"> Estancias de Entradas </a></li>
+            <li class="nav-item"> <a class="nav-link" href="EstanciasSalidas.php"> Estancias de Salidas </a></li>
+          </ul>
+        </div>
+      </li>
     <?php } else { ?>
       <li class="nav-item">
         <a class="nav-link" href="index.php">

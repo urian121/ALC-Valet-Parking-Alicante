@@ -1,7 +1,6 @@
 <?php
 session_start();
 if (isset($_SESSION['emailUser']) != "") {
-    // include('../config/config.php');
     $IdUser     = $_SESSION['IdUser'];
     $rolUser     = $_SESSION['rol'];
     $email      = $_SESSION['emailUser'];
