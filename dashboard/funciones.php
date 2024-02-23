@@ -152,6 +152,9 @@
         $observacion_cliente    = trim($_POST['observacion_cliente']);
         $id_coche_cliente       = trim($_POST['id_coche_cliente']);
 
+        $fecha_1 = date('Y-m-d', strtotime($_POST['fecha_entrega']));
+        $fecha_2 = date('Y-m-d', strtotime($_POST['fecha_recogida']));
+
         //Calculando el total de dias de la reserva, esto se calcula si existe la fecha de recogida, de lo contrario seria 'Sin definir'
         $total_dias_reserva = 'Sin definir';
         if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_recogida)) {
@@ -166,21 +169,17 @@
          * Para calcular el 'total_pago_reserva', primero validar si existen dias de reservas, si existen, retorno el valor de la deuda total de acuerdo al tipo de plaza y los dias
          */
         $total_pago_reserva = 0;
-        if ($total_dias_reserva >= "0" && $total_dias_reserva != 'Sin definir') {
+        // si ambas fechas son iguales, indica que el total de la reserva es 0
+        if ($fecha_1 == $fecha_2) {
             $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+            // echo "Las fechas de entrega y recogida son iguales: $fecha_entrega" . "<br><br>";
         } elseif ($total_dias_reserva == 'Sin definir') {
             $total_pago_reserva = 0;
+            //echo 'no existe una fecha de recogida <br><br>';
         } else {
-            $total_pago_reserva = 0;
-        }
-        /*
-        $total_pago_reserva = 0;
-        if ($total_dias_reserva != 'Sin definir') {
             $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
-        } else {
-            $total_pago_reserva = 0;
+            //echo 'Las fechas de entrega y recogida son distintas <br><br>';
         }
-        */
 
 
         $queryInserReserva  = ("INSERT INTO tbl_reservas(id_cliente, id_coche_cliente, fecha_entrega, hora_entrega, fecha_recogida, hora_recogida, tipo_plaza, terminal_entrega, terminal_recogida, numero_vuelo_de_vuelta, observacion_cliente, total_pago_reserva, total_dias_reserva)
@@ -525,7 +524,7 @@
         $queryInsertVehiculo = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
         $resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
         if ($resultInsertVehiculo) {
-            header("location:./AddCoche.php?successCoche=1");
+            header("location:./index.php?successCoche=1");
         }
     }
     /**
@@ -541,7 +540,7 @@
 
         $UpdateVehiculo = "UPDATE tbl_vehiculos SET  marca_car='$marca_car', modelo_car='$modelo_car', color_car='$color_car', matricula_car='$matricula_car' WHERE id='$id_coche' AND id_cliente='$id_cliente'";
         $resultadoV = mysqli_query($con, $UpdateVehiculo);
-        header("location:./AddCoche.php?successCocheUp=1");
+        header("location:./index.php?successCocheUp=1");
     }
 
 

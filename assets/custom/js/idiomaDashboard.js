@@ -9,6 +9,10 @@ function cambiarIdioma(idioma) {
   /**
    *Modulo registrar carro desde el cliente
    */
+  let msj_titulo_reserva = {
+    es: "Recuerda, para crear una reserva primero necesitas registrar un coche.",
+    en: "Remember, to create a reservation you need to register a car.",
+  };
   let title_add_coche = {
     es: "Registrar Mi Coche",
     en: "Register My Car",
@@ -260,6 +264,10 @@ function cambiarIdioma(idioma) {
     es: "Cancelar",
     en: "Cancel",
   };
+
+  selector("#msj_titulo_reserva")
+    ? (selector("#msj_titulo_reserva").innerText = msj_titulo_reserva[idioma])
+    : "";
 
   selector("#title_mis_coches")
     ? (selector("#title_mis_coches").innerText = title_mis_coches[idioma])

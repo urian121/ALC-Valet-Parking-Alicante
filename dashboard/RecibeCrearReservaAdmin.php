@@ -5,17 +5,21 @@
     */
 
     include('../config/config.php');
-    $SinDefinir = 'Sin definir';
-    $fecha_recogida = $_POST['fecha_recogida'] != '' ? date("Y-m-d", strtotime($_POST['fecha_recogida'])) : $SinDefinir;
+    $fecha_recogida = $_POST['fecha_recogida'] != '' ? date("Y-m-d", strtotime($_POST['fecha_recogida'])) : 'Sin definir';
+
+
+    $fecha_1 = date('Y-m-d', strtotime($_POST['fecha_entrega']));
+    $fecha_2 = date('Y-m-d', strtotime($_POST['fecha_recogida']));
 
     //Calcular el total de dias de la reserva, esto se calcula si existe la fecha de $_POST['fecha_recogida'], de lo contrario seria 'Sin definir'
-    $total_dias_reserva = $SinDefinir;
+    $total_dias_reserva = 0;
     //Verificando si existe una fecha de recogida valida
     if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_recogida)) {
         //Si existe una fecha de recogida valida
         $diferencia = diferenciaDias($_POST['fecha_entrega'], $_POST['fecha_recogida']);
         $total_dias_reserva = $diferencia;
     } else {
+        $total_dias_reserva = 'Sin definir';
         //echo "El formato de fecha no es válido: $fecha_recogida";
     }
 
@@ -32,18 +36,22 @@
         return $dias_diferencia;
     }
 
-
     /**
      * Para calcular el 'total_pago_reserva', primero validar si existen dias de reservas, si existen, retorno el valor de la deuda total de acuerdo al tipo de plaza y los dias
      */
     $tipo_plaza = trim($_POST['tipo_plaza']);
     $total_pago_reserva = 0;
-    if ($total_dias_reserva >= "0" && $total_dias_reserva != 'Sin definir') {
+
+    // si ambas fechas son iguales, indica que el total de la reserva es 0
+    if ($fecha_1 == $fecha_2) {
         $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+        // echo "Las fechas de entrega y recogida son iguales: $fecha_entrega" . "<br><br>";
     } elseif ($total_dias_reserva == 'Sin definir') {
         $total_pago_reserva = 0;
+        //echo 'no existe una fecha de recogida <br><br>';
     } else {
-        $total_pago_reserva = 0;
+        $total_pago_reserva = totalDeudaPorTipoPlazaYDias($con, $tipo_plaza, $total_dias_reserva);
+        //echo 'Las fechas de entrega y recogida son distintas <br><br>';
     }
 
     /**

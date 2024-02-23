@@ -68,13 +68,13 @@
       </li>
     <?php } else { ?>
       <li class="nav-item">
-        <a class="nav-link" href="AddCoche.php">
+        <a class="nav-link" href="index.php">
           <img src="../assets/custom/imgs/carro.png" alt="car" style="padding: 0px 10px 0px 0px" />
           <span class="menu-title" id="linkAddCoche">Registrar mi Coche</span>
         </a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="index.php">
+        <a class="nav-link" href="NuevaReserva.php">
           <i class="icon-grid menu-icon"></i>
           <span class="menu-title" id="linkInicio">Crear Nueva Reserva</span>
         </a>

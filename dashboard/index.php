@@ -1,158 +1,163 @@
 <?php
 session_start();
-if (isset($_SESSION['emailUser']) != "") {
-  // include('../config/config.php');
-  $IdUser     = $_SESSION['IdUser'];
-  $rolUser     = $_SESSION['rol'];
-  $email      = $_SESSION['emailUser'];
+if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 0) {
+    $IdUser     = $_SESSION['IdUser'];
+    $rolUser     = $_SESSION['rol'];
+    $email      = $_SESSION['emailUser'];
 ?>
-  <!DOCTYPE html>
-  <html lang="es">
-  <?php
-  include('bases/head.html');
-  include('bases/toastr.html');
-  ?>
-  <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-  <style>
-    .gj-picker-md table tr td.today div {
-      color: #BDBDBD;
-    }
-  </style>
-
-  <body>
+    <!DOCTYPE html>
+    <html lang="es">
     <?php
-    include('../msjs.php');
-    include('bases/loader.html');
+    include('bases/head.html');
+    include('bases/toastr.html');
     ?>
-    <div class="container-scroller">
-      <?php include 'bases/navbar.php' ?>
-      <div class="container-fluid page-body-wrapper">
+
+    <body>
         <?php
-        include 'bases/nav.php';
-        include 'selectDate.php';
-        include 'funciones.php';
-        $listaCochesClientes = getCochesClientes($con, $IdUser);
+        include('../msjs.php');
+        include('bases/loader.html');
         ?>
-        <div class="main-panel">
-          <div class="content-wrapper">
-            <?php
-            if ($rolUser == 0) { ?>
-              <div class="row justify-content-md-center">
-                <div class="col-md-8 grid-margin">
-                  <div class="card">
-                    <div class="card-body">
-                      <h1 class="card-title text-center mb-5" id="title_reserva">Crea tu reserva aquí en segundos
-                        <hr>
-                      </h1>
-
-                      <form action="funciones.php" method="post" autocomplete="off">
-                        <input type="text" name="accion" value="crearReservaClienteDashboard" hidden>
-                        <input type="text" name="email_cliente" value="<?php echo $email; ?>" hidden>
-                        <input type="text" name="IdUser" value="<?php echo $IdUser; ?>" hidden>
-                        <div class="row mb-2">
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelFechaEntrega">Fecha de entrega</label>
-                            <input type="text" name="fecha_entrega" id="fecha_entrega" class="borderInput form-control form-control-lg campo_obligatorio" required />
-                          </div>
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelHoraEntrega">Hora de entrega</label>
-                            <select name="hora_entrega" id="hora_entrega" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected="">Seleccione</option>
-                              <?php echo generarOpcionesDeHora(); ?>
-                            </select>
-                          </div>
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelFechaRecogida">Fecha de recogida</label>
-                            <input type="text" name="fecha_recogida" id="fecha_recogida" class="borderInput form-control form-control-lg campo_obligatorio" />
-                          </div>
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelHoraRecogida">Hora de recogida (Aterrizaje)</label>
-                            <select name="hora_recogida" class="form-control form-control-lg campo_obligatorio">
-                              <option value="No la sé" selected="" id="optionNo">No la sé</option>
-                              <?php echo generarOpcionesDeHora(); ?>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class="row mb-2">
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelTipoPlaza">Tipo de plaza</label>
-                            <select name="tipo_plaza" id="tipo_plaza" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected id="valorSeleccione">Seleccione</option>
-                              <option value="Plaza Aire Libre" id="optionPlazaAireLibre">Plaza Aire Libre</option>
-                              <option value="Plaza Cubierto" id="optionPlazaCubierto">Plaza Cubierto</option>
-                            </select>
-                          </div>
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelTerminalEntrega">Terminal de entrega</label>
-                            <select name="terminal_entrega" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected id="valorSeleccione">Seleccione</option>
-                              <option value="Aeropuerto de Alicante" id="optionAeropuerto">Aeropuerto de Alicante</option>
-                            </select>
-                          </div>
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelTerminalRecogida">Terminal de recogida</label>
-                            <select name="terminal_recogida" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected id="valorSeleccione">Seleccione</option>
-                              <option value="Aeropuerto de Alicante" id="optionAeropuerto">Aeropuerto de Alicante</option>
-                            </select>
-                          </div>
-                          <div class="col-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="select_coche">Seleccione el coche</label>
-                            <select name="id_coche_cliente" class="form-control form-control-lg campo_obligatorio" required>
-                              <option value="" selected id="option_car_one">Seleccione</option>
-                              <?php
-                              while ($data = mysqli_fetch_array($listaCochesClientes)) { ?>
-                                <option value="<?php echo $data["id"]; ?>">
-                                  <?php echo ("Marca: " . $data["marca_car"] . " - " . "Modelo: " . $data["modelo_car"]); ?>
-                                </option>
-                              <?php } ?>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row mb-2">
-                          <div class="col-12 col-md-4 col-lg-6 col-xl-3 col-xxl-3 mb-2">
-                            <label id="labelNumeroVuelo">Nº Vuelo de Vuelta</label>
-                            <input type="text" name="numero_vuelo_de_vuelta" class="form-control form-control-lg campo_obligatorio" />
-                          </div>
-                          <div class="col-md-6 mb-2">
-                            <label id="labelObservaciones">Observaciones</label>
-                            <div class="form-floating">
-                              <textarea class="form-control" name="observacion_cliente" style="height: 100px"></textarea>
+        <div class="container-scroller">
+            <?php include 'bases/navbar.php' ?>
+            <div class="container-fluid page-body-wrapper">
+                <?php
+                include 'bases/nav.php';
+                include 'funciones.php';
+                $listaCochesClientes = getCochesClientes($con, $IdUser);
+                if (isset($_GET['id'])) {
+                    $idCoche = $_GET['id'];
+                    $infoCliente = infoCocheBD($con, $idCoche, $IdUser);
+                }
+                ?>
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-12">
+                                <h2 class="card-title text-center mb-4" id="msj_titulo_reserva">Recuerda, para crear una reserva primero necesitas registrar un coche.
+                                    <hr>
+                                </h2>
                             </div>
-                          </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                          <button type="submit" class="btn btn-primary mr-2" id="btnCrearReserva">Crear mi Reserva Ahora</button>
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-5 grid-margin">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="auth-form-light py-2 px-4">
+                                            <h1 class="card-title text-center mb-4 title_add_coche">Registrar mi Coche
+                                                <hr>
+                                            </h1>
+                                            <form action="funciones.php" method="post" autocomplete="off">
+                                                <input type="text" name="idCliente" value="<?php echo $IdUser; ?>" hidden>
+                                                <input type="text" name="accion" value="<?php echo isset($infoCliente['IdUser']) ? 'actualizarCocheCliente' : 'registraCocheCliente'; ?>" hidden>
+                                                <?php
+                                                if (isset($infoCliente['id'])) {
+                                                    echo '<input type="text" name="id" value="' . $infoCliente['id'] . '" hidden>';
+                                                } ?>
+
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="marca_car" id="marca_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Marca" value="<?php echo isset($infoCliente['marca_car']) ? $infoCliente['marca_car'] : ''; ?>" required />
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="modelo_car" id="modelo_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Modelo" value="<?php echo isset($infoCliente['modelo_car']) ? $infoCliente['modelo_car'] : ''; ?>" required />
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="color_car" id="color_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Color" value="<?php echo isset($infoCliente['color_car']) ? $infoCliente['color_car'] : ''; ?>" required />
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <input type="text" name="matricula_car" id="matricula_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" value="<?php echo isset($infoCliente['matricula_car']) ? $infoCliente['matricula_car'] : ''; ?>" required />
+                                                </div>
+
+                                                <div class="mt-3">
+                                                    <?php if (isset($infoCliente['id'])) { ?>
+                                                        <button type="submit" id="btn_actualizar_coche" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                                                            Actualizar Coche
+                                                        </button>
+                                                    <?php } else { ?>
+                                                        <button type="submit" id="btn_registrar_coche" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                                                            Registrar Coche
+                                                        </button>
+                                                    <?php } ?>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card">
+                                    <div class="card-body mt-3">
+                                        <h1 class="text-center mb-4" id="title_mis_coches">Mis Coches
+                                            <hr>
+                                        </h1>
+                                        <div class="table-responsive">
+                                            <table id="MiTabla_coches" class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th id="th_marca">Marca</th>
+                                                        <th id="th_modelo">Modelos</th>
+                                                        <th id="th_color">Color</th>
+                                                        <th id="th_matricula">Matrícula</th>
+                                                        <th id="th_acciones">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    while ($row = mysqli_fetch_array($listaCochesClientes)) { ?>
+                                                        <tr>
+                                                            <td class="custom_td"><?php echo $row["marca_car"]; ?></td>
+                                                            <td class="custom_td"><?php echo $row["modelo_car"]; ?></td>
+                                                            <td class="custom_td"><?php echo $row["color_car"]; ?></td>
+                                                            <td class="custom_td"><?php echo $row["matricula_car"]; ?></td>
+                                                            <td class="custom_td">
+                                                                <a href="AddCoche.php?id=<?php echo $row["id"]; ?>" class="btn btn-info btn_padding">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                    <span class="btn_edit_car">Editar Coche</span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </form>
                     </div>
-                  </div>
                 </div>
-              </div>
-            <?php } ?>
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
 
+        <?php include 'bases/PageJs.html'; ?>
+        <script src=" https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"></script>
+        <?php
+        if ($rolUser == 0) { ?>
+            <script src="../assets/custom/js/idiomaDashboard.js"></script>
+        <?php } ?>
+        <script>
+            $(document).ready(function() {
+                let idiomaActivo = localStorage.getItem("idioma");
+                let tablaEspanol = "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json";
+                let tablaIngles = "//cdn.datatables.net/plug-ins/1.10.25/i18n/English.json";
 
-    <?php include 'bases/PageJs.html'; ?>
-    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
-    <script src="https://unpkg.com/gijgo@1.9.14/js/messages/messages.es-es.js" type="text/javascript"></script>
-    <script src="../assets/custom/js/custom_date_time.js"></script>
+                let languageConfig = {
+                    url: idiomaActivo === "es" ? tablaEspanol : tablaIngles
+                };
 
-    <?php
-    if ($rolUser == 0) { ?>
-      <script src="../assets/custom/js/idiomaDashboard.js"></script>
-    <?php } ?>
-  </body>
+                $("#MiTabla_coches").DataTable({
+                    language: languageConfig
+                });
+            });
+        </script>
+    </body>
 
-  </html>
+    </html>
 <?php
 } else { ?>
-  <script type="text/javascript">
-    location.href = "../acciones/login/exit.php";
-  </script>
+    <script type="text/javascript">
+        location.href = "../acciones/login/exit.php";
+    </script>
 <?php }  ?>
