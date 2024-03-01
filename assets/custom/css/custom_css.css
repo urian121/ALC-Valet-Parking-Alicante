@@ -146,3 +146,6 @@ body tr td:hover {
 .amarilla {
   background-color: #fdfd8b !important; /* amarillo */
 }
+.bi-pen {
+  font-size: 25px;
+}

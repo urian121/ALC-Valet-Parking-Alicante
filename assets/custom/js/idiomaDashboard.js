@@ -132,7 +132,7 @@ function cambiarIdioma(idioma) {
   };
   let optionPlazaCubierto = {
     es: "Plaza cubierta",
-    en: "Covered parking",
+    en: "Covered / Indoor",
   };
   let valorSeleccione = {
     es: "Seleccione",

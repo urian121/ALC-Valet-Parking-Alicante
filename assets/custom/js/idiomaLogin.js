@@ -46,6 +46,26 @@ function cambiarIdioma(idioma) {
     es: "Recuperar mi clave",
     en: "Recover my password",
   };
+  let title_add_coche = {
+    es: "Registrar Mi Coche",
+    en: "Register My Car",
+  };
+  let marca_car_placeholder = {
+    es: "Marca",
+    en: "Car brand",
+  };
+  let modelo_car_placeholder = {
+    es: "Modelo",
+    en: "Car model",
+  };
+  let color_car_placeholder = {
+    es: "Color",
+    en: "Car color",
+  };
+  let matricula_car_placeholder = {
+    es: "Matricula",
+    en: "Car plate",
+  };
 
   // Actualiza el contenido de la página según el idioma seleccionado
   selector("#loginTitle")
@@ -71,7 +91,25 @@ function cambiarIdioma(idioma) {
   selector("#btn_recovery")
     ? (selector("#btn_recovery").innerText = btn_recovery[idioma])
     : "";
-
+  selector(".title_add_coche")
+    ? (selector(".title_add_coche").innerText = title_add_coche[idioma])
+    : "";
+  selector("#marca_car_placeholder")
+    ? (selector("#marca_car_placeholder").placeholder =
+        marca_car_placeholder[idioma])
+    : "";
+  selector("#modelo_car_placeholder")
+    ? (selector("#modelo_car_placeholder").placeholder =
+        modelo_car_placeholder[idioma])
+    : "";
+  selector("#color_car_")
+    ? (selector("#color_car_placeholder").placeholder =
+        color_car_placeholder[idioma])
+    : "";
+  selector("#matricula_car_placeholder")
+    ? (selector("#matricula_car_placeholder").placeholder =
+        matricula_car_placeholder[idioma])
+    : "";
   /**
    * Crear cuenta de usuario
    */
@@ -80,13 +118,13 @@ function cambiarIdioma(idioma) {
     en: "Full name",
   };
   let din = {
-    es: "DNI",
-    en: "DNI",
+    es: "CIF",
+    en: "CIF",
   };
 
   let direccion_completa = {
     es: "Dirección completa",
-    en: "Full address",
+    en: "Full address (only companies)",
   };
   let tlf = {
     es: "Teléfono",

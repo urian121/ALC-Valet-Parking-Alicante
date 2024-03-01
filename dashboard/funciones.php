@@ -97,6 +97,34 @@
         mysqli_free_result($query);
         return $data;
     }
+
+    /**
+     * obtener toda la informacion de una Reserva por su id
+     */
+    function getReservaID($con, $idReserva)
+    {
+        $infoReserva = ("SELECT 
+					    c.*,
+                        r.*,
+                        r.id AS id_reserva,
+                        v.*
+                   FROM tbl_clientes AS c 
+                	  INNER JOIN tbl_reservas AS r ON c.idUser=r.id_cliente            
+                   INNER JOIN tbl_vehiculos AS v
+                   ON r.id_cliente = v.id_cliente
+                   WHERE  r.id='$idReserva'
+                   GROUP BY r.id
+                   ORDER BY r.date_registro LIMIT 1");
+        $queryReserva = mysqli_query($con, $infoReserva);
+        if (!$queryReserva) {
+            return false;
+        }
+        $data = mysqli_fetch_assoc($queryReserva);
+        mysqli_free_result($queryReserva);
+        return $data;
+    }
+
+
     /**
      * Actualizar Perfil
      */
@@ -404,21 +432,26 @@
         $emailUser = trim($_POST['emailUser']);
         $tlf = $_POST['tlf'];
         $observaciones = $_POST['observaciones'];
+
         $IdUser = trim($_POST['IdUser']);
         $marca_car = trim($_POST['marca_car']);
         $modelo_car = trim($_POST['modelo_car']);
         $color_car = trim($_POST['color_car']);
         $matricula_car = trim($_POST['matricula_car']);
 
-        $PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT); //Incriptando clave,
-
-        $Update = "UPDATE tbl_clientes SET emailUser='$emailUser', passwordUser='$PasswordHash', nombre_completo='$nombre_completo', din='$din', direccion_completa='$direccion_completa', tlf='$tlf', observaciones='$observaciones', observaciones='$observaciones' WHERE IdUser='$IdUser'";
-        $resultado = mysqli_query($con, $Update);
-        if ($resultado) {
-            $UpdateVehiculo = "UPDATE tbl_vehiculos SET  marca_car='$marca_car', modelo_car='$modelo_car', color_car='$color_car', matricula_car='$matricula_car' WHERE matricula_car='$matricula_car'";
-            $resultadoV = mysqli_query($con, $UpdateVehiculo);
-            header("location:./CrearCliente.php?successUC=1");
+        if ($passwordUser == "") {
+            $Update = "UPDATE tbl_clientes SET emailUser='$emailUser', nombre_completo='$nombre_completo', din='$din', direccion_completa='$direccion_completa', tlf='$tlf', observaciones='$observaciones', observaciones='$observaciones' WHERE IdUser='$IdUser'";
+            $resultado = mysqli_query($con, $Update);
+        } else {
+            $PasswordHash = password_hash($passwordUser, PASSWORD_BCRYPT);
+            $Update = "UPDATE tbl_clientes SET emailUser='$emailUser', passwordUser='$PasswordHash', nombre_completo='$nombre_completo', din='$din', direccion_completa='$direccion_completa', tlf='$tlf', observaciones='$observaciones', observaciones='$observaciones' WHERE IdUser='$IdUser'";
+            $resultado = mysqli_query($con, $Update);
+            if ($resultado) {
+                $UpdateVehiculo = "UPDATE tbl_vehiculos SET  marca_car='$marca_car', modelo_car='$modelo_car', color_car='$color_car', matricula_car='$matricula_car' WHERE matricula_car='$matricula_car'";
+                $resultadoV = mysqli_query($con, $UpdateVehiculo);
+            }
         }
+        header("location:./CrearCliente.php?successUC=1");
     }
 
     /**

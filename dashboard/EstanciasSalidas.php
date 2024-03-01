@@ -86,12 +86,10 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                                                             </td>
                                                             <td class="custom_td"><?php echo $reserva["hora_recogida"]; ?></td>
                                                             <td class="custom_td"><?php echo $reserva["tipo_plaza"]; ?></td>
-                                                            <td class="custom_td" style="display: flex;justify-content: center;">
+                                                            <td class="custom_td" style="display: flex;justify-content: space-around;">
                                                                 <a href="ReservaPDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Recibo de Aparcamiento" target="_blank">
                                                                     <i class="bi bi-filetype-pdf" style="color: green;"></i>
                                                                 </a>
-                                                                &nbsp;&nbsp;
-                                                                &nbsp;&nbsp;
                                                                 <?php
                                                                 if ($reserva["formato_pago"] != "") { ?>
                                                                     <a href="FacturaClientePDF.php?idReserva=<?php echo $reserva_id; ?>" title="Descargar Factura" target="_blank">
@@ -102,6 +100,9 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                                                                         <i class="bi bi-receipt con_deuda"></i>
                                                                     </a>
                                                                 <?php } ?>
+                                                                <a href="editarReserva.php?idReserva=<?php echo $reserva_id; ?>" title="Editar Reserva">
+                                                                    <i class="bi bi-pen"></i>
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>

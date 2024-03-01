@@ -51,7 +51,7 @@ if (isset($_SESSION['emailUser']) != "") {
                                                 </h1>
                                                 <form action="funciones.php" method="post" autocomplete="off">
                                                     <input type="text" name="idCliente" value="<?php echo $IdUser; ?>" hidden>
-                                                    <input type="text" name="accion" value="<?php echo isset($infoCliente['IdUser']) ? 'actualizarCocheCliente' : 'registraCocheCliente'; ?>" hidden>
+                                                    <input type="text" name="accion" value="<?php echo isset($infoCliente['id_cliente']) ? 'actualizarCocheCliente' : 'registraCocheCliente'; ?>" hidden>
                                                     <?php
                                                     if (isset($infoCliente['id'])) {
                                                         echo '<input type="text" name="id" value="' . $infoCliente['id'] . '" hidden>';

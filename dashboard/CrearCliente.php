@@ -92,9 +92,8 @@ if (isset($_SESSION['emailUser']) != "" && $_SESSION['rol'] == 1 || $_SESSION['r
                                                     <input type="text" name="color_car" class="form-control form-control-lg campo_obligatorio" placeholder="Color" value="<?php echo isset($infoCliente['color_car']) ? $infoCliente['color_car'] : ''; ?>" required />
                                                 </div>
                                                 <div class="col-md-12 mb-2">
-                                                    <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" <?php echo isset($infoCliente['matricula_car']) ? 'disabled' : ''; ?> value="<?php echo isset($infoCliente['matricula_car']) ? $infoCliente['matricula_car'] : ''; ?>" required />
+                                                    <input type="text" name="matricula_car" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" <?php echo isset($infoCliente['matricula_car']) ? 'readonly' : ''; ?> value="<?php echo isset($infoCliente['matricula_car']) ? $infoCliente['matricula_car'] : ''; ?>" required />
                                                 </div>
-
 
                                                 <div class="mt-3">
                                                     <?php if (isset($infoCliente['IdUser'])) { ?>

@@ -1,9 +1,9 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	/*
+
 	ini_set('display_errors', 1);
 	error_reporting(E_ALL);
-	*/
+
 
 	include('../../config/config.php');
 	date_default_timezone_set("Europe/Madrid");
@@ -31,14 +31,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$resultInsertUser = mysqli_query($con, $queryInsertUser);
 
 		if ($resultInsertUser) {
-			echo '<script>';
-			echo '    let idiomaActivo = localStorage.getItem("idioma");';
-			echo '    if (idiomaActivo == "es") {';
-			echo '        window.location.href = "../../emails/cuenta_creada_email_es.php?emailUser=' . $emailUser . '";';
-			echo '    } else if (idiomaActivo == "en") {';
-			echo '        window.location.href = "../../emails/cuenta_creada_email_en.php?emailUser=' . $emailUser . '";';
-			echo '    }';
-			echo '</script>';
+			// Obtengo el ID del último registro insertado
+			$ultimoIdInsertado = mysqli_insert_id($con);
+			$id_cliente = $ultimoIdInsertado;
+			$marca_car = trim($_POST['marca_car']);
+			$modelo_car = trim($_POST['modelo_car']);
+			$color_car = trim($_POST['color_car']);
+			$matricula_car = trim($_POST['matricula_car']);
+
+			$queryInsertVehiculo = ("INSERT INTO tbl_vehiculos(id_cliente, marca_car, modelo_car, color_car, matricula_car) VALUES ('$id_cliente', '$marca_car', '$modelo_car', '$color_car', '$matricula_car')");
+			$resultInsertVehiculo = mysqli_query($con, $queryInsertVehiculo);
+			if ($resultInsertVehiculo) {
+				echo '<script>';
+				echo '    let idiomaActivo = localStorage.getItem("idioma");';
+				echo '    if (idiomaActivo == "es") {';
+				echo '        window.location.href = "../../emails/cuenta_creada_email_es.php?emailUser=' . $emailUser . '";';
+				echo '    } else if (idiomaActivo == "en") {';
+				echo '        window.location.href = "../../emails/cuenta_creada_email_en.php?emailUser=' . $emailUser . '";';
+				echo '    }';
+				echo '</script>';
+			}
 		}
 	}
 }

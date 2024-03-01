@@ -31,11 +31,11 @@
                     <input type="text" name="nombre_completo" id="nombre_completo" class="form-control form-control-lg" required placeholder="Nombre completo" />
                   </div>
                   <div class="col-md-6">
-                    <input type="text" name="din" id="din" class="form-control form-control-lg" placeholder="DNI" required />
+                    <input type="text" name="din" id="din" class="form-control form-control-lg" placeholder="CIF" required />
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="text" name="direccion_completa" id="direccion_completa" class="form-control form-control-lg" placeholder="Dirección completa" required />
+                  <input type="text" name="direccion_completa" id="direccion_completa" class="form-control form-control-lg" placeholder="Dirección completa (Solo empresas)" required />
                 </div>
                 <div class="row mb-2">
                   <div class="col-md-6 mb-2">
@@ -70,8 +70,28 @@
                     <textarea class="form-control" name="observaciones" id="observaciones" placeholder="Observaciones" style="height: 100px"></textarea>
                   </div>
                 </div>
+                <h1 class="card-title text-center mb-4 title_add_coche">Registrar mi Coche
+                  <hr>
+                </h1>
+                <div class="row mb-2">
+                  <div class="col-md-6 mb-2">
+                    <input type="text" name="marca_car" id="marca_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Marca" required />
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <input type="text" name="modelo_car" id="modelo_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Modelo" required />
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-6 mb-2">
+                    <input type="text" name="color_car" id="color_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Color" required />
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <input type="text" name="matricula_car" id="matricula_car_placeholder" class="form-control form-control-lg campo_obligatorio" placeholder="Matrícula" required />
+                  </div>
+                </div>
+
                 <div class="row mb-2 text-center">
-                  <div class="col-md-12 mb-2">
+                  <div class="col-md-12 mb-2 px-3">
                     <input type="checkbox" name="terminos" value="1" class="form-check-input" checked>
                     <label class="form-check-label" id="terminos">
                       Acepto los términos de uso
