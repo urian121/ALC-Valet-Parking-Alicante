@@ -150,7 +150,7 @@ if (isset($_GET["idReserva"])) {
         exit;
     }
     $rowReserva = mysqli_fetch_assoc($resulReserva);
-    MYPDF::setCountReserva($rowReserva["id_reserva"]);
+    MYPDF::setCountReserva($rowReserva["IdUser"]);
     // $CountReserva = $rowReserva["id_reserva"];
 } else {
     header("Location: https://alcvaletparking.com/");
